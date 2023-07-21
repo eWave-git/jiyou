@@ -1,0 +1,82 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    회원관리
+                </h2>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <form class="card" method="post" action="{{action}}" >
+                    <div class="card-header">
+                        <h3 class="card-title">회원 등록</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">회원 아이디</label>
+                            <div class="col">
+                                <input type="text" name="member_id" value="{{member_id}}" class="form-control" aria-describedby="" placeholder="회원 아이디">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">회원 이름</label>
+                            <div class="col">
+                                <input type="text" name="member_name" value="{{member_name}}" class="form-control" placeholder="회원 이름">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">회원 비밀번호</label>
+                            <div class="col">
+                                <input type="password" name="member_password" value="{{member_password}}" class="form-control" placeholder="회원 비밀번호">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">회원 이메일</label>
+                            <div class="col">
+                                <input type="text" name="member_email" value="{{member_email}}" class="form-control" placeholder="회원 이메일">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">회원 휴대폰번호</label>
+                            <div class="col">
+                                <input type="text" name="member_phone" value="{{member_phone}}" class="form-control" placeholder="회원 휴대폰번호">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">회원 타입</label>
+                            <div class="col">
+                                <select class="form-select" name="member_type">
+                                    {{member_type_options}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">회원 농장</label>
+                            <div class="col">
+                                <select class="form-select" name="member_farm_idx">
+                                    {{member_farm_options}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{{URL}}/admin/member_list"><button type="button" class="btn btn-secondary">목록</button></a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
