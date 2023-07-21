@@ -23,6 +23,7 @@ class Farm extends Page {
             $items .= View::render('admin/modules/farm/farm_item', [
                 'idx'           => $obFarm->idx,
                 'farm_name'     => $obFarm->farm_name,
+                'farm_ceo'     => $obFarm->farm_ceo,
                 'farm_address'  => $obFarm->farm_address,
             ]);
         }
@@ -47,12 +48,14 @@ class Farm extends Page {
             $content = View::render('admin/modules/farm/farm_form', [
                 'action' => '/admin/farm_form/'.$idx.'/edit',
                 'farm_name' => $objFarm->farm_name,
+                'farm_ceo' => $objFarm->farm_ceo,
                 'farm_address' => $objFarm->farm_address,
             ]);
         } else {
             $content = View::render('admin/modules/farm/farm_form', [
                 'action' => '/admin/farm_form/create',
                 'farm_name' => '',
+                'farm_ceo' => '',
                 'farm_address' => '',
             ]);
         }
@@ -66,6 +69,7 @@ class Farm extends Page {
 
         $obj = new EntityFarm;
         $obj->farm_name = $postVars['farm_name'];
+        $obj->farm_ceo = $postVars['farm_ceo'];
         $obj->farm_address = $postVars['farm_address'];
         $obj->created();
 
@@ -78,6 +82,7 @@ class Farm extends Page {
         $postVars = $request->getPostVars();
 
         $obj->farm_name = $postVars['farm_name'] ?? $obj->farm_name;
+        $obj->farm_ceo = $postVars['farm_ceo'] ?? $obj->farm_ceo;
         $obj->farm_address = $postVars['farm_address'] ?? $obj->farm_name;
         $obj->updated();
 

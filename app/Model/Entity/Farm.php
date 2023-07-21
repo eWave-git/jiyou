@@ -7,6 +7,7 @@ use \WilliamCosta\DatabaseManager\Database;
 class Farm {
     public $idx;
     public $farm_name;
+    public $farm_ceo;
     public $farm_address;
     public $created_at;
 
@@ -24,6 +25,7 @@ class Farm {
 
         $this->idx = (new Database('farm'))->insert([
             'farm_name' => $this->farm_name,
+            'farm_ceo' => $this->farm_ceo,
             'farm_address' => $this->farm_address,
             'created_at' => $this->created_at,
         ]);
@@ -32,6 +34,7 @@ class Farm {
     public function updated() {
         $this->idx = (new Database('farm'))->update('idx ='.$this->idx,[
             'farm_name' => $this->farm_name,
+            'farm_ceo' => $this->farm_ceo,
             'farm_address' => $this->farm_address,
         ]);
     }
