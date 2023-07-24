@@ -3,11 +3,24 @@
 namespace App\Controller\Admin;
 
 use \App\Model\Entity\Farm as EntityFarm;
+use \App\Model\Entity\FarmAddress as EntityFarmAddress;
 use \app\Utils\Common;
 use \WilliamCosta\DatabaseManager\Pagination;
 use \App\Utils\View;
 
 class Farm extends Page {
+
+    private static function getFarmAdddress($farm_idx) {
+        $list = '';
+        $results = EntityFarmAddress::getAddressByFarmIdx($farm_idx);
+
+        while ($obFarmAddress = $results->fetchObject(EntityFarmAddress::class)) {
+            $list .=  $obFarmAddress->address."<br>";
+        }
+
+        return $list;
+    }
+
     private static function getFarmListItems($request) {
         $items = '';
 
@@ -25,6 +38,7 @@ class Farm extends Page {
                 'farm_name'     => $obFarm->farm_name,
                 'farm_ceo'     => $obFarm->farm_ceo,
                 'farm_address'  => $obFarm->farm_address,
+                'address'   => self::getFarmAdddress($obFarm->idx),
             ]);
         }
 
@@ -96,5 +110,28 @@ class Farm extends Page {
         $obj->deleted();
 
         $request->getRouter()->redirect('/admin/farm_list');
+    }
+
+    public static function Farm_Address_Add($request) {
+        $postVars = $request->getPostVars();
+        if (empty($postVars['farm_idx'])) {
+            throw new \Exception("fasdfs",400);
+        }
+        if (empty($postVars['address'])) {
+            throw new \Exception("fasdfs",400);
+        }
+
+        $obj = EntityFarmAddress::getAddressCnt($postVars['address']);
+
+        if ($obj > 0) {
+            throw new \Exception("fasdfs",400);
+        }
+
+        $obj = new EntityFarmAddress;
+        $obj->farm_idx = $postVars['farm_idx'];
+        $obj->address = $postVars['address'];
+        $obj->save();
+
+        return ['success' => true];
     }
 }

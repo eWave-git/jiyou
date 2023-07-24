@@ -11,7 +11,7 @@ class Member extends Page {
     private static function getFarmsByIdx($idx) {
         $obj = EntityFarm::getFarmsByIdx($idx);
 
-        return $obj->farm_name;
+        return $obj->farm_name ?? '';
     }
 
     private static function getMemberType($type = '') {

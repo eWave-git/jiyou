@@ -2,6 +2,7 @@
 
 use \App\Http\Response;
 use \App\Controller\Admin;
+use \app\Utils\Common;
 
 $obRouter->get('/admin/farm_list',[
     'middlewares' => [
@@ -54,5 +55,16 @@ $obRouter->get('/admin/farm_form/{idx}/delete',[
     ],
     function($request, $idx) {
         return new Response(200, Admin\Farm::Farm_Delete($request, $idx));
+    }
+]);
+
+$obRouter->post('/admin/farm_form/addAddres',[
+    'middlewares' => [
+        'api',
+        'required-admin-login'
+    ],
+    function($request) {
+//        Common::print_r2($request);
+        return new Response(200, Admin\Farm::Farm_Address_Add($request), 'application/json');
     }
 ]);

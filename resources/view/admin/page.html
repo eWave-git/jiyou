@@ -59,8 +59,25 @@
             ]
         });
 
+        $("#add_address").click(function(){
+            $("[name='farm_idx']").val($(this).data('idx'));
 
+        });
 
+        $("[name='address_add_form_save']").click(function(){
+
+            $.ajax({
+                url:'{{URL}}/admin/farm_form/addAddres',
+                type:'post',
+                data:$("[name='address_add_form']").serialize(),
+                dataType: "json",
+                success:function(obj){
+                    if (obj.success) {
+                        location.reload();
+                    }
+                }
+            })
+        });
     });
 </script>
 
