@@ -8,17 +8,11 @@ class Member {
     public $idx;
     public $member_id;
     public $member_name;
-
     public $member_password;
-
     public $member_email;
-
     public $member_phone;
-
     public $member_type;
-
     public $member_farm_idx;
-
     public $created_at;
 
     public static function getMemberByIdx($idx) {

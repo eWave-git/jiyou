@@ -1,0 +1,119 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    보드타입관리
+                </h2>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <form class="card" method="post" action="{{action}}" >
+                    <div class="card-header">
+                        <h3 class="card-title">보드타입 등록</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">보드 타입</label>
+                            <div class="col">
+                                <input type="text" name="board_type" value="{{board_type}}" class="form-control" aria-describedby="" placeholder="보드 타입">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">모델명</label>
+                            <div class="col">
+                                <input type="text" name="model_name" value="{{model_name}}" class="form-control" aria-describedby="" placeholder="모델명">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">제조사</label>
+                            <div class="col">
+                                <input type="text" name="maker" value="{{maker}}" class="form-control" aria-describedby="" placeholder="제조사">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">데이터 양</label>
+                            <div class="col">
+                                <input type="text" name="use_count" value="{{use_count}}" class="form-control" aria-describedby="" placeholder="데이터 양">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data1</label>
+                            <div class="col">
+                                <input type="text" name="data1" value="{{data1}}" class="form-control" aria-describedby="" placeholder="data1">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data2</label>
+                            <div class="col">
+                                <input type="text" name="data2" value="{{data2}}" class="form-control" aria-describedby="" placeholder="data2">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data3</label>
+                            <div class="col">
+                                <input type="text" name="data3" value="{{data3}}" class="form-control" aria-describedby="" placeholder="data3">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data4</label>
+                            <div class="col">
+                                <input type="text" name="data4" value="{{data4}}" class="form-control" aria-describedby="" placeholder="data4">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data5</label>
+                            <div class="col">
+                                <input type="text" name="data5" value="{{data5}}" class="form-control" aria-describedby="" placeholder="data5">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data6</label>
+                            <div class="col">
+                                <input type="text" name="data6" value="{{data6}}" class="form-control" aria-describedby="" placeholder="data6">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data7</label>
+                            <div class="col">
+                                <input type="text" name="data7" value="{{data7}}" class="form-control" aria-describedby="" placeholder="data7">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data8</label>
+                            <div class="col">
+                                <input type="text" name="data8" value="{{data8}}" class="form-control" aria-describedby="" placeholder="data8">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{{URL}}/admin/board_type_ref_list"><button type="button" class="btn btn-secondary">목록</button></a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

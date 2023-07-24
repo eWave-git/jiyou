@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Model\Entity\Farm as EntityFarm;
+use \App\Model\Entity\Farm as EntityFarm;
 use \App\Model\Entity\Member as EntityMmeber;
 use \App\Utils\View;
 

@@ -21,20 +21,16 @@ class Page {
             'link'  => URL."/admin/farm_list"
         ],
         [
-            'label' => 'data_chk',
+            'label' => 'member_mant',
             'title' => '회원관리',
             'link'  => URL."/admin/member_list"
-//            'submenu'=>[
-//                ['label' => 'data_chk', 'title' => 'Horizontal', 'link' => ''],
-//                ['label' => 'data_chk', 'title' => 'Boxed', 'link' => ''],
-//            ],
         ],
         [
-            'label' => 'data_mnt',
+            'label' => 'device_mant',
             'title' => '장비관리',
             'submenu'=>[
-                ['label' => 'data_mnt', 'title' => '회원1', 'link' => ''],
-                ['label' => 'data_mnt', 'title' => '회원2', 'link' => ''],
+                ['label' => 'device_mant', 'title' => '보드타입관리', 'link' => URL.'/admin/board_type_ref_list'],
+                ['label' => 'device_mant', 'title' => '장비관리', 'link' => URL.'/admin/device_list'],
             ],
         ],
     ];
@@ -73,6 +69,7 @@ class Page {
         foreach ($sub_menu['submenu'] as $k => $v) {
             $dropdown .= View::render('admin/menu/dropdown', [
                 'depth_2' => $v['title'],
+                'link'    => $v['link'],
             ]);
         }
 
