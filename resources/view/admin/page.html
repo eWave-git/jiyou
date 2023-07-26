@@ -65,7 +65,6 @@
         });
 
         $("[name='address_add_form_save']").click(function(){
-
             $.ajax({
                 url:'{{URL}}/admin/farm_form/addAddres',
                 type:'post',
@@ -78,6 +77,31 @@
                 }
             })
         });
+
+        $("#farm_idx").change(function () {
+            $("#address").empty()
+            $.ajax({
+                url:'{{URL}}/admin/device_form/searchAddres',
+                type:'post',
+                data: {
+                    farm_idx:$(this).val()
+                },
+                dataType: "json",
+                success:function(obj){
+                    if (obj.success) {
+                        $.each(obj.address, function (key, value) {
+                            // console.log(obj.idx[key])
+                            $("#address").append(
+                                $("<option></option>").attr("value",value).text(value)
+                            )
+                        })
+
+                    }
+                }
+            })
+        });
+
+
     });
 </script>
 

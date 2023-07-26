@@ -1,0 +1,101 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    농장관리
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <a href="/admin/device_form">
+                    <button type="button" class="btn btn-primary">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path>
+                        </svg>
+                        농장 등록
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+
+        <div class="row row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive" >
+
+                        <table id="farm_list" class="table table-vcenter card-table">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="12%">
+                                <col width="12%">
+                                <col width="30%">
+                                <col width="">
+
+                                <col width="5%">
+                                <col width="5%">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>idx</th>
+                                <th>농장 이름</th>
+                                <th>address</th>
+                                <th>board_type</th>
+                                <th>board_number</th>
+                                <th class="w-1"></th>
+                                <th class="w-1"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{items}}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+            <form name="address_add_form">
+                <input type="hidden" name="farm_idx" value="">
+                <div class="modal-header">
+                    <h5 class="modal-title">address 추가</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">address</label>
+                        <input type="text" class="form-control" name="address" placeholder="address">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </a>
+                    <button type="button" class="btn btn-primary ms-auto" name="address_add_form_save">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        ADDRESS 추가
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

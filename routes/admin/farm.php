@@ -64,7 +64,6 @@ $obRouter->post('/admin/farm_form/addAddres',[
         'required-admin-login'
     ],
     function($request) {
-//        Common::print_r2($request);
         return new Response(200, Admin\Farm::Farm_Address_Add($request), 'application/json');
     }
 ]);
