@@ -29,6 +29,8 @@ MiddlewareQueue::setMap([
     'maintenance' => \App\Http\Middleware\maintenance::class,
     'required-admin-logout' => \App\Http\Middleware\RequireAdminLogout::class,
     'required-admin-login' => \App\Http\Middleware\RequireAdminLogin::class,
+    'required-manager-logout' => \App\Http\Middleware\RequireManagerLogout::class,
+    'required-manager-login' => \App\Http\Middleware\RequireManagerLogin::class,
     'api' => \App\Http\Middleware\Api::class,
 ]);
 

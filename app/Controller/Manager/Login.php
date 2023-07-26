@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Manager;
 
 use \app\Utils\Common;
 use \App\Utils\View;
 use \App\Model\Entity\Member;
-use \App\Session\Admin\Login as SessionAdminLogin;
+use \App\Session\Manager\Login as SessionManagerLogin;
+
 
 class Login extends Page {
-
     public static function getLogin($request, $errorMessage = null) {
 
-        $content = View::render('admin/login',[
+        $content = View::render('manager/login',[
             'status' => !is_null($errorMessage) ? Alert::getError($errorMessage) : ''
         ]);
 
@@ -24,7 +24,7 @@ class Login extends Page {
         $member_id    = $postVars['member_id'] ?? '';
         $member_password    = $postVars['member_password'] ?? '';
 
-        $obUser = Member::getAdminMemberById($member_id);
+        $obUser = Member::getManagerMemberById($member_id);
 
         if (!$obUser instanceof Member) {
             return self::getLogin($request, 'id Error');
@@ -34,14 +34,14 @@ class Login extends Page {
             return  self::getLogin($request, 'password Error');
         }
 
-        SessionAdminLogin::login($obUser);
+        SessionManagerLogin::login($obUser);
 
-        $request->getRouter()->redirect('/admin/farm_list');
+        $request->getRouter()->redirect('/manager');
     }
 
     public static function setLogout($request) {
-        SessionAdminLogin::logout();
+        SessionManagerLogin::logout();
 
-        $request->getRouter()->redirect('/admin/login');
+        $request->getRouter()->redirect('/manager/login');
     }
 }

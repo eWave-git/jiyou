@@ -15,6 +15,11 @@ class Member {
     public $member_farm_idx;
     public $created_at;
 
+
+    public static function getMemberJoinFarm() {
+        return (new Database('member'))->execute("select f.* from farm as f left join member as m on f.idx = m.member_farm_idx where m.idx is null");
+    }
+
     public static function getMemberByIdx($idx) {
         return self::getMembers('idx ='.$idx)->fetchObject(self::class);
     }
@@ -23,6 +28,13 @@ class Member {
         return self::getMembers("member_id='".$member_id."'")->fetchObject(self::class);
     }
 
+    public static function getAdminMemberById($member_id) {
+        return self::getMembers("member_type='admin' and member_id='".$member_id."'")->fetchObject(self::class);
+    }
+
+    public static function getManagerMemberById($member_id) {
+        return self::getMembers("member_type='manager' and member_id='".$member_id."'")->fetchObject(self::class);
+    }
 
     public static function getMembers($where = null, $order = null, $limit = null, $fields = '*') {
 
