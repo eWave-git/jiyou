@@ -113,7 +113,7 @@ class Router {
             $route = $this->getRoute();
 
             if (!isset($route['controller'])) {
-                throw new Exception("Error Processing Request3", 500);
+                throw new Exception("Error Processing Request3", 200);
             }
 
             $args = [];
@@ -152,6 +152,13 @@ class Router {
 
         header('location: '.$url);
         exit;
+    }
+
+    public function goback(){
+        if (isset($_SERVER["HTTP_REFERER"])) {
+            header("Location: " . $_SERVER["HTTP_REFERER"]);
+            exit;
+        }
     }
 
 }
