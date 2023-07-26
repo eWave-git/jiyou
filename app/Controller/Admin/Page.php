@@ -33,6 +33,11 @@ class Page {
                 ['label' => 'device_mant', 'title' => '장비관리', 'link' => URL.'/admin/device_list'],
             ],
         ],
+        [
+            'label' => 'all_mant',
+            'title' => '전체리스트',
+            'link' => "javascript:alert('준비중')",
+        ],
     ];
 
 
