@@ -19,20 +19,27 @@ class Page {
         [
             'label' => 'dashboard',
             'title' => '대쉬보드',
+            'link'  => URL."/manager/dashboard",
         ],
-        ['label' => 'data_chk',
-            'title' => '데이터조회',
-            'submenu'=>[
-                ['label' => 'data_chk', 'title' => 'Horizontal', 'link' => ''],
-                ['label' => 'data_chk', 'title' => 'Boxed', 'link' => ''],
-            ],
+        [
+            'label' => 'inquiry',
+            'title' => '조회',
+            'link'  => URL."/manager/inquiry",
         ],
-        ['label' => 'data_mnt',
-            'title' => '데이터관리',
-            'submenu'=>[
-                ['label' => 'data_mnt', 'title' => '회원1', 'link' => ''],
-                ['label' => 'data_mnt', 'title' => '회원2', 'link' => ''],
-            ],
+        [
+            'label' => 'management',
+            'title' => '관리',
+            'link'  => URL."/manager/managment",
+        ],
+        [
+            'label' => 'settin',
+            'title' => '설정',
+            'link'  => URL."/manager/settin",
+        ],
+        [
+            'label' => 'all',
+            'title' => '전체',
+            'link'  => URL."/manager/all",
         ],
     ];
 
@@ -46,6 +53,7 @@ class Page {
                 $menus .= View::render('manager/menu/li', [
                     'depth_1' => $v['title'],
                     'active' => $v['label'] == $currentModule ? 'active' : '',
+                    'link'    => $v['link'],
                 ]);
             } else {
                 $menus .= View::render('manager/menu/li_dropdown', [
@@ -69,6 +77,7 @@ class Page {
         foreach ($sub_menu['submenu'] as $k => $v) {
             $dropdown .= View::render('manager/menu/dropdown', [
                 'depth_2' => $v['title'],
+                'link'    => $v['link'],
             ]);
         }
 

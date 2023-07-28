@@ -36,7 +36,7 @@ class Login extends Page {
 
         SessionManagerLogin::login($obUser);
 
-        $request->getRouter()->redirect('/manager');
+        $request->getRouter()->redirect('/manager/dashboard');
     }
 
     public static function setLogout($request) {
