@@ -23,7 +23,7 @@ $obRouter->post('/manager/login',[
 
 $obRouter->get('/manager/logout',[
     'middlewares' => [
-        'required-admin-login'
+        'required-manager-login'
     ],
     function($request) {
         return new Response(200, Manager\Login::setLogout($request));
