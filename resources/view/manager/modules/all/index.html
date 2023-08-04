@@ -4,7 +4,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Empty page
+                    전체
                 </h2>
             </div>
         </div>
@@ -13,6 +13,138 @@
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
-        <!-- Content here -->
+
+        <div class="col-12">
+            <form class="card" method="post" action="{{action}}" >
+                <div class="card-header">
+                    <h3 class="card-title">정액보관고 온도 설정</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-1 col-form-label required">제품번호</label>
+                        <div class="col-2">
+                            <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                        <label class="col-1 col-form-label required">온도 설정</label>
+                        <div class="col-2">
+                            <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12">
+            <form class="card" method="post" action="{{action}}" >
+                <div class="card-header">
+                    <h3 class="card-title">배치 설정</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-1 col-form-label required">제품번호</label>
+                        <div class="col-2">
+                            <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                        <label class="col-1 col-form-label required">입실 일자</label>
+                        <div class="col-2">
+                            <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                        <label class="col-1 col-form-label required">종료 일자</label>
+                        <div class="col-auto">
+                            <div class="row">
+                                <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">배치리스트</h3>
+                </div>
+                <div class="table-responsive" >
+                    <table id="farm_list" class="table table-vcenter card-table">
+                        <colgroup>
+                            <col width="5%">
+                            <col width="20%">
+                            <col width="15%">
+                            <col width="">
+                            <col width="15%">
+                            <col width="15%">
+                            <col width="10%">
+                            <col width="10%">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>idx</th>
+                            <th>제품 번호</th>
+                            <th>입실 일자</th>
+                            <th>종료 일자</th>
+                            <th>완료 구분</th>
+                            <th>등록 일시</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>9005-21-06</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <a href="/admin/member_form/{{idx}}/edit">수정</a>
+                            </td>
+                            <td>
+                                <a href="/admin/member_form/{{idx}}/delete">삭제</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>9005-21-06</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <a href="/admin/member_form/{{idx}}/edit">수정</a>
+                            </td>
+                            <td>
+                                <a href="/admin/member_form/{{idx}}/delete">삭제</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>9005-21-06</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <a href="/admin/member_form/{{idx}}/edit">수정</a>
+                            </td>
+                            <td>
+                                <a href="/admin/member_form/{{idx}}/delete">삭제</a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

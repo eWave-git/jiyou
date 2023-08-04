@@ -4,8 +4,9 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Empty page
+                    조회
                 </h2>
+
             </div>
         </div>
     </div>
@@ -13,6 +14,146 @@
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
-        <!-- Content here -->
+        <div class="row row-cards">
+
+            <div class="col-12">
+                <form class="card" method="post" action="{{action}}" >
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label class="col-1 col-form-label required">제품번호</label>
+                            <div class="col-2">
+                                <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                            <label class="col-1 col-form-label required">센서</label>
+                            <div class="col-2">
+                                <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                            <label class="col-1 col-form-label required">정상범위</label>
+                            <div class="col-auto">
+                                <div class="row">
+                                    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" style="width: 130px;">&nbsp;~&nbsp;
+                                    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" style="width: 130px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                <path d="M21 21l-6 -6"></path>
+                                <path d="M10 13l0 .01"></path>
+                                <path d="M10 10a1.5 1.5 0 1 0 -1.14 -2.474"></path>
+                            </svg>
+                            조회
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+
+
+
+
+
+            <div class="col-lg-12" >
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item ms-auto">
+                                <div class="col-auto">
+                                    <div class="dropdown">
+                                        <a href="#" class="btn-action" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/dots-vertical -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a href="#" class="dropdown-item">Import</a>
+                                            <a href="#" class="dropdown-item">Export</a>
+                                            <a href="#" class="dropdown-item">Download</a>
+                                            <a href="#" class="dropdown-item text-danger">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body" >
+                        <canvas id="myChart_1"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive" >
+                        <table id="farm_list" class="table table-vcenter card-table">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="20%">
+                                <col width="5%">
+                                <col width="15%">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>idx</th>
+                                <th>DATA1</th>
+                                <th>DATA2</th>
+                                <th>DATA3</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>12</td>
+                                <td>321</td>
+                                <td>312321</td>
+                                <td>321321</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>321</td>
+                                <td>312321</td>
+                                <td>321321</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>321</td>
+                                <td>312321</td>
+                                <td>321321</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>321</td>
+                                <td>312321</td>
+                                <td>321321</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>321</td>
+                                <td>312321</td>
+                                <td>321321</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>321</td>
+                                <td>312321</td>
+                                <td>321321</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>321</td>
+                                <td>312321</td>
+                                <td>321321</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </div>
