@@ -36,7 +36,7 @@ class Login extends Page {
 
         SessionAdminLogin::login($obUser);
 
-        $request->getRouter()->redirect('/admin/farm_list');
+        $request->getRouter()->redirect('/admin/member_list');
     }
 
     public static function setLogout($request) {

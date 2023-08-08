@@ -9,6 +9,8 @@ class Farm {
     public $farm_name;
     public $farm_ceo;
     public $farm_address;
+    public $address;
+    public $member_idx;
     public $created_at;
 
 
@@ -27,6 +29,8 @@ class Farm {
             'farm_name' => $this->farm_name,
             'farm_ceo' => $this->farm_ceo,
             'farm_address' => $this->farm_address,
+            'address' => $this->address,
+            'member_idx' => $this->member_idx,
             'created_at' => $this->created_at,
         ]);
     }
@@ -36,6 +40,8 @@ class Farm {
             'farm_name' => $this->farm_name,
             'farm_ceo' => $this->farm_ceo,
             'farm_address' => $this->farm_address,
+            'member_idx' => $this->member_idx,
+            'address' => $this->address,
         ]);
     }
 

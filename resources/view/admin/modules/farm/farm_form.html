@@ -25,7 +25,6 @@
                             <label class="col-2 col-form-label required">농장이름</label>
                             <div class="col">
                                 <input type="text" name="farm_name" value="{{farm_name}}" class="form-control" aria-describedby="" placeholder="농장이름">
-
                             </div>
                         </div>
                         <div class="mb-3 row">
@@ -40,6 +39,21 @@
                                 <input type="text" name="farm_address" value="{{farm_address}}" class="form-control" placeholder="주소">
                             </div>
                         </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label">농장 고유번호</label>
+                            <div class="col">
+                                <input type="text" name="address" value="{{address}}" class="form-control" placeholder="농장고유주소">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label">manager 회원</label>
+                            <div class="col">
+                                <select class="form-select" name="member_idx">
+                                    {{member_idx}}
+                                </select>
+                            </div>
+                        </div>
+
 
                     </div>
                     <div class="card-footer text-center">

@@ -16,14 +16,14 @@ class Page {
 
     private static $menus = [
         [
-            'label' => 'farm_mant',
-            'title' => '농장관리',
-            'link'  => URL."/admin/farm_list"
-        ],
-        [
             'label' => 'member_mant',
             'title' => '회원관리',
             'link'  => URL."/admin/member_list"
+        ],
+        [
+            'label' => 'farm_mant',
+            'title' => '농장관리',
+            'link'  => URL."/admin/farm_list"
         ],
         [
             'label' => 'device_mant',

@@ -26,6 +26,17 @@ class Common{
             exit;
         }
 
+        return $str;
+    }
+
+    public static function int_check($int, $msg) {
+
+        if (!is_numeric($int)) {
+            self::error_msg($msg);
+            exit;
+        }
+
+        return $int;
     }
 
     public static function error_msg($msg) {

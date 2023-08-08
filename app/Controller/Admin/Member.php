@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use \App\Model\Entity\Farm as EntityFarm;
 use \App\Model\Entity\Member as EntityMmeber;
+use app\Utils\Common;
 use \App\Utils\View;
 
 class Member extends Page {
@@ -15,7 +16,7 @@ class Member extends Page {
     }
 
     private static function getMemberType($type = '') {
-        $_type = array('admin', 'manager','user');
+        $_type = array( 'manager','viewer');
         $options = '';
 
         foreach ($_type as $item) {
@@ -53,7 +54,6 @@ class Member extends Page {
         while ($obMember = $request->fetchObject(EntityMmeber::class)) {
             $items .= View::render('admin/modules/member/member_item', [
                'idx'            => $obMember->idx,
-               'farm_name'      => self::getFarmsByIdx($obMember->member_farm_idx),
                'member_type'    => $obMember->member_type,
                'member_id'      => $obMember->member_id,
                'member_name'    => $obMember->member_name,
@@ -85,7 +85,6 @@ class Member extends Page {
                 'member_email'              => $objMember->member_email,
                 'member_phone'              => $objMember->member_phone,
                 'member_type_options'       => self::getMemberType($objMember->member_type),
-                'member_farm_options'       => self::getFarmList($objMember->member_farm_idx),
             ]);
         } else {
             $content = View::render('admin/modules/member/member_form', [
@@ -96,7 +95,6 @@ class Member extends Page {
                 'member_email'              => '',
                 'member_phone'              => '',
                 'member_type_options'       => self::getMemberType(),
-                'member_farm_options'       => self::getFarmList(),
             ]);
         }
 
@@ -113,7 +111,6 @@ class Member extends Page {
         $obj->member_email = $postVars['member_email'];
         $obj->member_phone = $postVars['member_phone'];
         $obj->member_type = $postVars['member_type'];
-        $obj->member_farm_idx = $postVars['member_farm_idx'];
         $obj->created();
 
         $request->getRouter()->redirect('/admin/member_list');
@@ -130,7 +127,6 @@ class Member extends Page {
         $obj->member_email = $postVars['member_email'] ?? $obj->member_email;
         $obj->member_phone = $postVars['member_phone'] ?? $obj->member_phone;
         $obj->member_type = $postVars['member_type'] ?? $obj->member_type;
-        $obj->member_farm_idx = $postVars['member_farm_idx'] ?? $obj->member_farm_idx;
         $obj->updated();
 
 

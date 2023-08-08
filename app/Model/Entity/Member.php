@@ -51,7 +51,6 @@ class Member {
             'member_email' => $this->member_email,
             'member_phone' => $this->member_phone,
             'member_type' => $this->member_type,
-            'member_farm_idx' => $this->member_farm_idx,
             'created_at' => $this->created_at,
         ]);
     }
@@ -64,7 +63,6 @@ class Member {
             'member_email' => $this->member_email,
             'member_phone' => $this->member_phone,
             'member_type' => $this->member_type,
-            'member_farm_idx' => $this->member_farm_idx,
         ]);
     }
 

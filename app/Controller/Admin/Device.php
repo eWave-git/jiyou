@@ -157,13 +157,16 @@ class Device extends Page {
             throw new \Exception("fasdfs",400);
         }
 
-        $results = EntityFarmAddress::getAddressByFarmIdx($postVars['farm_idx']);
+//        $results = EntityFarmAddress::getAddressByFarmIdx($postVars['farm_idx']);
+        $results = EntityFarm::getFarmsByIdx($postVars['farm_idx']);
         $arr = array();
 
-        while ($obFarmAddress = $results->fetchObject(EntityFarmAddress::class)) {
-            $arr['idx'][] =  $obFarmAddress->idx;
-            $arr['text'][] =  $obFarmAddress->address;
+
+        if ($results) {
+            $arr['idx'][] =  $results->idx;
+            $arr['text'][] =  $results->address;
         }
+
 
         return [
             'success' => true,
