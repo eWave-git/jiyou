@@ -36,7 +36,7 @@ class Page {
         [
             'label' => 'all_mant',
             'title' => '전체리스트',
-            'link' => "javascript:alert('준비중')",
+            'link' => URL."/admin/all_list",
         ],
     ];
 

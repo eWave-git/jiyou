@@ -16,6 +16,14 @@ class Member {
     public $created_at;
 
 
+    public static function getMemberDetail($farm_idx) {
+        return (new Database('member'))->execute("select * , m.created_at as member_created_at, f.idx as farm_idx from member as m left join farm as f on m.idx = f.member_idx where m.member_type='manager' and f.idx={$farm_idx} and f.idx is not null order by f.idx desc");
+    }
+
+    public static function getMemberDetailList() {
+        return (new Database('member'))->execute("select * , f.idx as farm_idx from member as m left join farm as f on m.idx = f.member_idx where m.member_type='manager' and f.idx is not null order by f.idx desc");
+    }
+
     public static function getMemberJoinFarm() {
         return (new Database('member'))->execute("select f.* from farm as f left join member as m on f.idx = m.member_farm_idx where m.idx is null");
     }

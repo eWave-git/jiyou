@@ -13,6 +13,10 @@ class Device {
     public $created_at;
 
 
+    public static function getDevicesByIdxAddress($farm_idx, $address) {
+        return self::getDevices("farm_idx = ".$farm_idx." and address = '".$address."'");
+    }
+
     public static function getDevicesByIdx($idx) {
         return self::getDevices('idx = '.$idx)->fetchObject(self::class);
     }

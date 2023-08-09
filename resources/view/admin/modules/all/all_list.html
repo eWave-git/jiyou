@@ -1,0 +1,50 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    전체 리스트
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive" >
+                        <table id="farm_list" class="table table-vcenter card-table">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="10%">
+                                <col width="5%">
+                                <col width="15%">
+                                <col width="15%">
+
+                                <col width="10%">
+
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>idx</th>
+                                <th>회원 아이디</th>
+                                <th>회원 이름</th>
+                                <th>농장 이름</th>
+                                <th>장비</th>
+                                <th class="w-1"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{items}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

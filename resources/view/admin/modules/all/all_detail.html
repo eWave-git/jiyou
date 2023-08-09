@@ -1,0 +1,66 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    상세
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="card card-lg">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="h2">회원 정보</p>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-5">회원 아이디:</dt><dd class="col-7">{{member_id}}</dd>
+                                <dt class="col-5">회원 이름:</dt><dd class="col-7">{{member_name}}</dd>
+                                <dt class="col-5">회원 이메일:</dt><dd class="col-7">{{member_email}}</dd>
+                                <dt class="col-5">회원 휴대폰번호:</dt><dd class="col-7">{{member_phone}}</dd>
+                                <dt class="col-5">회원 등록일:</dt><dd class="col-7">{{member_created_at}}</dd>
+
+                            </dl>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <p class="h2">농장 정보</p>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-5">농장 이름:</dt><dd class="col-7">{{farm_name}}</dd>
+                                <dt class="col-5">대표자 이름:</dt><dd class="col-7">{{farm_ceo}}</dd>
+                                <dt class="col-5">주소:</dt><dd class="col-7">{{farm_address}}</dd>
+                                <dt class="col-5">농장 고유번호:</dt><dd class="col-7">{{address}}</dd>
+                            </dl>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 my-5">
+                        <h2>장비 목록</h2>
+                    </div>
+                </div>
+
+
+                <div class="accordion" id="accordion-example">
+                    {{all_detail_device}}
+                </div>
+            </div>
+
+            <div class="card-footer text-center">
+                <a href="{{URL}}/admin/all_list"><button type="button" class="btn btn-secondary">목록</button></a>
+            </div>
+
+        </div>
+    </div>
+</div>

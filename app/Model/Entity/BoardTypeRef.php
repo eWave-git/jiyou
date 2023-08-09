@@ -21,6 +21,10 @@ class BoardTypeRef {
     public $created_at;
 
 
+    public static function getBoardTypeRefByBoardType($board_type) {
+        return self::getBoardTypeRef('board_type ='.$board_type)->fetchObject(self::class);
+    }
+
     public static function getBoardTypeRefByIdx($idx) {
         return self::getBoardTypeRef('idx ='.$idx)->fetchObject(self::class);
     }
