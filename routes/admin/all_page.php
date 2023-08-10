@@ -9,7 +9,7 @@ $obRouter->get('/admin/all_list',[
         'required-admin-login'
     ],
     function($request) {
-        return new Response(200, Admin\all::all_list($request));
+        return new Response(200, Admin\All::all_list($request));
     }
 ]);
 
@@ -18,6 +18,6 @@ $obRouter->get('/admin/all_detail/{idx}',[
         'required-admin-login'
     ],
     function($request, $idx) {
-        return new Response(200, Admin\all::all_detail($request, $idx));
+        return new Response(200, Admin\All::all_detail($request, $idx));
     }
 ]);
