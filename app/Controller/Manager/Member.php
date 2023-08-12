@@ -2,18 +2,36 @@
 
 namespace App\Controller\Manager;
 
+use App\Controller\Admin\BoardTypeRef;
 use \App\Model\Entity\Farm as EntityFarm;
 use \App\Model\Entity\Member as EntityMmeber;
+use app\Utils\Common;
 use \App\Utils\View;
 
 class Member extends Page {
 
+
+    public static function getMembersDevice($member_idx) {
+        $arr  = array();
+
+        $result = EntityMmeber::getMembersDevice($member_idx);
+
+        $_i = 0;
+        while ($obj = $result->fetchObject(EntityMmeber::class)) {
+            $arr[$_i] = (array) $obj;
+            $arr[$_i]['board_name'] =  BoardTypeRef::getBoardTypeName($obj->board_type);
+            $_i++;
+        }
+
+        return $arr;
+    }
+
     private static function getMemberJoinFarm() {
         $options = '';
 
-        $request = EntityMmeber::getMemberJoinFarm();
+        $results = EntityMmeber::getMemberJoinFarm();
 
-        while ($obMember = $request->fetchObject(EntityMmeber::class)) {
+        while ($obMember = $results->fetchObject(EntityMmeber::class)) {
             $options .= View::render('manager/modules/member/member_join_options', [
                 'value' => $obMember->idx,
                 'text'  => $obMember->farm_name,

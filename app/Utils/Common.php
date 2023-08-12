@@ -19,6 +19,14 @@ class Common{
         exit;
     }
 
+    public static function var_dump2($vars) {
+        echo "<pre>";
+        var_dump($vars);
+        echo "<pre>";
+        exit;
+    }
+
+
     public static function str_chekc($str, $msg) {
 
         if (!isset($str) || empty($str)) {
@@ -37,6 +45,12 @@ class Common{
         }
 
         return $int;
+    }
+
+    public static function get_manager() {
+        if (!$_SESSION['manager']) return null;
+
+        return $_SESSION['manager']['user']['id'];
     }
 
     public static function error_msg($msg) {

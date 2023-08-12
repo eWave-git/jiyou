@@ -37,14 +37,14 @@ class Device extends Page {
     private static function getAddressList($farm_idx = '', $address = '') {
         $options = '';
 
-        $results = EntityFarmAddress::getAddressByFarmIdx($farm_idx);
-        while ($obFarmAddress = $results->fetchObject(EntityBoardTypeRef::class)) {
-            $options .= View::render('admin/modules/device/device_form_options', [
-                'value' => $obFarmAddress->address,
-                'text'  => $obFarmAddress->address,
-                'selected' => $obFarmAddress->address == $address ? 'selected' : '',
-            ]);
-        }
+        $results = EntityFarm::getFarmsByIdx($farm_idx);
+
+        $options = View::render('admin/modules/device/device_form_options', [
+            'value' => $results->address,
+            'text'  => $results->address,
+            'selected' => $results->address == $address ? 'selected' : '',
+        ]);
+
 
         return $options;
     }
@@ -157,7 +157,6 @@ class Device extends Page {
             throw new \Exception("fasdfs",400);
         }
 
-//        $results = EntityFarmAddress::getAddressByFarmIdx($postVars['farm_idx']);
         $results = EntityFarm::getFarmsByIdx($postVars['farm_idx']);
         $arr = array();
 

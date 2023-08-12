@@ -15,6 +15,13 @@ class Member {
     public $member_farm_idx;
     public $created_at;
 
+    public static function getMembersDevice($member_idx) {
+        return (new Database('member'))->execute("select * from member as m left join farm as f on m.idx = f.member_idx left join device as d on f.idx = d.farm_idx where m.member_type='manager' and f.idx is not null and m.idx=".$member_idx."");
+    }
+
+    public static function getMembersFarm($member_idx) {
+        return (new Database('member'))->execute("select f.* from member as m left join farm as f on m.idx = f.member_idx where m.member_type='manager' and f.idx is not null and m.idx=".$member_idx."");
+    }
 
     public static function getMemberDetail($farm_idx) {
         return (new Database('member'))->execute("select * , m.created_at as member_created_at, f.idx as farm_idx from member as m left join farm as f on m.idx = f.member_idx where m.member_type='manager' and f.idx={$farm_idx} and f.idx is not null order by f.idx desc");

@@ -8,6 +8,21 @@ use \App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 
 class BoardTypeRef extends Page {
 
+    public static function getBoardTypeName($board_type) {
+        $array = array();
+
+        $objBoardTypeRef = EntityBoardTypeRef::getBoardTypeRefByBoardType($board_type);
+
+        if ($objBoardTypeRef) {
+            foreach($objBoardTypeRef as $column_name=>$column_value){
+                if (preg_match('/data/',$column_name, $match) && $column_value) {
+                    $array[] = $column_value;
+                }
+            }
+        }
+
+        return $array;
+    }
 
     private static function getMemberListItems($request) {
         $items = '';

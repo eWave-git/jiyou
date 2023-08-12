@@ -47,27 +47,28 @@
 <script>
     $(function () {
 
-        // const data = {
-        //     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-        //     datasets: [
-        //         {
-        //             label: 'Dataset 1',
-        //             data: [0,10,5,2,20,30,45],
-        //             borderColor: 'rgb(255,99,132)',
-        //             backgroundColor: 'rgb(255,99,132)',
-        //
-        //         },
-        //         {
-        //             label: 'Dataset 2',
-        //             data: [10,10,15,12,20,30,45],
-        //             borderColor: 'rgb(255,255,0)',
-        //             backgroundColor: 'rgb(255,255,0)',
-        //
-        //         }
-        //     ]
-        // };
+        $("#widget_device").change(function () {
+            $("#widget_board").empty()
+            $.ajax({
+                url:'{{URL}}/manager/dashboard/get_widget_board',
+                type:'post',
+                data: {
+                    board_type:$(this).val()
+                },
+                dataType: "json",
+                success:function(obj){
+                    if (obj.success) {
+                        $.each(obj.text, function (key, value) {
+                            // console.log(obj.idx[key])
+                            $("#widget_board").append(
+                                $("<option></option>").attr("value",value).text(value)
+                            )
+                        })
 
-
+                    }
+                }
+            })
+        });
 
 
 

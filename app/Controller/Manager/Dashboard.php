@@ -2,6 +2,7 @@
 
 namespace App\Controller\Manager;
 
+use App\Model\Entity\BoardTypeRef;
 use App\Model\Entity\Member as EntityMmeber;
 use App\Model\Entity\RawData as EntityRawData;
 use app\Utils\Common;
@@ -9,12 +10,64 @@ use \App\Utils\View;
 
 class Dashboard extends Page {
 
+    public static function getWidgetBoard($request) {
+        $postVars = $request->getPostVars();
+
+        $results = Management::getBoardTypeName($postVars['board_type']);
+
+        $arr = array();
+
+        if ($results) {
+            foreach ($results as $k => $v) {
+                $arr['idx'][] =  $k;
+                $arr['text'][] =  $v;
+            }
+        } else {
+            $arr['idx'][] =  '';
+            $arr['text'][] =  '';
+        }
+
+
+        return [
+            'success' => true,
+            'idx'=>$arr['idx'],
+            'text' => $arr['text'],
+        ];
+    }
+
+    private static function getMemberDevice($user_idx) {
+        $option = "";
+
+        $member_devices = Member::getMembersDevice($user_idx);
+        if (is_array($member_devices[0])) {
+            foreach ($member_devices as $k => $v) {
+                $option .= View::render('manager/modules/dashboard/widget_add_form_options', [
+                    'value' => $v['idx'],
+                    'text'  => $v['address']."-".$v['board_type']."-".$v['board_number'],
+                ]);
+            }
+        }
+
+        return $option;
+    }
+
+    private static function widget_add($user_idx) {
+        $item = "";
+        $item = View::render('manager/modules/dashboard/widget_add_form', [
+            'device_options' => self::getMemberDevice($user_idx),
+        ]);
+
+        return $item;
+    }
+
     public static function getDashboard($request) {
-        $content = View::render('manager/modules/dashboard/index', []);
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
 
+        $content = View::render('manager/modules/dashboard/index', [
+            'widget_add_form' => self::widget_add($_userInfo->idx),
 
-
-
+        ]);
 
 
         return parent::getPanel('Home > DASHBOARD', $content, 'dashboard');
