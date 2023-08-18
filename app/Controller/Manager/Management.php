@@ -11,7 +11,7 @@ class Management extends Page {
 
     public static function getBoardTypeName($board_type) {
         $array = array();
-        $array =  BoardTypeRef::getBoardTypeName($board_type);
+        $array =  BoardTypeRef::getBoardTypeNameArray($board_type);
 
         return $array;
     }

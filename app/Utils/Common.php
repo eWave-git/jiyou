@@ -53,6 +53,39 @@ class Common{
         return $_SESSION['manager']['user']['id'];
     }
 
+    // TODO : date_range
+    /**
+     *
+     * @param $startDate
+     * @param $lastDate
+     * @return array|string
+     *
+     * getDatesStartToLast("2020-09-25", "2020-09-25")
+     */
+    public static function getDatesStartToLast($startDate, $lastDate) {
+        $regex = "/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/";
+        if(!(preg_match($regex, $startDate) && preg_match($regex, $lastDate))) return "Not Date Format";
+        $period = new DatePeriod( new DateTime($startDate), new DateInterval('PT1M'), new DateTime($lastDate." +1 day"));
+        foreach ($period as $date) $dates[] = $date->format("Y-m-d H:i:s");
+        return $dates;
+    }
+
+    public static function date_range($first, $last, $step = '+1 day', $output_format = 'd/m/Y' )  {
+        $dates = array();
+        $current = strtotime($first);
+        $last = strtotime($last);
+
+        while( $current <= $last ) {
+            //$dates[] = date($output_format, $current);
+            $dates[] = date($output_format, $current);
+            $current = strtotime($step, $current);
+        }
+
+        return $dates;
+    }
+
+
+
     public static function error_msg($msg) {
         echo "<script language='javascript'>alert('$msg');history.back();</script>";
         exit;

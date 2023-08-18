@@ -15,7 +15,6 @@ class Member extends Page {
         $arr  = array();
 
         $result = EntityMmeber::getMembersDevice($member_idx);
-
         $_i = 0;
         while ($obj = $result->fetchObject(EntityMmeber::class)) {
             $arr[$_i] = (array) $obj;
