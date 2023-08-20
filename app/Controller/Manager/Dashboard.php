@@ -2,7 +2,7 @@
 
 namespace App\Controller\Manager;
 
-use App\Model\Entity\BoardTypeRef;
+
 use \App\Model\Entity\Device as EntityDevice;
 use App\Model\Entity\Member as EntityMmeber;
 use App\Model\Entity\RawData as EntityRawData;
@@ -10,7 +10,7 @@ use App\Model\Entity\Widget as EntityWidget;
 use App\Model\Entity\WidgetData as EntityWidgetData;
 use app\Utils\Common;
 use \App\Utils\View;
-use http\Encoding\Stream\Inflate;
+
 
 
 class Dashboard extends Page {
@@ -43,13 +43,7 @@ class Dashboard extends Page {
     private static function getIntervalOption() {
         $option = "";
 
-        $interval = array(
-            "PT1M" => "1분",
-            "PT5M" => "5분",
-            "PT10M" => "10분",
-            "PT30M" => "30분",
-            "PT60M" => "1시간",
-        );
+        $interval = Common::getInterval();
 
         foreach ($interval as $k => $v) {
             $option .= View::render('manager/modules/dashboard/widget_add_form_options', [
@@ -236,6 +230,7 @@ class Dashboard extends Page {
 
             $i++;
         }
+
 
         $chart_arr = array();
 

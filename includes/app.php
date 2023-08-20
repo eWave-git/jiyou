@@ -22,7 +22,8 @@ define('URL', getenv('URL'));
 Common::init();
 
 View::init([
-    'URL' => URL
+    'URL' => URL,
+    'REQUEST_URI' => $_SERVER['REQUEST_URI'],
 ]);
 
 MiddlewareQueue::setMap([

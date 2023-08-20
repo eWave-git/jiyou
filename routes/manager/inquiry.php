@@ -12,20 +12,21 @@ $obRouter->get('/manager/inquiry',[
     }
 ]);
 
-$obRouter->get('/manager/chart_inquiry',[
+$obRouter->post('/manager/inquiry/getMyChart',[
     'middlewares' => [
+        'api',
         'required-manager-login'
     ],
     function($request) {
-        return new Response(200, Manager\Inquiry::getChartInquiry($request));
+        return new Response(200, Manager\Inquiry::getMyChart($request), 'application/json');
     }
 ]);
 
-$obRouter->get('/manager/table_inquiry',[
-    'middlewares' => [
-        'required-manager-login'
-    ],
-    function($request) {
-        return new Response(200, Manager\Inquiry::getTableInquiry($request));
-    }
-]);
+//$obRouter->post('/manager/inquiry',[
+//    'middlewares' => [
+//        'required-manager-login'
+//    ],
+//    function($request) {
+//        return new Response(200, Manager\Inquiry::postInquiry($request));
+//    }
+//]);

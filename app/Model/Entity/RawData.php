@@ -46,6 +46,18 @@ class RawData {
         ");
     }
 
+    public static function AvgDatesBetweenDate($address, $board_type, $field, $name, $start, $end, $group, $interval) {
+        return (new Database('raw_data_all'))->execute("
+            select
+                DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:00') as created,
+                avg({$field}) as {$name}
+            from raw_data_all
+            where address={$address} and board_type={$board_type} and (created_at >= '{$start} 00:00:00' and created_at <= '{$end} 23:59:59')
+            group by {$group}(created_at),FLOOR(MINUTE(created_at)/{$interval})*10
+            order by created asc
+        ");
+    }
+
     public static function TwoAvgData($data1, $data2, $interval, $minute_interval) {
         return (new Database('raw_data'))->execute("
             select

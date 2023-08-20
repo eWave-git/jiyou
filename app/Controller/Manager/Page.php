@@ -9,9 +9,19 @@ class Page {
 
 
     public static function getPage($title, $content) {
+
+        $REQUEST_URI = explode('?',$_SERVER['REQUEST_URI'])[0];
+
+        if (file_exists("resources/dynamic/".$REQUEST_URI.".js")) {
+            $javascript_file = "<script src='".URL."/resources/dynamic".$REQUEST_URI.".js' defer></script>";
+        } else {
+            $javascript_file = "";
+        }
+
         return View::render('manager/page', [
             'title' => $title,
-            'content' => $content
+            'content' => $content,
+            'javascript' => $javascript_file,
         ]);
     }
 

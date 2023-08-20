@@ -53,6 +53,30 @@ class Common{
         return $_SESSION['manager']['user']['id'];
     }
 
+    public static function getInterval($key = '') {
+        if ($key) {
+            $interval = array(
+                "PT1M" => "1",
+                "PT5M" => "5",
+                "PT10M" => "10",
+                "PT30M" => "30",
+                "PT60M" => "60",
+            );
+
+            $interval = $interval[$key];
+        } else {
+            $interval = array(
+                "PT1M" => "1분",
+                "PT5M" => "5분",
+                "PT10M" => "10분",
+                "PT30M" => "30분",
+                "PT60M" => "1시간",
+            );
+        }
+        return $interval;
+    }
+
+
     // TODO : date_range
     /**
      *

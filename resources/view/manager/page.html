@@ -10,6 +10,7 @@
     <link href="{{URL}}/resources/dist/css/tabler-payments.min.css?1684106062" rel="stylesheet"/>
     <link href="{{URL}}/resources/dist/css/tabler-vendors.min.css?1684106062" rel="stylesheet"/>
     <link href="{{URL}}/resources/dist/css/demo.min.css?1684106062" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
         @import url('https://rsms.me/inter/inter.css?1684106062');
         :root {
@@ -22,6 +23,7 @@
 </head>
 <body  class=" d-flex flex-column">
 <script src="{{URL}}/resources/dist/js/demo-theme.min.js"></script>
+
 {{content}}
 
 
@@ -43,6 +45,9 @@
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.min.js" integrity="sha512-csUso5vWY3PpIJkxLWFbPI7KkjXFhKXpUaAUp1ZLyNhxVWdQacEPH9e7Iw6Rco4es1uQNnlxdCCFkSnJ/f1ZzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.umd.min.js" integrity="sha512-ziISJqd7FOx3QNvnXiFWAfgSKqte9jMjzhrCnc7Gxpxfxjb5FdrBFg673DloeFEH6VLmTeo86yu5y/xJm38cBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/helpers.min.js" integrity="sha512-JG3S/EICkp8Lx9YhtIpzAVJ55WGnxT3T6bfiXYbjPRUoN9yu+ZM+wVLDsI/L2BWRiKjw/67d+/APw/CDn+Lm0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 <script>
     $(function () {
@@ -70,12 +75,33 @@
             })
         });
 
+        $("#device").change(function () {
+            $("#board").empty()
+            $.ajax({
+                url:'{{URL}}/manager/dashboard/get_widget_board',
+                type:'post',
+                data: {
+                    device_idx:$(this).val()
+                },
+                dataType: "json",
+                success:function(obj){
+                    if (obj.success) {
+                        $.each(obj.text, function (key, value) {
+                            // console.log(obj.idx[key])
+                            $("#board").append(
+                                $("<option></option>").attr("value",obj.idx[key]).text(value)
+                            )
+                        })
+
+                    }
+                }
+            })
+        });
 
 
     });
 
-
-
 </script>
+{{javascript}}
 </body>
 </html>

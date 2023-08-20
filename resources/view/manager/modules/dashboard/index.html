@@ -49,36 +49,6 @@
 <script>
     $(function () {
 
-
-        // $.ajax({
-        //     url:'{{URL}}/manager/dashboard/testChart',
-        //     type:'post',
-        //     data: {
-        //         data_1: 'data1', data_2: 'data2', interval:'2', minute_interval:'1'
-        //     },
-        //     dataType: 'json',
-        //     success:function(obj) {
-        //         if (obj.success) {
-        //             const data = {
-        //                 labels: obj.labels,
-        //                 datasets: obj.datasets,
-        //             };
-        //
-        //             const config = {
-        //                 type: 'line',
-        //                 data:data,
-        //                 options: {
-        //                     plugins: {
-        //
-        //                     }
-        //                 },
-        //             };
-        //
-        //             var myChart = new Chart(document.getElementById('myChart_1'), config);
-        //         }
-        //     }
-        // });
-
         $.ajax({
             url:'{{URL}}/manager/dashboard/getMyChart',
             type:'post',
@@ -95,8 +65,6 @@
                 })
             }
         });
-
-
 
 
     });
