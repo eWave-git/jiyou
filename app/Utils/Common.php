@@ -1,6 +1,8 @@
 <?php
 namespace app\Utils;
 
+
+use App\Model\Entity\Member as EntityMmeber;
 use Exception;
 
 class Common{
@@ -45,6 +47,12 @@ class Common{
         }
 
         return $int;
+    }
+
+    public static function get_member_info($idx) {
+        $obj = (array) EntityMmeber::getMemberByIdx($idx);
+
+        return $obj;
     }
 
     public static function get_manager() {
@@ -119,6 +127,18 @@ class Common{
         if($target) { echo "<script language='javascript'>alert('$msg');".$target.".location.href=('${loc}');</script>"; }
         else { echo "<script language='javascript'>alert('$msg');location.href=('${loc}');</script>"; }
         exit;
+    }
+
+    public static function getBoardTypeNameSelect($board_type, $field) {
+        $array = array();
+
+        foreach (\App\Controller\Admin\BoardTypeRef::getBoardTypeNameArray($board_type) as $k => $v) {
+            if ($v['field'] == $field) {
+                $array = $v;
+            }
+        }
+
+        return $array;
     }
 
 }

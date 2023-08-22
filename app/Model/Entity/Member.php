@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use http\Encoding\Stream\Inflate;
 use \WilliamCosta\DatabaseManager\Database;
 
 class Member {
@@ -12,8 +13,14 @@ class Member {
     public $member_email;
     public $member_phone;
     public $member_type;
+    public $member_group;
     public $member_farm_idx;
     public $created_at;
+
+
+    public static function getMemberByGroup($member_idx) {
+        return (new Database('member'))->execute("select * from member where member_group=".$member_idx);
+    }
 
     public static function getMembersDevice($member_idx) {
         return (new Database('member'))->execute("select * from member as m left join farm as f on m.idx = f.member_idx left join device as d on f.idx = d.farm_idx where m.member_type='manager' and f.idx is not null and m.idx=".$member_idx."");

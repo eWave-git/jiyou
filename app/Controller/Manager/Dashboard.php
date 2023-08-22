@@ -113,7 +113,7 @@ class Dashboard extends Page {
 
             $table_arr[$k_1]['idx'] = $v_1['info']['idx'];
             $table_arr[$k_1]['text'] = $v_1['datas'][0]['board_type_name'];
-            $table_arr[$k_1]['value'] = $obj_3->{$v_1['datas'][0]['board_type_name']};
+            $table_arr[$k_1]['value'] = $obj_3->{$v_1['datas'][0]['board_type_name']} ?? '';
         }
 
 
