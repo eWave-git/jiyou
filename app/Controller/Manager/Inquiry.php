@@ -196,36 +196,43 @@ class Inquiry extends Page {
         $sdateAtedate = $postVars['sdateAtedate'] ?? date("Y-m-d")." - ".date("Y-m-d");
 
         $_idx = !$device ? $member_devices[0]['idx'] : $device;
-        $obj = EntityDevice::getDevicesByIdx($_idx);
 
-        $graph_interval = $postVars['graph_interval'] ?? 'PT1M';
+        if ($_idx) {
 
-        $address = $obj->address;
-        $board_type = $obj->board_type;
-        $board_type_info = Management::getBoardTypeName($board_type);
+            $obj = EntityDevice::getDevicesByIdx($_idx);
 
-        if ($board) {
-            foreach($board_type_info as $k => $v) {
-                if ($board == $v['field']) {
-                    $board_type_field = $board_type_info[$k]['field'];
-                    $board_type_name = $board_type_info[$k]['name'];
+            $graph_interval = $postVars['graph_interval'] ?? 'PT1M';
+
+            $address = $obj->address;
+            $board_type = $obj->board_type;
+            $board_type_info = Management::getBoardTypeName($board_type);
+
+            if ($board) {
+                foreach ($board_type_info as $k => $v) {
+                    if ($board == $v['field']) {
+                        $board_type_field = $board_type_info[$k]['field'];
+                        $board_type_name = $board_type_info[$k]['name'];
+                    }
                 }
+            } else {
+                $board_type_field = $board_type_info[0]['field'];
+                $board_type_name = $board_type_info[0]['name'];
+
             }
+
+            $content = View::render('manager/modules/inquiry/index', [
+                'device_options' => self::getMemberDevice($member_devices, $device),
+                'board_options' => self::getMemberBoardType($obj, $board),
+                'sdateAtedate' => $sdateAtedate,
+                'interval_options' => self::getIntervalOption($graph_interval),
+                'table_date' => self::getMyTable($address, $board_type, $board_type_field, $board_type_name, $sdateAtedate, $graph_interval),
+                'board_type_name' => $board_type_name,
+            ]);
         } else {
-            $board_type_field = $board_type_info[0]['field'];
-            $board_type_name = $board_type_info[0]['name'];
-
+            $content = View::render('manager/modules/inquiry/index', [
+                'table_date' => '',
+            ]);
         }
-
-        $content = View::render('manager/modules/inquiry/index', [
-            'device_options' => self::getMemberDevice($member_devices, $device),
-            'board_options' => self::getMemberBoardType($obj, $board),
-            'sdateAtedate' => $sdateAtedate,
-            'interval_options' => self::getIntervalOption($graph_interval),
-            'table_date'    => self::getMyTable($address, $board_type, $board_type_field, $board_type_name, $sdateAtedate, $graph_interval),
-            'board_type_name' => $board_type_name,
-        ]);
-
         return parent::getPanel('Home > DASHBOARD', $content, 'inquiry');
     }
 

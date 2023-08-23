@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 
 use \WilliamCosta\DatabaseManager\Database;
 
-class Settin {
+class Setting {
     public $idx;
     public $device_idx;
 
@@ -30,7 +30,7 @@ class Settin {
     public function created() {
         $this->created_at = date('Y-m-d H:i:s');
 
-        $this->idx = (new Database('settin'))->insert([
+        $this->idx = (new Database('setting'))->insert([
             'device_idx' => $this->device_idx,
             'address' => $this->address,
             'board_type' => $this->board_type,
@@ -47,7 +47,7 @@ class Settin {
     }
 
     public function updated() {
-        $this->idx = (new Database('settin'))->update('idx = '.$this->idx,[
+        $this->idx = (new Database('setting'))->update('idx = '.$this->idx,[
             'device_idx' => $this->device_idx,
             'address' => $this->address,
             'board_type' => $this->board_type,
@@ -60,17 +60,17 @@ class Settin {
         ]);
     }
 
-    public static function getSettinByDeviceIdx($idx) {
-        return self::getSettin('device_idx ='.$idx);
+    public static function getSettingByDeviceIdx($idx) {
+        return self::getSetting('device_idx ='.$idx);
     }
-    public static function getSettinByIdx($idx) {
-        return self::getSettin('idx ='.$idx)->fetchObject(self::class);
+    public static function getSettingByIdx($idx) {
+        return self::getSetting('idx ='.$idx)->fetchObject(self::class);
     }
-    public static function getSettin($where = null, $order = null, $limit = null, $fields = '*') {
-        return (new Database('settin'))->select($where, $order, $limit, $fields);
+    public static function getSetting($where = null, $order = null, $limit = null, $fields = '*') {
+        return (new Database('setting'))->select($where, $order, $limit, $fields);
     }
 
     public function deleted() {
-        $this->idx = (new Database('settin'))->delete('idx ='.$this->idx);
+        $this->idx = (new Database('setting'))->delete('idx ='.$this->idx);
     }
 }

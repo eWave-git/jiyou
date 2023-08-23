@@ -4,49 +4,51 @@ namespace App\Controller\Manager;
 
 use \App\Model\Entity\Device as EntityDevice;
 use \App\Model\Entity\Member as EntityMmeber;
-use \App\Model\Entity\Settin as EntitySettin;
-use \App\Model\Entity\SettinMember as EntitySettinMember;
+use \App\Model\Entity\Setting as EntitySetting;
+use \App\Model\Entity\SettingMember as EntitySettingMember;
 use \app\Utils\Common;
 use \App\Utils\View;
 
-class Settin extends Page {
+class Setting extends Page {
 
 
-    public static function getSettinList($user_idx) {
+    public static function getSettingList($user_idx) {
 
         $member_devices = Member::getMembersDevice($user_idx);
 
         $array = array();
+        $_i = 0;
         foreach ($member_devices as $k_1 => $v_1) {
-            $result_1 = EntitySettin::getSettinByDeviceIdx($v_1['idx']);
+            if ($v_1['idx']) {
+                $result_1 = EntitySetting::getSettingByDeviceIdx($v_1['idx']);
+                while ($obj_1 = $result_1->fetchObject(EntitySetting::class)) {
+                    $array[$_i]['idx'] = $obj_1->idx;
+                    $array[$_i]['address'] = $obj_1->address;
+                    $array[$_i]['board_type'] = $obj_1->board_type;
+                    $array[$_i]['board_type_name'] = $obj_1->board_type_name;
+                    $array[$_i]['min'] = $obj_1->min;
+                    $array[$_i]['max'] = $obj_1->max;
+                    $array[$_i]['activation'] = $obj_1->activation;
+                    $array[$_i]['create'] = $obj_1->created_at;
 
-            while ($obj_1 = $result_1->fetchObject(EntitySettin::class)) {
-                $array[$k_1]['idx'] = $obj_1->idx;
-                $array[$k_1]['address'] = $obj_1->address;
-                $array[$k_1]['board_type'] = $obj_1->board_type;
-                $array[$k_1]['board_type_name'] = $obj_1->board_type_name;
-                $array[$k_1]['min'] = $obj_1->min;
-                $array[$k_1]['max'] = $obj_1->max;
-                $array[$k_1]['activation'] = $obj_1->activation;
-                $array[$k_1]['create'] = $obj_1->created_at;
+                    $result_2 = EntitySettingMember::getSettingMemberByIdx($obj_1->idx);
 
-                $result_2 = EntitySettinMember::getSettinMemberByIdx($obj_1->idx);
+                    $_temp = "";
+                    while ($obj_2 = $result_2->fetchObject(EntitySettingMember::class)) {
+                        $member = Common::get_member_info($obj_2->member_idx);
+                        $_temp .= $member['member_name'] . " ";
+                    }
 
-                $_temp = "";
-                while ($obj_2 = $result_2->fetchObject(EntitySettinMember::class)) {
-                    $member = Common::get_member_info($obj_2->member_idx);
-                    $_temp .= $member['member_name']." ";
+                    $array[$_i]['member'] = $_temp;
+                    $_i++;
                 }
-
-                $array[$k_1]['member'] = $_temp;
-
             }
         }
 
         $item = "";
 
         foreach ($array as $k => $v) {
-            $item .= View::render('manager/modules/settin/settin_list_item', [
+            $item .= View::render('manager/modules/setting/setting_list_item', [
                 'idx' => $v['idx'],
                 'device' => $v['address']."-".$v['board_type']."-".$v['board_type'],
                 'field' => $v['board_type_name'],
@@ -62,16 +64,16 @@ class Settin extends Page {
     }
 
 
-    public static function getSettin($request) {
+    public static function getSetting($request) {
 
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        $content = View::render('manager/modules/settin/index', [
-            'settin_list_item' => self::getSettinList($_userInfo->idx),
+        $content = View::render('manager/modules/setting/index', [
+            'setting_list_item' => self::getSettingList($_userInfo->idx),
         ]);
 
-        return parent::getPanel('Home > DASHBOARD', $content, 'settin');
+        return parent::getPanel('Home > DASHBOARD', $content, 'setting');
     }
 
     private static function getMemberDevice($member_devices, $device = '') {
@@ -107,14 +109,14 @@ class Settin extends Page {
         return $option;
     }
 
-    private static function getMemberGroup($user_idx, $settin_idx = null) {
-        $settin_member_array = array();
+    private static function getMemberGroup($user_idx, $setting_idx = null) {
+        $setting_member_array = array();
 
 
-        if (!empty($settin_idx)) {
-            $settin_member = EntitySettinMember::getSettinMemberByIdx($settin_idx);
-            while ($obj = $settin_member->fetchObject(EntitySettinMember::class)) {
-                $settin_member_array[] = $obj->member_idx;
+        if (!empty($setting_idx)) {
+            $setting_member = EntitySettingMember::getSettingMemberByIdx($setting_idx);
+            while ($obj = $setting_member->fetchObject(EntitySettingMember::class)) {
+                $setting_member_array[] = $obj->member_idx;
             }
         }
 
@@ -123,26 +125,26 @@ class Settin extends Page {
 
         while ($obj = $results->fetchObject(EntityMmeber::class)) {
 
-            $item .= View::render('manager/modules/settin/targer_user_checkbox', [
+            $item .= View::render('manager/modules/setting/targer_user_checkbox', [
                 'idx' => $obj->idx,
                 'name' => $obj->member_name,
-                'checked' => in_array($obj->idx, $settin_member_array) ? 'checked' : '',
+                'checked' => in_array($obj->idx, $setting_member_array) ? 'checked' : '',
             ]);
         }
 
         return $item;
     }
 
-    public static function Settin_Form($request, $idx = null) {
-        $objSettin = is_null($idx) ? '': EntitySettin::getSettinByIdx($idx) ;
+    public static function Setting_Form($request, $idx = null) {
+        $objSetting = is_null($idx) ? '': EntitySetting::getSettingByIdx($idx) ;
 
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
         $member_devices = Member::getMembersDevice($_userInfo->idx);
 
-        $device = $objSettin->device_idx ?? '';
-        $board = $objSettin->board_type_field ?? '';
+        $device = $objSetting->device_idx ?? '';
+        $board = $objSetting->board_type_field ?? '';
 
         $_idx = !$device ? $member_devices[0]['idx'] : $device;
         $obj = EntityDevice::getDevicesByIdx($_idx);
@@ -163,30 +165,30 @@ class Settin extends Page {
             $board_type_name = $board_type_info[0]['name'];
 
         }
-        $idx = $objSettin->idx ?? '';
-        $activation = $objSettin->activation ?? '';
+        $idx = $objSetting->idx ?? '';
+        $activation = $objSetting->activation ?? '';
 
 
-        $content = View::render('manager/modules/settin/settin_form', [
+        $content = View::render('manager/modules/setting/setting_form', [
             'device_options' => self::getMemberDevice($member_devices, $device),
             'board_options' => self::getMemberBoardType($obj, $board),
-            'min'           => $objSettin->min ?? '',
-            'max'           => $objSettin->max ?? '',
+            'min'           => $objSetting->min ?? '',
+            'max'           => $objSetting->max ?? '',
             'target_user'   => self::getMemberGroup($_userInfo->idx, $idx),
             'checked'       => $activation == 'Y'? 'checked' : '' ,
-            'action'        => $idx == '' ? '/manager/settin_form_create' : '/manager/settin_form/'.$idx.'/edit',
+            'action'        => $idx == '' ? '/manager/setting_form_create' : '/manager/setting_form/'.$idx.'/edit',
         ]);
 
-        return parent::getPanel('Home > DASHBOARD', $content, 'settin');
+        return parent::getPanel('Home > DASHBOARD', $content, 'setting');
     }
 
-    public static function Settin_Create($request) {
+    public static function Setting_Create($request) {
         $postVars = $request->getPostVars();
 
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
         $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
 
-        $obj_1 = new EntitySettin;
+        $obj_1 = new EntitySetting;
         $obj_1->device_idx = $device_info->idx;
         $obj_1->address = $device_info->address;
         $obj_1->board_type = $device_info->board_type;
@@ -200,21 +202,21 @@ class Settin extends Page {
 
         if (!empty($postVars['target_user'])) {
             foreach ($postVars['target_user'] as $k => $v) {
-                $obj_2 = new EntitySettinMember;
-                $obj_2->settin_idx = $obj_1->idx;
+                $obj_2 = new EntitySettingMember;
+                $obj_2->setting_idx = $obj_1->idx;
                 $obj_2->member_idx = $v;
                 $obj_2->created();
             }
         }
 
-        $request->getRouter()->redirect('/manager/settin');
+        $request->getRouter()->redirect('/manager/setting');
     }
 
-    public static function Settin_Edit($request, $idx) {
-        $obj = EntitySettin::getSettinByIdx($idx);
+    public static function Setting_Edit($request, $idx) {
+        $obj = EntitySetting::getSettingByIdx($idx);
         $postVars = $request->getPostVars();
 
-        EntitySettinMember::deleted($idx);
+        EntitySettingMember::deleted($idx);
 
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
         $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
@@ -232,14 +234,14 @@ class Settin extends Page {
 
         if (!empty($postVars['target_user'])) {
             foreach ($postVars['target_user'] as $k => $v) {
-                $obj_2 = new EntitySettinMember;
-                $obj_2->settin_idx = $idx;
+                $obj_2 = new EntitySettingMember;
+                $obj_2->setting_idx = $idx;
                 $obj_2->member_idx = $v;
                 $obj_2->created();
             }
         }
 
-        $request->getRouter()->redirect('/manager/settin');
+        $request->getRouter()->redirect('/manager/setting');
     }
 
 

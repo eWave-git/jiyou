@@ -42,9 +42,9 @@ class Page {
             'link'  => URL."/manager/managment",
         ],
         [
-            'label' => 'settin',
+            'label' => 'setting',
             'title' => '설정',
-            'link'  => URL."/manager/settin",
+            'link'  => URL."/manager/setting",
         ],
         [
             'label' => 'all',
