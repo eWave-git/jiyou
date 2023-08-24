@@ -149,7 +149,6 @@ class Setting extends Page {
         $_idx = !$device ? $member_devices[0]['idx'] : $device;
         $obj = EntityDevice::getDevicesByIdx($_idx);
 
-        $address = $obj->address;
         $board_type = $obj->board_type;
         $board_type_info = Management::getBoardTypeName($board_type);
 

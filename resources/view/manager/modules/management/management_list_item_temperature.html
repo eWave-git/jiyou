@@ -1,0 +1,14 @@
+<tr>
+    <td>{{idx}}</td>
+    <td>{{name}}</td>
+    <td>{{device}}</td>
+    <td>
+        현재 설정된 온도 <input type="text"  name="temperature_{{idx}}" class="form-control" placeholder="" value="{{temperature}}" >
+        <button type="button" name="temperature" data-idx={{idx}} class="btn btn-primary" style="user-select: auto;">저장</button>
+    </td>
+    <td>{{created_at}}</td>
+
+    <td>
+        <a href="/manager/setting_form/{{idx}}/delete">삭제</a>
+    </td>
+</tr>

@@ -4,151 +4,70 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    관리
+                    제어관리
                 </h2>
             </div>
+
+            <!-- Page title actions -->
+
+            <div class="col-auto ms-auto d-print-none">
+                <a href="/manager/management_form">
+                    <button type="button" class="btn btn-primary">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        제어 추가
+                    </button>
+                </a>
+            </div>
+
         </div>
     </div>
 </div>
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
+
+
         <div class="row row-cards">
             <div class="col-12">
-                <form class="card" method="post" action="{{action}}" >
-                    <div class="card-header">
-                        <h3 class="card-title">신규등록 제품</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <label  class="col-sm-2 col-form-label">제품 SN</label>
-                            <div class="col-8" >
-                                <div class="form-row row">
-                                    <div class="form-group col-md-2">
-                                        <input type="text" class="form-control" id="inputCity">
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <input type="text" class="form-control" id="inputCity">
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <input type="text" class="form-control" id="inputZip">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-lg-2">
-                                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                                        <path d="M21 21l-6 -6"></path>
-                                        <path d="M10 13l0 .01"></path>
-                                        <path d="M10 10a1.5 1.5 0 1 0 -1.14 -2.474"></path>
-                                    </svg>
-                                    중복 확인
-                                </a>
-                            </div>
-                        </div>
-                        &nbsp;
-                        <div class="form-group row align-items-center">
-                            <label  class="col-sm-2 col-form-label">나의 농장</label>
-                            <div class="col-4 "  >
-                                나의 농장
-                            </div>
-                            <label  class="col-sm-2 col-form-label">알람보조 ID</label>
-                            <div class="col-4" >
-                                <div class="form-row row">
-                                    <div class="form-group col-md-3">
-                                        <input type="text" class="form-control" id="inputCity">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <input type="text" class="form-control" id="inputCity">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <input type="text" class="form-control" id="inputZip">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="card-footer text-center">
-                        <button type="submit" class="btn btn-primary">저장</button>
-                    </div>
-                </form>
-            </div>
-
-
-            <div class="col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">설정된 알람</h3>
+
+                    </div>
                     <div class="table-responsive" >
                         <table id="farm_list" class="table table-vcenter card-table">
                             <colgroup>
                                 <col width="5%">
                                 <col width="20%">
-                                <col width="20%">
-                                <col width="20%">
                                 <col width="15%">
-                                <col width="10%">
+                                <col width="">
+                                <col width="15%">
+
                                 <col width="10%">
                             </colgroup>
                             <thead>
                             <tr>
                                 <th>idx</th>
-                                <th>제품 SN</th>
-                                <th>제품 설치장소</th>
-                                <th>농장 종류</th>
+                                <th>이름</th>
+                                <th>장치</th>
+                                <th>데이터</th>
                                 <th>등록 일시</th>
-                                <th></th>
+
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>9005-21-06</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <a href="/admin/member_form/{{idx}}/edit">수정</a>
-                                </td>
-                                <td>
-                                    <a href="/admin/member_form/{{idx}}/delete">삭제</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>9005-21-06</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <a href="/admin/member_form/{{idx}}/edit">수정</a>
-                                </td>
-                                <td>
-                                    <a href="/admin/member_form/{{idx}}/delete">삭제</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>9005-21-06</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <a href="/admin/member_form/{{idx}}/edit">수정</a>
-                                </td>
-                                <td>
-                                    <a href="/admin/member_form/{{idx}}/delete">삭제</a>
-                                </td>
-                            </tr>
-
+                            {{management_list_item}}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+
         </div>
+
+
     </div>
 </div>

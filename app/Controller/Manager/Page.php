@@ -38,7 +38,7 @@ class Page {
         ],
         [
             'label' => 'management',
-            'title' => '관리',
+            'title' => '장비',
             'link'  => URL."/manager/managment",
         ],
         [
