@@ -110,18 +110,19 @@ class Dashboard extends Page {
         foreach ($array as $k_1 => $v_1) {
             $result_3 = EntityRawData::LastLimitDataOne($v_1['datas'][0]['address'], $v_1['datas'][0]['board_type'], $v_1['datas'][0]['board_number'], $v_1['datas'][0]['board_type_field'], $v_1['datas'][0]['board_type_name']);
             $obj_3 = $result_3->fetchObject(EntityRawData::class);
-
+            $table_arr[$k_1]['title'] = $v_1['info']['widget_name'];
             $table_arr[$k_1]['idx'] = $v_1['info']['idx'];
             $table_arr[$k_1]['text'] = $v_1['datas'][0]['board_type_name'];
-            $table_arr[$k_1]['value'] = $obj_3->{$v_1['datas'][0]['board_type_name']} ?? '';
+            $table_arr[$k_1]['value'] = $obj_3->{$v_1['datas'][0]['board_type_name']} ?? 0;
         }
 
 
         foreach ($table_arr as $k => $v) {
             $item .= View::render('manager/modules/dashboard/widget_table', [
+                'title' => $v['title'],
                 'idx' => $v['idx'],
                 'text' => $v['text'],
-                'value' => $v['value'],
+                'value' => round($v['value'],1),
             ]);
         }
 
@@ -136,6 +137,7 @@ class Dashboard extends Page {
 
         while($obj = $result->fetchObject(EntityWidget::class)) {
             $item .= View::render('manager/modules/dashboard/widget_chart', [
+                'title' => $obj->widget_name,
                 'idx' => $obj->idx,
                 'chart_idx' => "myChart_".$obj->idx,
             ]);
@@ -246,13 +248,15 @@ class Dashboard extends Page {
                 $chart_data_array['label'] = $v_2['board_type_name'];
                 $chart_data_array['borderColor'] = "rgb(0, 0, 255)";
                 $chart_data_array['backgroundColor'] = "rgb(0, 0, 255)";
+                $chart_data_array['tension'] = 0.1;
+                $chart_data_array['pointStyle'] = false;
                 $chart_data_array['data'] = array();
                 $result_3 = EntityRawData::AvgDatas($v_2['address'], $v_2['board_type'], $v_2['board_type_field'], $v_2['board_type_name'],'0', '10');
                 while ($obj = $result_3->fetchObject(EntityRawData::class)) {
                     if ($k_2 == 0) {
                         array_push($chart_arr[$k_1]['config']['data']['labels'], substr( $obj->created, 11, 5) );
                     }
-                    array_push($chart_data_array['data'], floor($obj->{$v_2['board_type_name']}));
+                    array_push($chart_data_array['data'], round($obj->{$v_2['board_type_name']},1));
                 }
 
                 array_push($chart_arr[$k_1]['config']['data']['datasets'], $chart_data_array);

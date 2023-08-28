@@ -60,6 +60,8 @@ class Inquiry extends Page {
                 $chart_data_array['label'] = $v_2['board_type_name'];
                 $chart_data_array['borderColor'] = "rgb(0, 0, 255)";
                 $chart_data_array['backgroundColor'] = "rgb(0, 0, 255)";
+                $chart_data_array['tension'] = 0.1;
+                $chart_data_array['pointStyle'] = false;
                 $chart_data_array['data'] = array();
 
                 $_i =  date_diff(date_create($v_1['info']['start']), date_create($v_1['info']['end']));
@@ -82,7 +84,7 @@ class Inquiry extends Page {
                     if ($k_2 == 0) {
                         array_push($chart_arr[$k_1]['config']['data']['labels'], substr( $obj->created, 5, 11) );
                     }
-                    array_push($chart_data_array['data'], floor($obj->{$v_2['board_type_name']}));
+                    array_push($chart_data_array['data'], round($obj->{$v_2['board_type_name']},1));
                 }
 
                 array_push($chart_arr[$k_1]['config']['data']['datasets'], $chart_data_array);
@@ -127,7 +129,7 @@ class Inquiry extends Page {
             $item .= View::render('manager/modules/inquiry/table_tr', [
                     'idx' => $_i,
                     'created' => substr($obj->created, 5, 11),
-                    'data' => round( $obj->{$board_type_name},3),
+                    'data' => round( $obj->{$board_type_name},1),
             ]);
             $_i++;
         }

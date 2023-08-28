@@ -28,7 +28,7 @@ class Page {
     private static $menus = [
         [
             'label' => 'dashboard',
-            'title' => '대쉬보드',
+            'title' => '홈',
             'link'  => URL."/manager/dashboard",
         ],
         [
