@@ -53,7 +53,17 @@ class Inquiry extends Page {
             $chart_arr[$k_1]['config'] = array(
                 'type'      => 'line',
                 'data'      =>  array('labels'=> array(), 'datasets'=>array()),
-                'option'    =>  array('plugins'=>array()));
+                'options'    =>  array(
+
+                        'scales' => array(
+                            'x' => array(
+                                 'ticks'=> array('labelOffset'=>20),
+                                'border'=> array('color'=>'red')
+                            ),
+                        ),
+                ),
+                    'plugins'=> array(),
+            );
 
             $chart_data_array = array();
             foreach ($v_1['datas'] as $k_2 => $v_2) {
@@ -118,6 +128,7 @@ class Inquiry extends Page {
 
         $item = "";
         $_i = 1;
+
         while ($obj = $result_3->fetchObject(EntityRawData::class)) {
             $item .= View::render('manager/modules/inquiry/table_tr', [
                     'idx' => $_i,
