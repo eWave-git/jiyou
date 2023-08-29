@@ -54,15 +54,14 @@ class Inquiry extends Page {
                 'type'      => 'line',
                 'data'      =>  array('labels'=> array(), 'datasets'=>array()),
                 'options'    =>  array(
-
-                        'scales' => array(
-                            'x' => array(
-                                 'ticks'=> array('labelOffset'=>20),
-                                'border'=> array('color'=>'red')
-                            ),
+                    'maintainAspectRatio' => true,
+                    'responsive' => true,
+                    'plugins' => array(
+                        'legend' => array(
+                            'position' => 'bottom',
                         ),
+                    ),
                 ),
-                    'plugins'=> array(),
             );
 
             $chart_data_array = array();

@@ -1,4 +1,40 @@
 <?php
+use \App\Http\Response;
+use \App\Controller\Manager;
+
+
+$obRouter->get('/',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        $request->getRouter()->redirect('/manager/dashboard');
+
+        exit;
+    }
+]);
+
+$obRouter->get('/manager',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        $request->getRouter()->redirect('/manager/dashboard');
+
+        exit;
+    }
+]);
+
+$obRouter->get('/manager/',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        $request->getRouter()->redirect('/manager/dashboard');
+
+        exit;
+    }
+]);
 
 include __DIR__.'/manager/dashboard.php';
 

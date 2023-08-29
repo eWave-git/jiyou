@@ -49,7 +49,7 @@ class Page {
         [
             'label' => 'all',
             'title' => '전체',
-            'link'  => URL."/manager/all",
+            'link'  => "javascript:alert('준비중')",
         ],
     ];
 

@@ -116,13 +116,14 @@ class Dashboard extends Page {
             $table_arr[$k_1]['value'] = $obj_3->{$v_1['datas'][0]['board_type_name']} ?? 0;
         }
 
-
         foreach ($table_arr as $k => $v) {
             $item .= View::render('manager/modules/dashboard/widget_table', [
                 'title' => $v['title'],
                 'idx' => $v['idx'],
                 'text' => $v['text'],
                 'value' => round($v['value'],1),
+//                'update_date' => date("Y-m-d H:i:s"),
+                'update_date' => date("m-d H:i"),
             ]);
         }
 
@@ -150,7 +151,10 @@ class Dashboard extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
+        $_farm_Info = EntityMmeber::getMembersFarm($_userInfo->idx)->fetchObject(EntityMmeber::class);
+
         $content = View::render('manager/modules/dashboard/index', [
+            'farm_name' => $_farm_Info->farm_name,
             'widget_add_form' => self::widget_add($_userInfo->idx),
             'widget_table'  => self::wigget_table($_userInfo->idx),
             'widget_chart'  => self::widget_chart($_userInfo->idx),
@@ -241,7 +245,15 @@ class Dashboard extends Page {
             $chart_arr[$k_1]['config'] = array(
                 'type'      => 'line',
                 'data'      =>  array('labels'=> array(), 'datasets'=>array()),
-                'option'    =>  array('plugins'=>array()));
+                'options'    =>  array(
+                    'plugins' => array(
+                        'legend' => array(
+                            'position' => 'bottom',
+                        ),
+                    ),
+                ),
+
+            );
 
             $chart_data_array = array();
             foreach ($v_1['datas'] as $k_2 => $v_2) {
@@ -251,6 +263,7 @@ class Dashboard extends Page {
                 $chart_data_array['tension'] = 0.1;
                 $chart_data_array['pointStyle'] = false;
                 $chart_data_array['data'] = array();
+
                 $result_3 = EntityRawData::AvgDatas($v_2['address'], $v_2['board_type'], $v_2['board_type_field'], $v_2['board_type_name'],'0', '10');
                 while ($obj = $result_3->fetchObject(EntityRawData::class)) {
                     if ($k_2 == 0) {
