@@ -103,14 +103,7 @@ class Inquiry extends Page {
         $start = $_t[0];
         $end = $_t[1];
 
-        $_i =  date_diff(date_create($start), date_create($end));
-
-        if ($_i->days > 0) {
-            $group = "DAY";
-        } else {
-            $group = "HOUR";
-        }
-
+        $group = "HOUR";
         $graph_interval = Common::getInterval($graph_interval);
 
         $result_3 = EntityRawData::AvgDatesBetweenDate(
