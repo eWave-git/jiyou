@@ -98,10 +98,18 @@ class Dashboard extends Page {
             $array[$i]['info'] = (array)$obj_1;
 
             $result_2 = EntityWidgetData::getWidgetDatesByWidgetIdx($obj_1->idx);
-            while ($obj_2 = $result_2->fetchObject(EntityWidgetData::class)) {
-                $array[$i]['datas'][] = (array)$obj_2;
-            }
+            $j = 0;
 
+            while ($obj_2 = $result_2->fetchObject(EntityWidgetData::class)) {
+                $array[$i]['datas'][$j] = (array)$obj_2;
+                $symbol = Common::findSymbol($obj_2->board_type_name);
+
+                if (isset($symbol['idx'])) {
+                    $array[$i]['datas'][$j]['symbol'] = $symbol['symbol'];
+                    $array[$i]['datas'][$j]['standard'] = $symbol['standard'];
+                }
+                $j++;
+            }
             $i++;
         }
 
@@ -114,15 +122,28 @@ class Dashboard extends Page {
             $table_arr[$k_1]['idx'] = $v_1['info']['idx'];
             $table_arr[$k_1]['text'] = $v_1['datas'][0]['board_type_name'];
             $table_arr[$k_1]['value'] = $obj_3->{$v_1['datas'][0]['board_type_name']} ?? 0;
+            $table_arr[$k_1]['symbol'] = $v_1['datas'][0]['symbol'] ?? '';
+            $table_arr[$k_1]['standard'] = $v_1['datas'][0]['standard'] ?? '';
         }
 
         foreach ($table_arr as $k => $v) {
+
+            if ($v['standard']) {
+                if ($v['symbol'] == "PPM") {
+                    $v['value'] =  ($v['value']*100) / 5000 ;
+                } else if ($v['symbol'] == "ug/㎥") {
+                    $v['value'] =  ($v['value']*100) / 1000 ;
+                } else if ($v['symbol'] == "lux") {
+                    $v['value'] =  ($v['value']*100) / 65000 ;
+                }
+            }
+
             $item .= View::render('manager/modules/dashboard/widget_table', [
                 'title' => $v['title'],
                 'idx' => $v['idx'],
                 'text' => $v['text'],
+                'symbol' => $v['symbol'],
                 'value' => round($v['value'],1),
-//                'update_date' => date("Y-m-d H:i:s"),
                 'update_date' => date("m-d H:i"),
             ]);
         }

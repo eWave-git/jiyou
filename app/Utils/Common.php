@@ -3,6 +3,7 @@ namespace app\Utils;
 
 
 use App\Model\Entity\Member as EntityMmeber;
+use App\Model\Entity\BoardTypeSymbol as EntityBoardTypeSymbol;
 use Exception;
 
 class Common{
@@ -139,6 +140,32 @@ class Common{
         }
 
         return $array;
+    }
+
+    public static function getBoardTypeSymbol() {
+        $symbols_array = array();
+
+        $symbols_result = EntityBoardTypeSymbol::getBoardTypeSymbol('','','','*');
+        while ($obj_symbols = $symbols_result->fetchObject(EntityBoardTypeSymbol::class)) {
+            $symbols_array[] = (array) $obj_symbols;
+        }
+
+        return $symbols_array;
+    }
+
+    public static function findSymbol($board_type_name) {
+        $symbols_array = self::getBoardTypeSymbol();
+
+
+
+        $array = array_filter(  $symbols_array, function($v, $k) use ($board_type_name) {
+                    return preg_match('/'.$v['name'].'/i', $board_type_name);
+                },ARRAY_FILTER_USE_BOTH );
+
+
+        if (count($array) > 0) {
+            return array_values($array)[0];
+        }
     }
 
 }
