@@ -54,8 +54,15 @@ class Inquiry extends Page {
                 'type'      => 'line',
                 'data'      =>  array('labels'=> array(), 'datasets'=>array()),
                 'options'    =>  array(
-                    'maintainAspectRatio' => true,
                     'responsive' => true,
+                    'maintainAspectRatio' => true,
+                    'scales' => array(
+                        'x' => array(
+
+                                array('ticks'=> array( 'display'=>false)),
+                            ),
+
+                        ),
                     'plugins' => array(
                         'legend' => array(
                             'position' => 'bottom',
@@ -73,12 +80,8 @@ class Inquiry extends Page {
                 $chart_data_array['pointStyle'] = false;
                 $chart_data_array['data'] = array();
 
-                $_i =  date_diff(date_create($v_1['info']['start']), date_create($v_1['info']['end']));
-                if ($_i->days > 0) {
-                    $group = "DAY";
-                } else {
-                    $group = "HOUR";
-                }
+                $group = "HOUR";
+
 
                 $result_3 = EntityRawData::AvgDatesBetweenDate(
                                                             $v_2['address'],
@@ -90,10 +93,17 @@ class Inquiry extends Page {
                                                             $group,
                                                             $v_1['info']['graph_interval']);
                 while ($obj = $result_3->fetchObject(EntityRawData::class)) {
-                    if ($k_2 == 0) {
-                        array_push($chart_arr[$k_1]['config']['data']['labels'], substr( $obj->created, 5, 11) );
-                    }
-                    array_push($chart_data_array['data'], round($obj->{$v_2['board_type_name']},1));
+//                    if ($k_2 == 0) {
+//                        array_push($chart_arr[$k_1]['config']['data']['labels'], substr( $obj->created, 5, 11) );
+//                    }
+
+                    array_push($chart_data_array['data'],
+                        array(
+                            'y' => round($obj->{$v_2['board_type_name']},1),
+                            'x' => $obj->created,
+                        )
+                    );
+//                    array_push($chart_data_array['data'], round($obj->{$v_2['board_type_name']},1));
                 }
 
                 array_push($chart_arr[$k_1]['config']['data']['datasets'], $chart_data_array);
