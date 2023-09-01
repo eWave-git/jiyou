@@ -55,11 +55,12 @@ class Inquiry extends Page {
                 'data'      =>  array('labels'=> array(), 'datasets'=>array()),
                 'options'    =>  array(
                     'responsive' => true,
-                    'maintainAspectRatio' => true,
+                    'maintainAspectRatio' => false,
                     'scales' => array(
                         'x' => array(
+                                array('type'=>'time'),
+                                array('time'=>array('unit'=>'hour')),
 
-                                array('ticks'=> array( 'display'=>false)),
                             ),
 
                         ),
@@ -80,8 +81,6 @@ class Inquiry extends Page {
                 $chart_data_array['pointStyle'] = false;
                 $chart_data_array['data'] = array();
 
-                $group = "HOUR";
-
 
                 $result_3 = EntityRawData::AvgDatesBetweenDate(
                                                             $v_2['address'],
@@ -90,7 +89,6 @@ class Inquiry extends Page {
                                                             $v_2['board_type_name'],
                                                             $v_1['info']['start'],
                                                             $v_1['info']['end'],
-                                                            $group,
                                                             $v_1['info']['graph_interval']);
                 while ($obj = $result_3->fetchObject(EntityRawData::class)) {
 //                    if ($k_2 == 0) {
@@ -122,7 +120,6 @@ class Inquiry extends Page {
         $start = $_t[0];
         $end = $_t[1];
 
-        $group = "HOUR";
         $graph_interval = Common::getInterval($graph_interval);
 
         $result_3 = EntityRawData::AvgDatesBetweenDate(
@@ -132,7 +129,6 @@ class Inquiry extends Page {
                                                         $board_type_name,
                                                         $start,
                                                         $end,
-                                                        $group,
                                                         $graph_interval);
 
         $item = "";

@@ -287,10 +287,17 @@ class Dashboard extends Page {
 
                 $result_3 = EntityRawData::AvgDatas($v_2['address'], $v_2['board_type'], $v_2['board_type_field'], $v_2['board_type_name'],'0', '10');
                 while ($obj = $result_3->fetchObject(EntityRawData::class)) {
-                    if ($k_2 == 0) {
-                        array_push($chart_arr[$k_1]['config']['data']['labels'], substr( $obj->created, 11, 5) );
-                    }
-                    array_push($chart_data_array['data'], round($obj->{$v_2['board_type_name']},1));
+//                    if ($k_2 == 0) {
+//                        array_push($chart_arr[$k_1]['config']['data']['labels'], substr( $obj->created, 11, 5) );
+//                    }
+                    array_push($chart_data_array['data'],
+                        array(
+                            'y' => round($obj->{$v_2['board_type_name']},1),
+                            'x' => substr( $obj->created, 11, 5),
+                        )
+                    );
+
+//                    array_push($chart_data_array['data'], round($obj->{$v_2['board_type_name']},1));
                 }
 
                 array_push($chart_arr[$k_1]['config']['data']['datasets'], $chart_data_array);

@@ -72,9 +72,9 @@
 <!--                        <canvas id="myChart_1" ></canvas>-->
 <!--                    </div>-->
 <!--                </div>-->
-                <div class="card" >
-                    <div class="card-body">
-                        <canvas id="myChart_1" ></canvas>
+                <div class="card" style="width: 100%; overflow-x: scroll;">
+                    <div class="card-body" style="width: 3000px; height: 500px; " >
+                        <canvas id="myChart_1"  ></canvas>
                     </div>
                 </div>
             </div>
@@ -108,8 +108,13 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.min.js" integrity="sha512-csUso5vWY3PpIJkxLWFbPI7KkjXFhKXpUaAUp1ZLyNhxVWdQacEPH9e7Iw6Rco4es1uQNnlxdCCFkSnJ/f1ZzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.umd.min.js" integrity="sha512-ziISJqd7FOx3QNvnXiFWAfgSKqte9jMjzhrCnc7Gxpxfxjb5FdrBFg673DloeFEH6VLmTeo86yu5y/xJm38cBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/helpers.min.js" integrity="sha512-JG3S/EICkp8Lx9YhtIpzAVJ55WGnxT3T6bfiXYbjPRUoN9yu+ZM+wVLDsI/L2BWRiKjw/67d+/APw/CDn+Lm0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <script>
     $(function () {
