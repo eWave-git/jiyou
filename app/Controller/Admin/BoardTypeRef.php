@@ -25,6 +25,21 @@ class BoardTypeRef extends Page {
         return $array;
     }
 
+    public static function getControlType($control_type = '') {
+        $options = '';
+        $_array = array('R', 'T');
+
+        foreach ($_array as $k => $v) {
+            $options .= View::render('admin/modules/device/board_type_ref_options', [
+                'value' => $v,
+                'text'  => $v,
+                'selected' => $v == $control_type ? 'selected' : '',
+            ]);
+        }
+
+
+        return $options;
+    }
     public static function getBoardTypeNameArray($board_type) {
         $array = array();
 
@@ -57,8 +72,7 @@ class BoardTypeRef extends Page {
                 'idx'            => $obBoardTypeRef->idx,
                 'board_type'      => $obBoardTypeRef->board_type,
                 'model_name'    => $obBoardTypeRef->model_name,
-                'maker'      => $obBoardTypeRef->maker,
-                'use_count'    => $obBoardTypeRef->use_count,
+                'sensor'      => $obBoardTypeRef->sensor,
             ]);
         }
 
@@ -81,8 +95,7 @@ class BoardTypeRef extends Page {
                 'action'                    =>  '/admin/board_type_ref_form/'.$idx.'/edit',
                 'board_type'         => $objBoardTypeRef->board_type,
                 'model_name'         => $objBoardTypeRef->model_name,
-                'maker'              => $objBoardTypeRef->maker,
-                'use_count'          => $objBoardTypeRef->use_count,
+                'sensor'              => $objBoardTypeRef->sensor,
                 'data1'              => $objBoardTypeRef->data1,
                 'data2'              => $objBoardTypeRef->data2,
                 'data3'              => $objBoardTypeRef->data3,
@@ -91,14 +104,14 @@ class BoardTypeRef extends Page {
                 'data6'              => $objBoardTypeRef->data6,
                 'data7'              => $objBoardTypeRef->data7,
                 'data8'              => $objBoardTypeRef->data8,
+                'control_type'       => self::getControlType($objBoardTypeRef->control_type),
             ]);
         } else {
             $content = View::render('admin/modules/device/board_type_ref_form', [
                 'action'             => '/admin/board_type_ref_form/create',
                 'board_type'         => '',
                 'model_name'         => '',
-                'maker'              => '',
-                'use_count'          => '',
+                'sensor'              => '',
                 'data1'              => '',
                 'data2'              => '',
                 'data3'              => '',
@@ -107,6 +120,7 @@ class BoardTypeRef extends Page {
                 'data6'              => '',
                 'data7'              => '',
                 'data8'              => '',
+                'control_type'       => self::getControlType(),
             ]);
         }
 
@@ -119,8 +133,7 @@ class BoardTypeRef extends Page {
         $obj = new EntityBoardTypeRef();
         $obj->board_type = $postVars['board_type'];
         $obj->model_name = $postVars['model_name'];
-        $obj->maker = $postVars['maker'];
-        $obj->use_count = $postVars['use_count'];
+        $obj->sensor = $postVars['sensor'];
         $obj->data1 = $postVars['data1'];
         $obj->data2 = $postVars['data2'];
         $obj->data3 = $postVars['data3'];
@@ -129,6 +142,7 @@ class BoardTypeRef extends Page {
         $obj->data6 = $postVars['data6'];
         $obj->data7 = $postVars['data7'];
         $obj->data8 = $postVars['data8'];
+        $obj->control_type = $postVars['control_type'];
         $obj->created();
 
         $request->getRouter()->redirect('/admin/board_type_ref_list');
@@ -141,8 +155,7 @@ class BoardTypeRef extends Page {
 
         $obj->board_type = $postVars['board_type'] ?? $obj->board_type;
         $obj->model_name = $postVars['model_name'] ?? $obj->model_name;
-        $obj->maker = $postVars['maker'] ?? $obj->maker;
-        $obj->use_count = $postVars['use_count'] ?? $obj->use_count;
+        $obj->sensor = $postVars['sensor'] ?? $obj->sensor;
         $obj->data1 = $postVars['data1'] ?? $obj->data1;
         $obj->data2 = $postVars['data2'] ?? $obj->data2;
         $obj->data3 = $postVars['data3'] ?? $obj->data3;
@@ -151,6 +164,7 @@ class BoardTypeRef extends Page {
         $obj->data6 = $postVars['data6'] ?? $obj->data6;
         $obj->data7 = $postVars['data7'] ?? $obj->data7;
         $obj->data8 = $postVars['data8'] ?? $obj->data8;
+        $obj->control_type = $postVars['control_type'] ?? $obj->control_type;
 
         $obj->updated();
 

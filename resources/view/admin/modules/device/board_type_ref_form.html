@@ -36,16 +36,9 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">제조사</label>
+                            <label class="col-2 col-form-label required">센서</label>
                             <div class="col">
-                                <input type="text" name="maker" value="{{maker}}" class="form-control" aria-describedby="" placeholder="제조사">
-
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">데이터 양</label>
-                            <div class="col">
-                                <input type="text" name="use_count" value="{{use_count}}" class="form-control" aria-describedby="" placeholder="데이터 양">
+                                <input type="text" name="sensor" value="{{sensor}}" class="form-control" aria-describedby="" placeholder="센서">
 
                             </div>
                         </div>
@@ -103,6 +96,15 @@
                             <div class="col">
                                 <input type="text" name="data8" value="{{data8}}" class="form-control" aria-describedby="" placeholder="data8">
 
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">control_type</label>
+                            <div class="col">
+                                <select class="form-control"  name="control_type">
+                                    <option value="">선택하세요.</option>
+                                    {{control_type}}
+                                </select>
                             </div>
                         </div>
                     </div>

@@ -8,8 +8,8 @@ class BoardTypeRef {
     public $idx;
     public $board_type;
     public $model_name;
-    public $maker;
-    public $use_count;
+
+    public $sensor;
     public $data1;
     public $data2;
     public $data3;
@@ -18,6 +18,7 @@ class BoardTypeRef {
     public $data6;
     public $data7;
     public $data8;
+    public $constrol_type;
     public $created_at;
 
 
@@ -40,8 +41,7 @@ class BoardTypeRef {
         $this->idx = (new Database('board_type_ref'))->insert([
             'board_type' => $this->board_type,
             'model_name' => $this->model_name,
-            'maker' => $this->maker,
-            'use_count' => $this->use_count,
+            'sensor' => $this->sensor,
             'data1' => $this->data1,
             'data2' => $this->data2,
             'data3' => $this->data3,
@@ -50,6 +50,7 @@ class BoardTypeRef {
             'data6' => $this->data6,
             'data7' => $this->data7,
             'data8' => $this->data8,
+            'control_type' => $this->control_type,
             'created_at' => $this->created_at,
         ]);
     }
@@ -58,8 +59,7 @@ class BoardTypeRef {
         $this->idx = (new Database('board_type_ref'))->update('idx ='.$this->idx,[
             'board_type' => $this->board_type,
             'model_name' => $this->model_name,
-            'maker' => $this->maker,
-            'use_count' => $this->use_count,
+            'sensor' => $this->sensor,
             'data1' => $this->data1,
             'data2' => $this->data2,
             'data3' => $this->data3,
@@ -68,6 +68,7 @@ class BoardTypeRef {
             'data6' => $this->data6,
             'data7' => $this->data7,
             'data8' => $this->data8,
+            'control_type' => $this->control_type,
         ]);
     }
 
