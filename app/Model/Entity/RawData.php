@@ -34,14 +34,25 @@ class RawData {
         ");
     }
 
+    public static function AccumulateDatas($address, $board_type, $field, $name, $ago, $interval) {
+        return (new Database('raw_data'))->execute("
+            select
+                date_format(created_at, '%Y-%m-%d %H:%i:00') as created,
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
+            from raw_data
+            where address={$address} and board_type={$board_type} and  created_at <= (now() - INTERVAL {$ago} HOUR )
+            group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/{$interval})*10
+            order BY idx asc
+        ");
+    }
     public static function AvgDatas($address, $board_type, $field, $name, $ago, $interval) {
         return (new Database('raw_data'))->execute("
             select
                 DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:00') as created,
                 avg({$field}) as '{$name}'
             from raw_data
-            where address={$address} and board_type={$board_type} and (created_at >= '2023-07-23 10:00:00' - INTERVAL {$ago} HOUR )
-            group by HOUR(created_at),FLOOR(MINUTE(created_at)/{$interval})*10
+            where address={$address} and board_type={$board_type} and  created_at <= (now() - INTERVAL {$ago} HOUR )
+            group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/{$interval})*10
             order by created asc
         ");
     }

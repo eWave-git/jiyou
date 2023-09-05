@@ -251,13 +251,21 @@ class Dashboard extends Page {
             $array[$i]['info'] = (array)$obj_1;
 
             $result_2 = EntityWidgetData::getWidgetDatesByWidgetIdx($obj_1->idx);
+            $j = 0;
+
             while ($obj_2 = $result_2->fetchObject(EntityWidgetData::class)) {
-                $array[$i]['datas'][] = (array)$obj_2;
+                $array[$i]['datas'][$j] = (array)$obj_2;
+                $symbol = Common::findSymbol($obj_2->board_type_name);
+
+                if (isset($symbol['idx'])) {
+                    $array[$i]['datas'][$j]['symbol'] = $symbol['symbol'];
+                    $array[$i]['datas'][$j]['standard'] = $symbol['standard'];
+                }
+                $j++;
             }
 
             $i++;
         }
-
 
         $chart_arr = array();
 
@@ -285,7 +293,11 @@ class Dashboard extends Page {
                 $chart_data_array['pointStyle'] = false;
                 $chart_data_array['data'] = array();
 
-                $result_3 = EntityRawData::AvgDatas($v_2['address'], $v_2['board_type'], $v_2['board_type_field'], $v_2['board_type_name'],'0', '10');
+                if ($v_2['symbol'] == 'L') {
+                    $result_3 = EntityRawData::AccumulateDatas($v_2['address'], $v_2['board_type'], $v_2['board_type_field'], $v_2['board_type_name'],'0', '10');
+                } else {
+                    $result_3 = EntityRawData::AvgDatas($v_2['address'], $v_2['board_type'], $v_2['board_type_field'], $v_2['board_type_name'],'0', '10');
+                }
                 while ($obj = $result_3->fetchObject(EntityRawData::class)) {
 //                    if ($k_2 == 0) {
 //                        array_push($chart_arr[$k_1]['config']['data']['labels'], substr( $obj->created, 11, 5) );
@@ -293,7 +305,7 @@ class Dashboard extends Page {
                     array_push($chart_data_array['data'],
                         array(
                             'y' => round($obj->{$v_2['board_type_name']},1),
-                            'x' => substr( $obj->created, 11, 5),
+                            'x' => $obj->created,
                         )
                     );
 
