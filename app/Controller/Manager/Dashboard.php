@@ -327,6 +327,7 @@ class Dashboard extends Page {
 
         $request = EntityRawData::TwoAvgDataTest($postVars['data_1'], $postVars['data_2'], $postVars['interval'], $postVars['minute_interval']);
 
+
         $data1_arr =  array(
             'label'=> 'data_1',
             'borderColor' => 'rgb(0, 0, 255)',
