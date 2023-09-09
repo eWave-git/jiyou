@@ -51,6 +51,16 @@ $obRouter->post('/manager/dashboard/getMyChart',[
 ]);
 
 
+$obRouter->post('/manager/dashboard/set_push_id',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Dashboard::setPushId($request), 'application/json');
+    }
+]);
+
 $obRouter->post('/manager/dashboard/testChart',[
     'middlewares' => [
         'api',

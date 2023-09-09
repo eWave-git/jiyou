@@ -322,6 +322,20 @@ class Dashboard extends Page {
         ];
     }
 
+
+    public static function setPushId($request) {
+        $postVars = $request->getPostVars();
+
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        EntityMmeber::UpdateSubscriptionId($_userInfo->member_id, $postVars['subscription_id']);
+
+        return [
+            'success' => true,
+        ];
+    }
+
     public static function getTestChart($request) {
         $postVars = $request->getPostVars();
 

@@ -15,8 +15,16 @@ class Member {
     public $member_type;
     public $member_group;
     public $member_farm_idx;
+    public $push_subscription_id;
+
     public $created_at;
 
+
+    public static function UpdateSubscriptionId($member_id, $subscription_id) {
+        return (new Database('member'))->execute(
+            "update member set `push_subscription_id`= '".$subscription_id."' where `member_id` = '".$member_id."'"
+        );
+    }
 
     public static function getMemberByGroup($member_idx) {
         return (new Database('member'))->execute("select * from member where member_group=".$member_idx);
