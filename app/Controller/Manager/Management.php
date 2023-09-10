@@ -8,6 +8,7 @@ use App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 use App\Model\Entity\ControlData as EntityControlData ;
 use App\Model\Entity\Device as EntityDevice;
 use \App\Model\Entity\Member as EntityMmeber;
+use \App\Model\Entity\RawData as EntityRawData;
 use \app\Utils\Common;
 use \App\Utils\View;
 
@@ -39,6 +40,7 @@ class Management extends Page {
                     $array[$_i]['idx'] = $obj_1->idx;
                     $array[$_i]['address'] = $obj_1->address;
                     $array[$_i]['board_type'] = $obj_1->board_type;
+                    $array[$_i]['board_number'] = $obj_1->board_number;
                     $array[$_i]['name'] = $obj_1->name;
                     $array[$_i]['type'] = $obj_1->type;
                     $array[$_i]['relay1'] = $obj_1->relay1;
@@ -59,7 +61,7 @@ class Management extends Page {
                 $item .= View::render('manager/modules/management/management_list_item_relay', [
                     'idx' => $v['idx'],
                     'name' => $v['name'],
-                    'device' => $v['address']."-".$v['board_type']."-".$v['board_type'],
+                    'device' => $v['address']."-".$v['board_type']."-".$v['board_number'],
                     'text'  => $array[$k][$array[$k]['type']] == 1 ? "운영중" : "중지",
                     'checked' => $array[$k][$array[$k]['type']] == 1 ? "checked" : "",
                     'field' => $v['type'],
@@ -69,7 +71,7 @@ class Management extends Page {
                 $item .= View::render('manager/modules/management/management_list_item_temperature', [
                     'idx' => $v['idx'],
                     'name' => $v['name'],
-                    'device' => $v['address']."-".$v['board_type']."-".$v['board_type'],
+                    'device' => $v['address']."-".$v['board_type']."-".$v['board_number'],
                     'temperature' => $v['temperature'],
 
 
@@ -142,11 +144,7 @@ class Management extends Page {
         $_userInfo = EntityMmeber::getMemberById($_user);
 
         $member_devices = Member::getMembersControlDevice($_userInfo->idx);
-
-//        Common::print_r2($member_devices);
-
         $device = $objSetting->device_idx ?? '';
-
 
         $idx = $objSetting->idx ?? '';
 
@@ -214,9 +212,23 @@ class Management extends Page {
             $device_info = EntityDevice::getDevicesByIdx($postVars['device_idx']);
             $obj = (array) EntityBoardTypeRef::getBoardTypeRefByBoardType($device_info->board_type);
 
+            $result = EntityRawData::LastLimitDataOne($device_info->address, $device_info->board_type, $device_info->board_number, 'data1', 'data');
+            $obj_temperature = $result->fetchObject(EntityRawData::class);
+
+            $success = false;
+            if ($obj_temperature->data && $obj_temperature->data > 0) {
+                $success = true;
+
+                Common::temperature_commend($device_info->address, $device_info->board_type, $device_info->board_number, $obj_temperature->data);
+
+            } else {
+                $success = false;
+            }
+
             return [
-                'success' => true,
-                'obj' => $obj
+                'success' => $success,
+                'obj' => $obj,
+                'temperature' => $obj_temperature->data,
             ];
         } else {
             return [
@@ -228,7 +240,6 @@ class Management extends Page {
 
     public static function getControlRelayChange($request) {
         $postVars = $request->getPostVars();
-
 
         EntityControlData::relayUpdate($postVars['control_idx'], $postVars['field'], $postVars['val']);
 
@@ -242,10 +253,20 @@ class Management extends Page {
     public static function getControlTemperatureChange($request) {
         $postVars = $request->getPostVars();
 
-        EntityControlData::temperatureUpdate($postVars['control_idx'], $postVars['val']);
+        $success = false;
+
+        if ($postVars['val'] && $postVars['val'] > 0) {
+            EntityControlData::temperatureUpdate($postVars['control_idx'], $postVars['val']);
+            $reslut = EntityControlData::getControlDataByIDX($postVars['control_idx']);
+            Common::temperature_commend($reslut->address, $reslut->board_type, $reslut->board_number, $postVars['val']);
+
+            $success = true;
+        } else {
+            $success = false;
+        }
 
         return [
-            'success' => true,
+            'success' => $success,
             'obj' => ''
         ];
     }

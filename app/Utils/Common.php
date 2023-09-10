@@ -168,4 +168,13 @@ class Common{
         }
     }
 
+    public static function temperature_commend($address, $board_type, $board_number, $temperature) {
+        $_txt = $address.$board_type.$board_number;
+        $commend = 'mosquitto_pub -h 13.209.31.152 -t LORA/GATE/CONTROL/'.$_txt.' -u ewave -P andante -m "{\"temp\":'.$temperature.'}"';
+
+        $output=null;
+        $retval=null;
+        exec($commend, $output, $retval);
+    }
+
 }
