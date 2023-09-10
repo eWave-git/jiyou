@@ -34,6 +34,7 @@ class Management extends Page {
         foreach ($member_devices as $k_1 => $v_1) {
             if ($v_1) {
                 $result_1 = EntityControlData::getControlDataByDeviceIdx($v_1['idx']);
+
                 while ($obj_1 = $result_1->fetchObject(EntityControlData::class)) {
                     $array[$_i]['idx'] = $obj_1->idx;
                     $array[$_i]['address'] = $obj_1->address;
@@ -45,6 +46,8 @@ class Management extends Page {
                     $array[$_i]['temperature'] = $obj_1->temperature;
                     $array[$_i]['control_type'] = $v_1['control_type'];
                     $array[$_i]['created_at'] = $obj_1->create_at;
+
+                    $_i++;
                 }
             }
         }
@@ -57,8 +60,8 @@ class Management extends Page {
                     'idx' => $v['idx'],
                     'name' => $v['name'],
                     'device' => $v['address']."-".$v['board_type']."-".$v['board_type'],
-                    'text'  => $array[$_i][$array[$_i]['type']] == 1 ? "운영중" : "중지",
-                    'checked' => $array[$_i][$array[$_i]['type']] == 1 ? "checked" : "",
+                    'text'  => $array[$k][$array[$k]['type']] == 1 ? "운영중" : "중지",
+                    'checked' => $array[$k][$array[$k]['type']] == 1 ? "checked" : "",
                     'field' => $v['type'],
                     'created_at' => $v['created_at'],
                 ]);
@@ -198,6 +201,8 @@ class Management extends Page {
         $obj->temperature = $temperature;
 
         $obj->created();
+
+        $request->getRouter()->redirect('/manager/managment');
     }
 
 
