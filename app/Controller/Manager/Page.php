@@ -37,14 +37,14 @@ class Page {
             'link'  => URL."/manager/inquiry",
         ],
         [
-            'label' => 'management',
+            'label' => 'setting',
             'title' => '알람',
-            'link'  => URL."/manager/managment",
+            'link'  => URL."/manager/setting",
         ],
         [
-            'label' => 'setting',
+            'label' => 'management',
             'title' => '제어',
-            'link'  => URL."/manager/setting",
+            'link'  => URL."/manager/managment",
         ],
         [
             'label' => 'all',
