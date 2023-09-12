@@ -38,17 +38,17 @@ class Page {
         ],
         [
             'label' => 'management',
-            'title' => '장비',
+            'title' => '알람',
             'link'  => URL."/manager/managment",
         ],
         [
             'label' => 'setting',
-            'title' => '설정',
+            'title' => '제어',
             'link'  => URL."/manager/setting",
         ],
         [
             'label' => 'all',
-            'title' => '전체',
+            'title' => '기타',
             'link'  => "javascript:alert('준비중')",
         ],
     ];
