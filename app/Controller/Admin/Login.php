@@ -15,7 +15,7 @@ class Login extends Page {
             'status' => !is_null($errorMessage) ? Alert::getError($errorMessage) : ''
         ]);
 
-        return parent::getPage('ewave > Lgin', $content);
+        return parent::getPage('ewave > Login', $content);
     }
 
     public static function setLogin($request) {
