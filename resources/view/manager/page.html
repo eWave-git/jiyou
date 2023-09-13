@@ -65,59 +65,59 @@
 <script>
     $(function () {
 
-        $("#widget_device").change(function () {
-            $("#widget_board").empty()
-            $.ajax({
-                url:'{{URL}}/manager/dashboard/get_widget_board',
-                type:'post',
-                data: {
-                    device_idx:$(this).val()
-                },
-                dataType: "json",
-                success:function(obj){
-                    if (obj.success) {
-                        $.each(obj.text, function (key, value) {
-                            // console.log(obj.idx[key])
-                            $("#widget_board").append(
-                                $("<option></option>").attr("value",obj.idx[key]).text(value)
-                            )
-                        })
-
-                    }
-                }
-            })
-        });
-
-        $("#device").change(function () {
-            $("#board").empty()
-            $.ajax({
-                url:'{{URL}}/manager/dashboard/get_widget_board',
-                type:'post',
-                data: {
-                    device_idx:$(this).val()
-                },
-                dataType: "json",
-                success:function(obj){
-                    if (obj.success) {
-                        $.each(obj.text, function (key, value) {
-                            // console.log(obj.idx[key])
-                            $("#board").append(
-                                $("<option></option>").attr("value",obj.idx[key]).text(value)
-                            )
-                        })
-
-                    }
-                }
-            })
-        });
-
-        $("[name='widget_type']").click(function () {
-            if ($(this).val() == "graph") {
-                $("#row_interval").show();
-            } else if ($(this).val() == "text") {
-                $("#row_interval").hide();
-            }
-        });
+        // $("#widget_device").change(function () {
+        //     $("#widget_board").empty()
+        //     $.ajax({
+        //         url:'{{URL}}/manager/dashboard/get_widget_board',
+        //         type:'post',
+        //         data: {
+        //             device_idx:$(this).val()
+        //         },
+        //         dataType: "json",
+        //         success:function(obj){
+        //             if (obj.success) {
+        //                 $.each(obj.text, function (key, value) {
+        //                     // console.log(obj.idx[key])
+        //                     $("#widget_board").append(
+        //                         $("<option></option>").attr("value",obj.idx[key]).text(value)
+        //                     )
+        //                 })
+        //
+        //             }
+        //         }
+        //     })
+        // });
+        //
+        // $("#device").change(function () {
+        //     $("#board").empty()
+        //     $.ajax({
+        //         url:'{{URL}}/manager/dashboard/get_widget_board',
+        //         type:'post',
+        //         data: {
+        //             device_idx:$(this).val()
+        //         },
+        //         dataType: "json",
+        //         success:function(obj){
+        //             if (obj.success) {
+        //                 $.each(obj.text, function (key, value) {
+        //                     // console.log(obj.idx[key])
+        //                     $("#board").append(
+        //                         $("<option></option>").attr("value",obj.idx[key]).text(value)
+        //                     )
+        //                 })
+        //
+        //             }
+        //         }
+        //     })
+        // });
+        //
+        // $("[name='widget_type']").click(function () {
+        //     if ($(this).val() == "graph") {
+        //         $("#row_interval").show();
+        //     } else if ($(this).val() == "text") {
+        //         $("#row_interval").hide();
+        //     }
+        // });
 
     });
 

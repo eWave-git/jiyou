@@ -40,26 +40,6 @@ class BoardTypeRef extends Page {
 
         return $options;
     }
-    public static function getBoardTypeNameArray($board_type) {
-        $array = array();
-
-        $objBoardTypeRef = EntityBoardTypeRef::getBoardTypeRefByBoardType($board_type);
-
-        if ($objBoardTypeRef) {
-            $i = 0;
-            foreach($objBoardTypeRef as $column_name=>$column_value){
-                if (preg_match('/data/',$column_name, $match) && $column_value) {
-                    $array[$i]['field'] = $column_name;
-                    $array[$i]['name'] = $column_value;
-
-                    $i++;
-                }
-            }
-        }
-
-        return $array;
-    }
-
 
 
     private static function getMemberListItems($request) {

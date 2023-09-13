@@ -14,7 +14,7 @@ class Setting extends Page {
 
     public static function getSettingList($user_idx) {
 
-        $member_devices = Member::getMembersDevice($user_idx);
+        $member_devices = Common::getMembersDevice($user_idx);
 
         $array = array();
         $_i = 0;
@@ -141,7 +141,7 @@ class Setting extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        $member_devices = Member::getMembersDevice($_userInfo->idx);
+        $member_devices = Common::getMembersDevice($_userInfo->idx);
 
         $device = $objSetting->device_idx ?? '';
         $board = $objSetting->board_type_field ?? '';

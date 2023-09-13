@@ -11,11 +11,11 @@
             <div class="col-auto ms-auto d-print-none">
                 <div class="btn-list">
 
-                    <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        위젯 추가
-                    </a>
+<!--                    <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">-->
+<!--                        &lt;!&ndash; Download SVG icon from http://tabler-icons.io/i/plus &ndash;&gt;-->
+<!--                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>-->
+<!--                        위젯 추가-->
+<!--                    </a>-->
 
                 </div>
             </div>
@@ -29,15 +29,36 @@
 <div class="page-body">
     <div class="container-xl">
         <div class="row row-cards">
-
-            {{widget_table}}
-            {{widget_chart}}
-
+            {{widget_card}}
         </div>
+    </div>
+</div>
 
-        {{widget_add_form}}
 
+<div class="modal modal-blur fade" id="modal-widget" tabindex="-1" style="display: none;" aria-hidden="true">
+    <input type="hidden" name="idx" value="">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">장치 이름 변경</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">장치 이름</label>
+                    <input type="text" class="form-control" name="widget_name" placeholder="장치 이름">
+                </div>
+            </div>
 
+            <div class="modal-footer">
+                <button href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+                <button name="modal_submit" class="btn btn-primary ms-auto" >
+                    수정
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -48,22 +69,22 @@
 <script>
     $(function () {
 
-        $.ajax({
-            url:'{{URL}}/manager/dashboard/getMyChart',
-            type:'post',
-            data: {
-
-            },
-            dataType: 'json',
-            success:function(obj) {
-
-                $.each(obj.obj, function (key, value) {
-                    // console.log(obj.obj[key]['tag_name'])
-                    // console.log(obj.obj[key]['config'])
-                    var myChart = new Chart(document.getElementById(obj.obj[key]['tag_name']), obj.obj[key]['config']);
-                })
-            }
-        });
+        // $.ajax({
+        //     url:'{{URL}}/manager/dashboard/getMyChart',
+        //     type:'post',
+        //     data: {
+        //
+        //     },
+        //     dataType: 'json',
+        //     success:function(obj) {
+        //
+        //         $.each(obj.obj, function (key, value) {
+        //             // console.log(obj.obj[key]['tag_name'])
+        //             // console.log(obj.obj[key]['config'])
+        //             var myChart = new Chart(document.getElementById(obj.obj[key]['tag_name']), obj.obj[key]['config']);
+        //         })
+        //     }
+        // });
 
 
     });

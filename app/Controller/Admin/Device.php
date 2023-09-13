@@ -6,7 +6,10 @@ use \App\Model\Entity\Device as EntityDevice;
 use \App\Model\Entity\Farm as EntityFarm;
 use \App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 
+use \App\Model\Entity\Widget as EntityWidget;
+
 use App\Model\Entity\FarmAddress as EntityFarmAddress;
+
 use \app\Utils\Common;
 use \App\Utils\View;
 
@@ -123,7 +126,19 @@ class Device extends Page {
         $obj->address = $postVars['address'];
         $obj->board_type = $postVars['board_type'];
         $obj->board_number = $postVars['board_number'];
-        $obj->created();
+        $device_idx = $obj->created();
+
+        $farm_info = EntityFarm::getFarmsByIdx($postVars['farm_idx']);
+
+        $widget_obj = new EntityWidget();
+        $widget_obj->member_idx = $farm_info->member_idx;
+        $widget_obj->widget_name = $postVars['address']."-".$postVars['board_type']."-".$postVars['board_number'];
+        $widget_obj->device_idx = $device_idx;
+        $widget_obj->address = $postVars['address'];
+        $widget_obj->board_type = $postVars['board_type'];
+        $widget_obj->board_number = $postVars['board_number'];
+        $widget_obj->created();
+
 
         $request->getRouter()->redirect('/admin/device_list');
     }
@@ -144,8 +159,10 @@ class Device extends Page {
 
     public static function Device_Delete($request, $idx) {
         $obj = EntityDevice::getDevicesByIdx($idx);
-
         $obj->deleted();
+
+        $widget_obj = EntityWidget::getWidgetByDeviceIdx($idx)->fetchObject(EntityWidget::class);
+        $widget_obj->deleted();
 
         $request->getRouter()->redirect('/admin/device_list');
     }

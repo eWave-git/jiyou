@@ -35,6 +35,8 @@ class Device {
             'board_number' => $this->board_number,
             'created_at' => $this->created_at,
         ]);
+
+        return $this->idx;
     }
 
     public function updated() {

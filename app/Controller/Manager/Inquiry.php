@@ -200,7 +200,7 @@ class Inquiry extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        $member_devices = Member::getMembersDevice($_userInfo->idx);
+        $member_devices = Common::getMembersDevice($_userInfo->idx);
 
         $device = $postVars['device'] ?? '';
         $board = $postVars['board'] ?? '';

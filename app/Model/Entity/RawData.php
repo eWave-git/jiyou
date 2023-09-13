@@ -25,6 +25,32 @@ class RawData {
     public $data8;
     public $created_at;
 
+
+    public static function LastTotal($address, $board_type, $board_number, $field, $ago) {
+        return (new Database('raw_data'))->execute("
+            select
+               min({$field}) as min,
+               max({$field}) as max,
+               avg({$field}) as avg
+            from raw_data
+            where 
+                address={$address} 
+              and board_type={$board_type} 
+              and board_number={$board_number}
+              and created_at >= (now() - INTERVAL {$ago} HOUR)
+            order by created_at desc
+        ");
+    }
+
+    public static function LastLimitOne($address, $board_type, $board_number) {
+        return (new Database('raw_data'))->execute("
+            select *
+            from raw_data
+            where address={$address} and board_type={$board_type} and board_number={$board_number}
+            order by idx desc limit 1
+        ");
+    }
+
     public static function LastLimitDataOne($address, $board_type, $board_number, $field, $name) {
         return (new Database('raw_data'))->execute("
             select {$field} as '{$name}'

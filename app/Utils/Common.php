@@ -2,7 +2,10 @@
 namespace app\Utils;
 
 
+use App\Controller\Admin\BoardTypeRef;
+use App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 use App\Model\Entity\Member as EntityMmeber;
+use App\Model\Entity\Widget as EntityWidget;
 use App\Model\Entity\BoardTypeSymbol as EntityBoardTypeSymbol;
 use Exception;
 
@@ -133,7 +136,7 @@ class Common{
     public static function getBoardTypeNameSelect($board_type, $field) {
         $array = array();
 
-        foreach (\App\Controller\Admin\BoardTypeRef::getBoardTypeNameArray($board_type) as $k => $v) {
+        foreach (Common::getBoardTypeNameArray($board_type) as $k => $v) {
             if ($v['field'] == $field) {
                 $array = $v;
             }
@@ -177,4 +180,53 @@ class Common{
         exec($commend, $output, $retval);
     }
 
+    public static function getMembersDevice($member_idx) {
+        $arr  = array();
+
+        $result = EntityMmeber::getMembersDevice($member_idx);
+        $_i = 0;
+        while ($obj = $result->fetchObject(EntityMmeber::class)) {
+            $arr[$_i] = (array) $obj;
+            $arr[$_i]['board_name'] =  BoardTypeRef::getBoardTypeName($obj->board_type);
+            $_i++;
+        }
+
+        return $arr;
+    }
+
+    public static function getMembersWidget($member_idx) {
+        $arr  = array();
+
+        $result = EntityWidget::getWidgetByMemberIdx($member_idx);
+        $_i = 0;
+        while ($obj = $result->fetchObject(EntityWidget::class)) {
+
+            $arr[$_i] = (array) $obj;
+            $arr[$_i]['board_name'] =  Common::getBoardTypeNameArray($obj->board_type);
+
+            $_i++;
+        }
+
+        return $arr;
+    }
+
+    public static function getBoardTypeNameArray($board_type) {
+        $array = array();
+
+        $objBoardTypeRef = EntityBoardTypeRef::getBoardTypeRefByBoardType($board_type);
+
+        if ($objBoardTypeRef) {
+            $i = 0;
+            foreach($objBoardTypeRef as $column_name=>$column_value){
+                if (preg_match('/data/',$column_name, $match) && $column_value) {
+                    $array[$i]['field'] = $column_name;
+                    $array[$i]['name'] = $column_value;
+
+                    $i++;
+                }
+            }
+        }
+
+        return $array;
+    }
 }

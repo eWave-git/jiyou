@@ -1,0 +1,59 @@
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    {{farm_name}}
+                </h2>
+            </div>
+
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-vcenter table-bordered table-nowrap card-table">
+                    <thead>
+                    <tr class="bg-light">
+                        <td colspan="4" class="subheader"><h3 class="card-title">{{widget_name}}</h3></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td></td>
+                        <td class="text-center"><!-- Download SVG icon from http://tabler-icons.io/i/check -->
+                            최근값
+                        </td>
+                        <td class="text-center"><!-- Download SVG icon from http://tabler-icons.io/i/check -->
+                            최대값
+                        </td>
+                        <td class="text-center"><!-- Download SVG icon from http://tabler-icons.io/i/check -->
+                            최소값
+                        </td>
+                        <td class="text-center"><!-- Download SVG icon from http://tabler-icons.io/i/check -->
+                            평균값
+                        </td>
+                    </tr>
+                    {{data}}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -31,4 +31,29 @@ $(function () {
     if (isMobile()) {
         get_pushid();
     }
+
+    $("button[class='nav-link']").click(function () {
+        $("[name='idx']").val($(this).data('idx'));
+        $("[name='widget_name']").val($(this).data('title'));
+
+        $("#modal-widget").modal("show");
+    });
+
+    $("[name='modal_submit']").click(function () {
+        $.ajax({
+            url:'/manager/dashboard/widgetNameChange',
+            type:'post',
+            data: {
+                idx:$("[name='idx']").val(),
+                widget_name:$("[name='widget_name']").val()
+            },
+            dataType: "json",
+            success:function(obj){
+                if (obj.success) {
+                    location.reload();
+                }
+            }
+        })
+    })
+
 });
