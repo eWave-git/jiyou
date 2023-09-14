@@ -138,15 +138,15 @@ class Management extends Page {
     }
 
     public static function Management_Form($request) {
-        $objSetting = '';
+        $objAlarm = '';
 
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
         $member_devices = Member::getMembersControlDevice($_userInfo->idx);
-        $device = $objSetting->device_idx ?? '';
+        $device = $objAlarm->device_idx ?? '';
 
-        $idx = $objSetting->idx ?? '';
+        $idx = $objAlarm->idx ?? '';
 
         $content = View::render('manager/modules/management/management_form', [
             'device_options' => self::getMemberDevice($member_devices, $device),

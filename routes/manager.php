@@ -42,7 +42,7 @@ include __DIR__.'/manager/inquiry.php';
 
 include __DIR__.'/manager/management.php';
 
-include __DIR__ . '/manager/setting.php';
+include __DIR__ . '/manager/alarm.php';
 
 include __DIR__.'/manager/all.php';
 

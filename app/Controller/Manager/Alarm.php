@@ -4,15 +4,15 @@ namespace App\Controller\Manager;
 
 use \App\Model\Entity\Device as EntityDevice;
 use \App\Model\Entity\Member as EntityMmeber;
-use \App\Model\Entity\Setting as EntitySetting;
-use \App\Model\Entity\SettingMember as EntitySettingMember;
+use \App\Model\Entity\Alarm as EntityAlarm;
+use \App\Model\Entity\AlarmMember as EntityAlarmMember;
 use \app\Utils\Common;
 use \App\Utils\View;
 
-class Setting extends Page {
+class Alarm extends Page {
 
 
-    public static function getSettingList($user_idx) {
+    public static function getAlarmList($user_idx) {
 
         $member_devices = Common::getMembersDevice($user_idx);
 
@@ -20,8 +20,8 @@ class Setting extends Page {
         $_i = 0;
         foreach ($member_devices as $k_1 => $v_1) {
             if ($v_1['idx']) {
-                $result_1 = EntitySetting::getSettingByDeviceIdx($v_1['idx']);
-                while ($obj_1 = $result_1->fetchObject(EntitySetting::class)) {
+                $result_1 = EntityAlarm::getAlarmByDeviceIdx($v_1['idx']);
+                while ($obj_1 = $result_1->fetchObject(EntityAlarm::class)) {
                     $array[$_i]['idx'] = $obj_1->idx;
                     $array[$_i]['address'] = $obj_1->address;
                     $array[$_i]['board_type'] = $obj_1->board_type;
@@ -31,10 +31,10 @@ class Setting extends Page {
                     $array[$_i]['activation'] = $obj_1->activation;
                     $array[$_i]['create'] = $obj_1->created_at;
 
-                    $result_2 = EntitySettingMember::getSettingMemberByIdx($obj_1->idx);
+                    $result_2 = EntityAlarmMember::getAlarmMemberByIdx($obj_1->idx);
 
                     $_temp = "";
-                    while ($obj_2 = $result_2->fetchObject(EntitySettingMember::class)) {
+                    while ($obj_2 = $result_2->fetchObject(EntityAlarmMember::class)) {
                         $member = Common::get_member_info($obj_2->member_idx);
                         $_temp .= $member['member_name'] . " ";
                     }
@@ -48,7 +48,7 @@ class Setting extends Page {
         $item = "";
 
         foreach ($array as $k => $v) {
-            $item .= View::render('manager/modules/setting/setting_list_item', [
+            $item .= View::render('manager/modules/alarm/alarm_list_item', [
                 'idx' => $v['idx'],
                 'device' => $v['address']."-".$v['board_type']."-".$v['board_type'],
                 'field' => $v['board_type_name'],
@@ -64,16 +64,16 @@ class Setting extends Page {
     }
 
 
-    public static function getSetting($request) {
+    public static function getAlarm($request) {
 
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        $content = View::render('manager/modules/setting/index', [
-            'setting_list_item' => self::getSettingList($_userInfo->idx),
+        $content = View::render('manager/modules/alarm/index', [
+            'alarm_list_item' => self::getAlarmList($_userInfo->idx),
         ]);
 
-        return parent::getPanel('Home > DASHBOARD', $content, 'setting');
+        return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
     }
 
     private static function getMemberDevice($member_devices, $device = '') {
@@ -109,14 +109,14 @@ class Setting extends Page {
         return $option;
     }
 
-    private static function getMemberGroup($user_idx, $setting_idx = null) {
-        $setting_member_array = array();
+    private static function getMemberGroup($user_idx, $alarm_idx = null) {
+        $alarm_member_array = array();
 
 
-        if (!empty($setting_idx)) {
-            $setting_member = EntitySettingMember::getSettingMemberByIdx($setting_idx);
-            while ($obj = $setting_member->fetchObject(EntitySettingMember::class)) {
-                $setting_member_array[] = $obj->member_idx;
+        if (!empty($alarm_idx)) {
+            $alarm_member = EntityAlarmMember::getAlarmMemberByIdx($alarm_idx);
+            while ($obj = $alarm_member->fetchObject(EntityAlarmMember::class)) {
+                $alarm_member_array[] = $obj->member_idx;
             }
         }
 
@@ -125,26 +125,26 @@ class Setting extends Page {
 
         while ($obj = $results->fetchObject(EntityMmeber::class)) {
 
-            $item .= View::render('manager/modules/setting/targer_user_checkbox', [
+            $item .= View::render('manager/modules/alarm/targer_user_checkbox', [
                 'idx' => $obj->idx,
                 'name' => $obj->member_name,
-                'checked' => in_array($obj->idx, $setting_member_array) ? 'checked' : '',
+                'checked' => in_array($obj->idx, $alarm_member_array) ? 'checked' : '',
             ]);
         }
 
         return $item;
     }
 
-    public static function Setting_Form($request, $idx = null) {
-        $objSetting = is_null($idx) ? '': EntitySetting::getSettingByIdx($idx) ;
+    public static function Alarm_Form($request, $idx = null) {
+        $objAlarm = is_null($idx) ? '': EntityAlarm::getAlarmByIdx($idx) ;
 
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
         $member_devices = Common::getMembersDevice($_userInfo->idx);
 
-        $device = $objSetting->device_idx ?? '';
-        $board = $objSetting->board_type_field ?? '';
+        $device = $objAlarm->device_idx ?? '';
+        $board = $objAlarm->board_type_field ?? '';
 
         $_idx = !$device ? $member_devices[0]['idx'] : $device;
         $obj = EntityDevice::getDevicesByIdx($_idx);
@@ -164,30 +164,30 @@ class Setting extends Page {
             $board_type_name = $board_type_info[0]['name'];
 
         }
-        $idx = $objSetting->idx ?? '';
-        $activation = $objSetting->activation ?? '';
+        $idx = $objAlarm->idx ?? '';
+        $activation = $objAlarm->activation ?? '';
 
 
-        $content = View::render('manager/modules/setting/setting_form', [
+        $content = View::render('manager/modules/alarm/alarm_form', [
             'device_options' => self::getMemberDevice($member_devices, $device),
             'board_options' => self::getMemberBoardType($obj, $board),
-            'min'           => $objSetting->min ?? '',
-            'max'           => $objSetting->max ?? '',
+            'min'           => $objAlarm->min ?? '',
+            'max'           => $objAlarm->max ?? '',
             'target_user'   => self::getMemberGroup($_userInfo->idx, $idx),
             'checked'       => $activation == 'Y'? 'checked' : '' ,
-            'action'        => $idx == '' ? '/manager/setting_form_create' : '/manager/setting_form/'.$idx.'/edit',
+            'action'        => $idx == '' ? '/manager/alarm_form_create' : '/manager/alarm_form/'.$idx.'/edit',
         ]);
 
-        return parent::getPanel('Home > DASHBOARD', $content, 'setting');
+        return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
     }
 
-    public static function Setting_Create($request) {
+    public static function Alarm_Create($request) {
         $postVars = $request->getPostVars();
 
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
         $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
 
-        $obj_1 = new EntitySetting;
+        $obj_1 = new EntityAlarm;
         $obj_1->device_idx = $device_info->idx;
         $obj_1->address = $device_info->address;
         $obj_1->board_type = $device_info->board_type;
@@ -201,21 +201,21 @@ class Setting extends Page {
 
         if (!empty($postVars['target_user'])) {
             foreach ($postVars['target_user'] as $k => $v) {
-                $obj_2 = new EntitySettingMember;
-                $obj_2->setting_idx = $obj_1->idx;
+                $obj_2 = new EntityAlarmMember;
+                $obj_2->alarm_idx = $obj_1->idx;
                 $obj_2->member_idx = $v;
                 $obj_2->created();
             }
         }
 
-        $request->getRouter()->redirect('/manager/setting');
+        $request->getRouter()->redirect('/manager/alarm');
     }
 
-    public static function Setting_Edit($request, $idx) {
-        $obj = EntitySetting::getSettingByIdx($idx);
+    public static function Alarm_Edit($request, $idx) {
+        $obj = EntityAlarm::getAlarmByIdx($idx);
         $postVars = $request->getPostVars();
 
-        EntitySettingMember::deleted($idx);
+        EntityAlarmMember::deleted($idx);
 
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
         $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
@@ -233,14 +233,14 @@ class Setting extends Page {
 
         if (!empty($postVars['target_user'])) {
             foreach ($postVars['target_user'] as $k => $v) {
-                $obj_2 = new EntitySettingMember;
-                $obj_2->setting_idx = $idx;
+                $obj_2 = new EntityAlarmMember;
+                $obj_2->alarm_idx = $idx;
                 $obj_2->member_idx = $v;
                 $obj_2->created();
             }
         }
 
-        $request->getRouter()->redirect('/manager/setting');
+        $request->getRouter()->redirect('/manager/alarm');
     }
 
 

@@ -37,9 +37,9 @@ class Page {
             'link'  => URL."/manager/inquiry",
         ],
         [
-            'label' => 'setting',
+            'label' => 'alarm',
             'title' => '알람',
-            'link'  => URL."/manager/setting",
+            'link'  => URL."/manager/alarm",
         ],
         [
             'label' => 'management',
