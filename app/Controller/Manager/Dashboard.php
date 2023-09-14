@@ -178,7 +178,7 @@ class Dashboard extends Page {
 
                 $item .= View::render('manager/modules/dashboard/widget_card_item', [
                     'name' => $v['name'],
-                    'value' => $rew_obj->{$v['field']} . " " . $symbol,
+                    'value' => round($rew_obj->{$v['field']},1) . " " . $symbol,
                 ]);
             }
 
@@ -251,10 +251,10 @@ class Dashboard extends Page {
         foreach ($array as $k => $v) {
             $data .=  View::render('manager/modules/dashboard/widget_table_td', [
                 'name' => $v['name'],
-                'now' => $v['now'],
-                'min' => $v['min'],
-                'max' => $v['max'],
-                'avg' => $v['avg']
+                'now' => round($v['now'],1),
+                'min' => round($v['min'],1),
+                'max' => round($v['max'],1),
+                'avg' => round($v['avg'],1),
             ]);
         }
 
