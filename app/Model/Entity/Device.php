@@ -7,11 +7,18 @@ use \WilliamCosta\DatabaseManager\Database;
 class Device {
     public $idx;
     public $farm_idx;
+    public $device_name;
     public $address;
     public $board_type;
     public $board_number;
     public $created_at;
 
+
+    public static function UpdateDeviceName($idx, $device_name) {
+        return (new Database('device'))->execute(
+            "update device set `device_name`= '".$device_name."' where `idx` = '".$idx."'"
+        );
+    }
 
     public static function getDevicesByIdxAddress($farm_idx, $address) {
         return self::getDevices("farm_idx = ".$farm_idx." and address = '".$address."'");

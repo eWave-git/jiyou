@@ -77,6 +77,7 @@ class Device extends Page {
             $items .= View::render('admin/modules/device/device_item', [
                 'idx' => $obDevice->idx,
                 'farm_name' => self::getFarmsByIdx($obDevice->farm_idx),
+                'device_name' => $obDevice->device_name,
                 'address' => $obDevice->address,
                 'board_type' => $obDevice->board_type,
                 'board_number' => $obDevice->board_number,
@@ -101,6 +102,7 @@ class Device extends Page {
             $content = View::render('admin/modules/device/device_form', [
                 'action' =>  '/admin/device_form/'.$idx.'/edit',
                 'farm_idx' => self::getFarmList($objDevice->farm_idx),
+                'device_name'   => $objDevice->device_name,
                 'address'   => self::getAddressList($objDevice->farm_idx, $objDevice->address),
                 'board_type' => self::getBoardTypeList($objDevice->board_type),
                 'board_number' => $objDevice->board_number,
@@ -109,6 +111,7 @@ class Device extends Page {
             $content = View::render('admin/modules/device/device_form', [
                 'action' => '/admin/device_form/create',
                 'farm_idx' => self::getFarmList(),
+                'device_name'   => '',
                 'address'   => '',
                 'board_type' => self::getBoardTypeList(),
                 'board_number' => '',
@@ -123,6 +126,7 @@ class Device extends Page {
 
         $obj = new EntityDevice();
         $obj->farm_idx = $postVars['farm_idx'];
+        $obj->device_name = $postVars['device_name'];
         $obj->address = $postVars['address'];
         $obj->board_type = $postVars['board_type'];
         $obj->board_number = $postVars['board_number'];
@@ -132,7 +136,7 @@ class Device extends Page {
 
         $widget_obj = new EntityWidget();
         $widget_obj->member_idx = $farm_info->member_idx;
-        $widget_obj->widget_name = $postVars['address']."-".$postVars['board_type']."-".$postVars['board_number'];
+        $widget_obj->widget_name = $postVars['device_name'];
         $widget_obj->device_idx = $device_idx;
         $widget_obj->address = $postVars['address'];
         $widget_obj->board_type = $postVars['board_type'];

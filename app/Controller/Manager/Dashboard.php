@@ -2,6 +2,7 @@
 
 namespace App\Controller\Manager;
 
+use App\Model\Entity\Device as EntityDevice;
 use App\Model\Entity\Member as EntityMmeber;
 use App\Model\Entity\RawData as EntityRawData;
 use App\Model\Entity\Widget as EntityWidget;
@@ -421,6 +422,11 @@ class Dashboard extends Page {
     public static function widgetNameChange($request) {
         $postVars = $request->getPostVars();
         EntityWidget::UpdateWidgetName($postVars['idx'], $postVars['widget_name']);
+
+        $reslut = EntityWidget::getWidgetByIdx($postVars['idx']);
+        $obj = $reslut->fetchObject(EntityWidget::class);
+        EntityDevice::UpdateDeviceName($obj->device_idx, $postVars['widget_name']);
+
 
         return [
             'success' => true,
