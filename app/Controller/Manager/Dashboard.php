@@ -201,6 +201,9 @@ class Dashboard extends Page {
 
         if (is_array((array)$obj)) {
             foreach ($obj as $k => $v) {
+                // TODO: 디바이스 이이디로 갖고 오기
+//                $device_obj = EntityDevice::getDevicesByIdx($v['device_idx']);
+//                $result = EntityRawData::LastLimitOne($device_obj->address, $device_obj->board_type, $device_obj->board_number);
                 $result = EntityRawData::LastLimitOne($v['address'], $v['board_type'], $v['board_number']);
                 $rew_obj = $result->fetchObject(EntityRawData::class);
 

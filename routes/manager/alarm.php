@@ -47,3 +47,23 @@ $obRouter->post('/manager/alarm_form/{idx}/edit',[
         return new Response(200, Manager\Alarm::Alarm_Edit($request, $idx));
     }
 ]);
+
+$obRouter->post('/manager/alarm_form/getBoardType',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::getBoardType($request), 'application/json');
+    }
+]);
+
+$obRouter->post('/manager/alarm/setActiveChange',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::setActiveChange($request), 'application/json');
+    }
+]);

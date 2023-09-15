@@ -1,10 +1,17 @@
 <tr>
-    <td>{{idx}}</td>
-    <td>{{device}}</td>
-    <td>{{field}}</td>
+    <td>{{number}}</td>
+    <td>{{device_name}}</td>
+    <td>
+        {{field}}
+    </td>
     <td>{{MinAtMax}}</td>
-    <td>{{member}}</td>
     <td>{{created_at}}</td>
+    <td>
+        <label class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="activation" data-idx="{{idx}}" value="Y" {{checked}}>
+            <span class="form-check-label"></span>
+        </label>
+    </td>
     <td>
         <a href="/manager/alarm_form/{{idx}}/edit">수정</a>
     </td>

@@ -27,6 +27,12 @@ class Alarm {
     public $created_at;
 
 
+    public static function UpdateActiveValue($idx, $value) {
+        return (new Database('alarm'))->execute(
+            "update alarm set `activation`= '".$value."' where `idx` = '".$idx."'"
+        );
+    }
+
     public function created() {
         $this->created_at = date('Y-m-d H:i:s');
 

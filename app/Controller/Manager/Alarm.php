@@ -11,6 +11,42 @@ use \App\Utils\View;
 
 class Alarm extends Page {
 
+    public static function setActiveChange($request) {
+        $postVars = $request->getPostVars();
+        $active = $postVars['active'] == 'true' ? 'Y' : 'N';
+
+        EntityAlarm::UpdateActiveValue($postVars['idx'], $active);
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public static function getBoardType($request) {
+        $postVars = $request->getPostVars();
+
+        $device_obj = EntityDevice::getDevicesByIdx($postVars['device_idx']);
+        $board_array =  Common::getBoardTypeNameArray($device_obj->board_type);
+
+
+        $arr = array();
+        if ($board_array) {
+            $success = true;
+            foreach ($board_array as $k => $v) {
+                $arr['field'][] = $v['field'];
+                $arr['name'][] = $v['name'];
+            }
+        } else {
+            $success = false;
+        }
+
+        return [
+            'success' => $success,
+            'value'=>$arr['field'],
+            'text' => $arr['name'],
+        ];
+
+    }
 
     public static function getAlarmList($user_idx) {
 
@@ -22,10 +58,12 @@ class Alarm extends Page {
             if ($v_1['idx']) {
                 $result_1 = EntityAlarm::getAlarmByDeviceIdx($v_1['idx']);
                 while ($obj_1 = $result_1->fetchObject(EntityAlarm::class)) {
+                    $device_obj = EntityDevice::getDevicesByIdx($obj_1->device_idx);
                     $array[$_i]['idx'] = $obj_1->idx;
-                    $array[$_i]['address'] = $obj_1->address;
-                    $array[$_i]['board_type'] = $obj_1->board_type;
+                    $array[$_i]['device_name'] = $device_obj->device_name;
                     $array[$_i]['board_type_name'] = $obj_1->board_type_name;
+
+
                     $array[$_i]['min'] = $obj_1->min;
                     $array[$_i]['max'] = $obj_1->max;
                     $array[$_i]['activation'] = $obj_1->activation;
@@ -49,11 +87,14 @@ class Alarm extends Page {
 
         foreach ($array as $k => $v) {
             $item .= View::render('manager/modules/alarm/alarm_list_item', [
-                'idx' => $v['idx'],
-                'device' => $v['address']."-".$v['board_type']."-".$v['board_type'],
+                'idx'   => $v['idx'],
+                'number' => $k+1,
+                'device_name' => $v['device_name'],
                 'field' => $v['board_type_name'],
                 'MinAtMax' => $v['min']."~".$v['max'],
                 'member' => $v['member'],
+                'activation' => $v['activation'],
+                'checked'       => $v['activation'] == 'Y'? 'checked' : '' ,
                 'created_at' => $v['create'],
             ]);
         }
@@ -84,7 +125,7 @@ class Alarm extends Page {
                 foreach ($member_devices as $k => $v) {
                     $option .= View::render('manager/modules/dashboard/widget_add_form_options', [
                         'value' => $v['idx'],
-                        'text'  => $v['address']."-".$v['board_type']."-".$v['board_number'],
+                        'text'  => $v['device_name'],
                         'selected' => ($v['idx'] == $device) ? 'selected' : '',
                     ]);
                 }
@@ -109,6 +150,13 @@ class Alarm extends Page {
         return $option;
     }
 
+    /**
+     * TODO : 여러 사용자에게 발송 하기위해서 만들었음. 추후 여러 사용자를 선택할 수 있도록 불러옴.
+     *
+     * @param $user_idx
+     * @param $alarm_idx
+     * @return string
+     */
     private static function getMemberGroup($user_idx, $alarm_idx = null) {
         $alarm_member_array = array();
 
@@ -173,7 +221,7 @@ class Alarm extends Page {
             'board_options' => self::getMemberBoardType($obj, $board),
             'min'           => $objAlarm->min ?? '',
             'max'           => $objAlarm->max ?? '',
-            'target_user'   => self::getMemberGroup($_userInfo->idx, $idx),
+            'target_user'   => $_userInfo->idx,
             'checked'       => $activation == 'Y'? 'checked' : '' ,
             'action'        => $idx == '' ? '/manager/alarm_form_create' : '/manager/alarm_form/'.$idx.'/edit',
         ]);
@@ -185,27 +233,24 @@ class Alarm extends Page {
         $postVars = $request->getPostVars();
 
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
-        $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
 
         $obj_1 = new EntityAlarm;
         $obj_1->device_idx = $device_info->idx;
-        $obj_1->address = $device_info->address;
-        $obj_1->board_type = $device_info->board_type;
-        $obj_1->board_number = $device_info->board_number;
+
+        $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
         $obj_1->board_type_field = $board_type['field'];
         $obj_1->board_type_name = $board_type['name'];
+
         $obj_1->min = $postVars['min'];
         $obj_1->max = $postVars['max'];
         $obj_1->activation = empty($postVars['activation']) ? 'N' : $postVars['activation'];
         $obj_1->created();
 
-        if (!empty($postVars['target_user'])) {
-            foreach ($postVars['target_user'] as $k => $v) {
-                $obj_2 = new EntityAlarmMember;
-                $obj_2->alarm_idx = $obj_1->idx;
-                $obj_2->member_idx = $v;
-                $obj_2->created();
-            }
+        if ($postVars['target_user']) {
+            $obj_2 = new EntityAlarmMember;
+            $obj_2->alarm_idx = $obj_1->idx;
+            $obj_2->member_idx = $postVars['target_user'];
+            $obj_2->created();
         }
 
         $request->getRouter()->redirect('/manager/alarm');
@@ -215,30 +260,18 @@ class Alarm extends Page {
         $obj = EntityAlarm::getAlarmByIdx($idx);
         $postVars = $request->getPostVars();
 
-        EntityAlarmMember::deleted($idx);
-
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
-        $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
 
         $obj->device_idx = $device_info->idx ?? $obj->device_idx;
-        $obj->address = $device_info->address ?? $obj->address;
-        $obj->board_type = $device_info->board_type ?? $obj->board_type;
-        $obj->board_number = $device_info->board_number ?? $obj->board_number;
-        $obj->board_type_field = $board_type['field'] ?? $obj->board_type_field;
-        $obj->board_type_name = $board_type['name'] ?? $obj->board_type_name;
+
+        $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
+        $obj->board_type_field = $board_type['field'] ?? $obj->board_type;
+        $obj->board_type_name = $board_type['name'] ?? $obj->board_number;
+
         $obj->min = $postVars['min'] ?? $obj->min;
         $obj->max = $postVars['max'] ?? $obj->max;
         $obj->activation = empty($postVars['activation']) ? 'N': $postVars['activation'];
         $obj->updated();
-
-        if (!empty($postVars['target_user'])) {
-            foreach ($postVars['target_user'] as $k => $v) {
-                $obj_2 = new EntityAlarmMember;
-                $obj_2->alarm_idx = $idx;
-                $obj_2->member_idx = $v;
-                $obj_2->created();
-            }
-        }
 
         $request->getRouter()->redirect('/manager/alarm');
     }
