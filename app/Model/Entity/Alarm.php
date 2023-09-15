@@ -6,6 +6,8 @@ use \WilliamCosta\DatabaseManager\Database;
 
 class Alarm {
     public $idx;
+    public $member_idx;
+
     public $device_idx;
 
     public $address;
@@ -37,6 +39,7 @@ class Alarm {
         $this->created_at = date('Y-m-d H:i:s');
 
         $this->idx = (new Database('alarm'))->insert([
+            'member_idx' => $this->member_idx,
             'device_idx' => $this->device_idx,
             'address' => $this->address,
             'board_type' => $this->board_type,
@@ -54,6 +57,7 @@ class Alarm {
 
     public function updated() {
         $this->idx = (new Database('alarm'))->update('idx = '.$this->idx,[
+            'member_idx' => $this->member_idx,
             'device_idx' => $this->device_idx,
             'address' => $this->address,
             'board_type' => $this->board_type,

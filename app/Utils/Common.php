@@ -21,14 +21,14 @@ class Common{
      public static function print_r2($vars) {
         echo "<pre>";
         print_r($vars);
-        echo "<pre>";
+        echo "</pre>";
         exit;
     }
 
     public static function var_dump2($vars) {
         echo "<pre>";
         var_dump($vars);
-        echo "<pre>";
+        echo "</pre>";
         exit;
     }
 

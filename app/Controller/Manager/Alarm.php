@@ -232,9 +232,13 @@ class Alarm extends Page {
     public static function Alarm_Create($request) {
         $postVars = $request->getPostVars();
 
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
 
         $obj_1 = new EntityAlarm;
+        $obj_1->member_idx = $_userInfo->idx;
         $obj_1->device_idx = $device_info->idx;
 
         $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
@@ -261,7 +265,7 @@ class Alarm extends Page {
         $postVars = $request->getPostVars();
 
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
-
+        $obj->member_idx = $obj->member_idx;
         $obj->device_idx = $device_info->idx ?? $obj->device_idx;
 
         $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
