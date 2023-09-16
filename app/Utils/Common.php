@@ -7,7 +7,10 @@ use App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 use App\Model\Entity\Member as EntityMmeber;
 use App\Model\Entity\Widget as EntityWidget;
 use App\Model\Entity\BoardTypeSymbol as EntityBoardTypeSymbol;
-use Exception;
+use App\Model\Entity\PushSendLog as EntityPushSendLog;
+use DateInterval;
+use DatePeriod;
+use DateTime;
 
 class Common{
 
@@ -120,7 +123,14 @@ class Common{
         return $dates;
     }
 
+    public static function date_diff($startDate, $lastDate, $format='days') {
+        $startDate = new DateTime($startDate);
+        $lastDate = new DateTime($lastDate);
 
+        $date_diff = date_diff($startDate, $lastDate);
+
+        return $date_diff->$format;
+    }
 
     public static function error_msg($msg) {
         echo "<script language='javascript'>alert('$msg');history.back();</script>";
@@ -158,8 +168,6 @@ class Common{
 
     public static function findSymbol($board_type_name) {
         $symbols_array = self::getBoardTypeSymbol();
-
-
 
         $array = array_filter(  $symbols_array, function($v, $k) use ($board_type_name) {
                     return preg_match('/'.$v['name'].'/i', $board_type_name);
@@ -228,5 +236,60 @@ class Common{
         }
 
         return $array;
+    }
+
+    public static function sendPush($push_title, $push_content, $individual, $link_url = '') {
+        $push_target = array('');
+        $individual_arr = array();
+
+        $individual_arr[] = $individual;
+
+        $push_title_arr['en'] = $push_title;
+        $push_content_arr['en'] = $push_content;
+        $data['custom_url'] = $link_url;
+
+        $url = "https://onesignal.com/api/v1/notifications";
+        $body = array(
+            "app_id" => ONESIGNAL_APP,
+            "included_segments" => $push_target,
+            "include_player_ids" => $individual_arr,
+            "headings" => $push_title_arr,
+            "contents" => $push_content_arr,
+            "data" => $data,
+            "small_icon" => "icon_48",
+            "big_picture" => "",
+            "ios_attachments" => "",
+            "ios_badgeType" => "Increase",
+            "ios_badgeCount" => "1"
+        ); # type1
+        $body = json_encode($body);
+
+        $ch = curl_init();
+        curl_setopt_array($ch, array(
+            CURLOPT_URL			    => $url, //URL 지정하기
+            CURLOPT_POST			=> true, //true시 post 전송
+            CURLOPT_RETURNTRANSFER	=> true, //요청 결과를 문자열로 반환
+            CURLOPT_HTTPHEADER		=> array(// header data
+                "Content-Type:application/json",
+                "Authorization: Basic ".ONESIGNAL_API_KEY
+            ),
+            CURLOPT_SSL_VERIFYPEER	=> 0,    //원격 서버의 인증서가 유효한지 검사 안함
+            CURLOPT_POSTFIELDS		=> $body //POST data
+        ));
+
+        $response = curl_exec($ch);
+        $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+
+        $obj = new EntityPushSendLog;
+        $obj->push_title = $push_title;
+        $obj->push_content = $push_content;
+        $obj->individual = $individual;
+        $obj->link_url = $link_url;
+        $obj->status_code = $status_code;
+        $obj->created();
+
+
+        return $status_code;
     }
 }

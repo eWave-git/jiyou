@@ -18,6 +18,8 @@ Database::config(
 );
 
 define('URL', getenv('URL'));
+define('ONESIGNAL_APP', getenv('ONESIGNAL_APP'));
+define('ONESIGNAL_API_KEY', getenv('ONESIGNAL_API_KEY'));
 
 Common::init();
 
