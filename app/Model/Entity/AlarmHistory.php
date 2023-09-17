@@ -21,6 +21,9 @@ class AlarmHistory {
     public $raw_data_created_at;
     public $created_at;
 
+    public static function getAlarmHistoryByMemberIdx($idx) {
+        return self::getAlarmHistory('member_idx ='.$idx);
+    }
 
     public function created() {
         $this->created_at = date('Y-m-d H:i:s');

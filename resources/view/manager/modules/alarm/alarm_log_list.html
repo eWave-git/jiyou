@@ -33,34 +33,29 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">설정된 알람</h3>
+                        <h3 class="card-title">발생한 알람</h3>
                     </div>
                     <div class="table-responsive" >
                         <table id="farm_list" class="table table-vcenter card-table">
                             <colgroup>
                                 <col width="5%">
+                                <col width="20%">
+                                <col width="12%">
                                 <col width="">
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="19%">
-                                <col width="5%">
-                                <col width="10%">
-                                <col width="10%">
+                                <col width="18%">
+
                             </colgroup>
                             <thead>
                             <tr>
                                 <th>순서</th>
                                 <th>UPA 이름</th>
                                 <th>데이터 이름</th>
-                                <th>설정범위</th>
-                                <th>등록 일시</th>
-                                <th>활성화</th>
-                                <th></th>
-                                <th></th>
+                                <th>발생내용</th>
+                                <th>발생시점</th>
                             </tr>
                             </thead>
                             <tbody>
-                                {{alarm_list_item}}
+                            {{alarm_log_list_item}}
                             </tbody>
                         </table>
                     </div>

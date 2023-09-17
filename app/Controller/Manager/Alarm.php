@@ -6,6 +6,7 @@ use \App\Model\Entity\Device as EntityDevice;
 use \App\Model\Entity\Member as EntityMmeber;
 use \App\Model\Entity\Alarm as EntityAlarm;
 use \App\Model\Entity\AlarmMember as EntityAlarmMember;
+use \App\Model\Entity\AlarmHistory as EntityAlarmHistory;
 use \app\Utils\Common;
 use \App\Utils\View;
 
@@ -99,8 +100,6 @@ class Alarm extends Page {
             ]);
         }
 
-
-
         return $item;
     }
 
@@ -110,7 +109,7 @@ class Alarm extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        $content = View::render('manager/modules/alarm/index', [
+        $content = View::render('manager/modules/alarm/alarm_list', [
             'alarm_list_item' => self::getAlarmList($_userInfo->idx),
         ]);
 
@@ -257,7 +256,7 @@ class Alarm extends Page {
             $obj_2->created();
         }
 
-        $request->getRouter()->redirect('/manager/alarm');
+        $request->getRouter()->redirect('/manager/alarm_list');
     }
 
     public static function Alarm_Edit($request, $idx) {
@@ -277,8 +276,40 @@ class Alarm extends Page {
         $obj->activation = empty($postVars['activation']) ? 'N': $postVars['activation'];
         $obj->updated();
 
-        $request->getRouter()->redirect('/manager/alarm');
+        $request->getRouter()->redirect('/manager/alarm_list');
     }
 
+    public static function getAlarmLogList($user_idx) {
+        $alarm_log = EntityAlarmHistory::getAlarmHistoryByMemberIdx($user_idx);
+
+        $item = "";
+        $k = 0;
+        while ($obj = $alarm_log->fetchObject(EntityAlarmHistory::class)) {
+
+            $device_obj = EntityDevice::getDevicesByIdx($obj->device_idx);
+
+            $item .= View::render('manager/modules/alarm/alarm_log_list_item', [
+                'number' => $k+1,
+                'device_name' => $device_obj->device_name,
+                'board_type_name' => $obj->board_type_name,
+                'alarm_contents' => $obj->alarm_contents,
+                'created_at' => $obj->created_at,
+            ]);
+
+        }
+        return $item;
+    }
+
+    public static function AlarmLogList($request) {
+
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $content = View::render('manager/modules/alarm/alarm_log_list', [
+            'alarm_log_list_item' => self::getAlarmLogList($_userInfo->idx),
+        ]);
+
+        return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
+    }
 
 }

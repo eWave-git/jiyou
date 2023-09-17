@@ -3,7 +3,7 @@
 use \App\Http\Response;
 use \App\Controller\Manager;
 
-$obRouter->get('/manager/alarm',[
+$obRouter->get('/manager/alarm_list',[
     'middlewares' => [
         'required-manager-login'
     ],
@@ -45,6 +45,15 @@ $obRouter->post('/manager/alarm_form/{idx}/edit',[
     ],
     function($request, $idx) {
         return new Response(200, Manager\Alarm::Alarm_Edit($request, $idx));
+    }
+]);
+
+$obRouter->get('/manager/alarm_log_list',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::AlarmLogList($request));
     }
 ]);
 

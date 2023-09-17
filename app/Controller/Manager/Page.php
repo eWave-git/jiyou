@@ -39,7 +39,10 @@ class Page {
         [
             'label' => 'alarm',
             'title' => '알람',
-            'link'  => URL."/manager/alarm",
+            'submenu'=>[
+                ['label' => 'alarm', 'title' => '설정된 알람', 'link' => URL.'/manager/alarm_list'],
+                ['label' => 'alarm_log', 'title' => '발생한 알람', 'link' => URL.'/manager/alarm_log_list'],
+            ],
         ],
         [
             'label' => 'management',
