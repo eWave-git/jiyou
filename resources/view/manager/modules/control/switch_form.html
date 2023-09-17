@@ -1,0 +1,68 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    스위치 제어
+                </h2>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <form class="card" method="post" action="{{action}}" >
+                    <div class="card-header">
+                        <h3 class="card-title">제어 등록</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">제어 이름</label>
+                            <div class="col">
+                                <input type="text" id="name" name="name" class="form-control" placeholder="" value="" >
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">장치</label>
+                            <div class="col">
+                                <select class="form-select" name="device" id="control_device">
+                                    {{device_options}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">제어타입</label>
+                            <div class="col">
+                                <select class="form-select" name="control_type">
+                                    <option value="switch">스위치 제어</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">제어장치</label>
+                            <div class="col">
+                                <select class="form-select" name="relay" id="relay">
+                                    <option value="relay1">relay1</option>
+                                    <option value="relay2">relay2</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="/manager/control/switch"><button type="button" class="btn btn-secondary">목록</button></a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -44,6 +44,8 @@ include __DIR__.'/manager/management.php';
 
 include __DIR__ . '/manager/alarm.php';
 
+include __DIR__ . '/manager/control.php';
+
 include __DIR__.'/manager/all.php';
 
 include __DIR__.'/manager/member.php';

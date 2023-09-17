@@ -1,0 +1,15 @@
+<tr>
+    <td>{{number}}</td>
+    <td>{{name}}</td>
+    <td>{{topic}}</td>
+    <td>{{data1}}</td>
+    <td>
+        <input type="text"  name="temperature_{{idx}}" class="form-control" placeholder="" value="{{data2}}" >
+    </td>
+    <td> <button type="button" name="temperature" data-idx={{idx}} class="btn btn-primary" style="user-select: auto;">저장</button></td>
+    <td>{{created_at}}</td>
+    <td>{{update_at}}</td>
+    <td>
+        <a href="/manager/alarm_form/{{idx}}/delete">삭제</a>
+    </td>
+</tr>

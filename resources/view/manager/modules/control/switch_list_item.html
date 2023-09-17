@@ -1,0 +1,17 @@
+<tr>
+    <td>{{number}}</td>
+    <td>{{name}}</td>
+    <td>{{device_naem}}</td>
+    <td>{{text}}</td>
+    <td>
+        <label class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="relay"  {{checked}} data-field="{{field}}" data-idx={{idx}}>
+            <span class="form-check-label"></span>
+        </label>
+    </td>
+    <td>{{created_at}}</td>
+    <td>{{update_at}}</td>
+    <td>
+        <a href="/manager/alarm_form/{{idx}}/delete">삭제</a>
+    </td>
+</tr>

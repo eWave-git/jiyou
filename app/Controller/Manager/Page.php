@@ -45,9 +45,13 @@ class Page {
             ],
         ],
         [
-            'label' => 'management',
+            'label' => 'control',
             'title' => '제어',
-            'link'  => URL."/manager/managment",
+            'submenu'=>[
+                ['label' => 'control', 'title' => 'Switch 제어', 'link' => URL.'/manager/control/switch'],
+                ['label' => 'control', 'title' => 'Command 제어', 'link' => URL.'/manager/control/command'],
+                ['label' => 'control', 'title' => 'Inverter 제어', 'link' =>"javascript:alert('준비중')"],
+            ],
         ],
         [
             'label' => 'all',

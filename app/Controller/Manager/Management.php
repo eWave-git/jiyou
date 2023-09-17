@@ -257,7 +257,7 @@ class Management extends Page {
 
         if ($postVars['val'] && $postVars['val'] > 0) {
             EntityControlData::temperatureUpdate($postVars['control_idx'], $postVars['val']);
-            $reslut = EntityControlData::getControlDataByIDX($postVars['control_idx']);
+            $reslut = EntityControlData::getControlDataByIdx($postVars['control_idx']);
             Common::temperature_commend($reslut->address, $reslut->board_type, $reslut->board_number, $postVars['val']);
 
             $success = true;

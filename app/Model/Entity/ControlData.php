@@ -7,6 +7,8 @@ use \WilliamCosta\DatabaseManager\Database;
 class ControlData {
     public $idx;
 
+    public $member_idx;
+
     public $device_idx;
 
     public $address;
@@ -17,6 +19,8 @@ class ControlData {
 
     public $name;
 
+    public $control_type;
+
     public $type;
 
     public $relay1;
@@ -25,17 +29,20 @@ class ControlData {
 
     public $temperature;
 
+    public $update_at;
     public $create_at;
 
     public function created() {
         $this->create_at = date('Y-m-d H:i:s');
 
         $this->idx = (new Database('control_data'))->insert([
+            'member_idx' => $this->member_idx,
             'device_idx' => $this->device_idx,
             'address' => $this->address,
             'board_type' => $this->board_type,
             'board_number' => $this->board_number,
             'name' => $this->name,
+            'control_type' => $this->control_type,
             'type' => $this->type,
             'relay1' => $this->relay1,
             'relay2' => $this->relay2,
@@ -49,10 +56,12 @@ class ControlData {
 
     public function updated() {
         $this->idx = (new Database('control_data'))->update('idx = '.$this->idx,[
+            'member_idx' => $this->member_idx,
             'device_idx' => $this->device_idx,
             'address' => $this->address,
             'board_type' => $this->board_type,
             'board_number' => $this->board_number,
+            'control_type' => $this->control_type,
             'name' => $this->name,
             'type' => $this->type,
             'relay1' => $this->relay1,
@@ -63,13 +72,13 @@ class ControlData {
 
     public static function relayUpdate($idx, $field, $val) {
         return (new Database('control_data'))->execute(
-            "update control_data set ".$field."= ".$val." where idx = ".$idx
+            "update control_data set ".$field."= ".$val.", update_at=now()  where idx = ".$idx
         );
     }
 
     public static function temperatureUpdate($idx, $val) {
         return (new Database('control_data'))->execute(
-            "update control_data set temperature = ".$val." where idx = ".$idx
+            "update control_data set temperature = ".$val.", update_at=now() where idx = ".$idx
         );
     }
 
@@ -77,7 +86,12 @@ class ControlData {
         return self::getControlData('device_idx ='.$idx);
     }
 
-    public static function getControlDataByIDX($idx) {
+    public static function getControlDataByMemberIdx($idx) {
+        return self::getControlData('member_idx ='.$idx);
+    }
+
+
+    public static function getControlDataByIdx($idx) {
         return self::getControlData('idx ='.$idx)->fetchObject(self::class);
     }
 
