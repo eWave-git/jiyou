@@ -139,6 +139,11 @@ class Control extends Page {
         $obj = new EntityControlData;
         $obj->member_idx = $_userInfo->idx;
         $obj->device_idx = $device_info->idx;
+
+        $obj->address = $device_info->address;
+        $obj->board_type = $device_info->board_type;
+        $obj->board_number = $device_info->board_number;
+
         $obj->name = $postVars['name'];
         $obj->control_type = $postVars['control_type'];
         $obj->type = $relay;
