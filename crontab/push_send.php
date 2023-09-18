@@ -7,7 +7,7 @@ use \App\Model\Entity\Device as EntityDevice;
 
 
 $activation =  (new Database('alarm'))->execute(
-    "select * 
+    "select * ,a.idx as alarm_idx
             from alarm as a
                      left join alarm_member am on a.idx = am.alarm_idx
                      left join member as m on am.member_idx = m.idx
@@ -40,7 +40,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_field'] = $activation_obj->board_type_field;
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
-            $array[$key]['alarm_idx'] = $activation_obj->idx;
+            $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
             $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
@@ -62,7 +62,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_field'] = $activation_obj->board_type_field;
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
-            $array[$key]['alarm_idx'] = $activation_obj->idx;
+            $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
             $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
@@ -83,7 +83,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_field'] = $activation_obj->board_type_field;
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
-            $array[$key]['alarm_idx'] = $activation_obj->idx;
+            $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
             $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 알람 발생";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
