@@ -37,12 +37,39 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">알람설정범위</label>
+                            <div class="col">
+                                <select class="form-select" name="alarm_range" id="alarm_range">
+                                    <option value="between">적정범위</option>
+                                    <option value="up">이상</option>
+                                    <option value="down">이하</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row" id="between_row">
                             <label class="col-2 col-form-label required">정상범위</label>
                             <div class="col">
                                 <div class="row">
                                     <input type="text" id="min" name="min" class="form-control" placeholder="" value="{{min}}" style="width: 150px;">&nbsp;~&nbsp;
                                     <input type="text" id="max" name="max" class="form-control" placeholder="" value="{{max}}" style="width: 150px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row" id="up_row" style="display: none;">
+                            <label class="col-2 col-form-label required">이상</label>
+                            <div class="col">
+                                <div class="row">
+                                    <input type="text" id="max" name="max" class="form-control" placeholder="" value="{{max}}" style="width: 150px;"> <div class="col col-form-label"> 이상</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row" id="down_row" style="display: none;">
+                            <label class="col-2 col-form-label required">이하</label>
+                            <div class="col">
+                                <div class="row">
+                                    <input type="text" id="min" name="min" class="form-control" placeholder="" value="{{min}}" style="width: 150px;"> <div class="col col-form-label"> 이하</div>
                                 </div>
                             </div>
                         </div>
@@ -80,6 +107,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     $(function () {
+        $("#alarm_range").change(function () {
+
+            if ($(this).val() =="between") {
+                $("#between_row").show()
+                $("#up_row").hide()
+                $("#down_row").hide()
+            } else if ($(this).val() =="up") {
+                $("#between_row").hide()
+                $("#up_row").show()
+                $("#down_row").hide()
+            } else if ($(this).val() =="down") {
+                $("#between_row").hide()
+                $("#up_row").hide()
+                $("#down_row").show()
+            }
+
+        });
+
+
         $("#device").change(function () {
             // alert($(this).val());
             $("#board").empty()

@@ -29,27 +29,73 @@ while ($activation_obj = $activation->fetchObject()) {
                   and board_number='{$device_info->board_number}'
                 order by idx desc limit 0, 1 ")->fetchObject();
 
+    if ($activation_obj->alarm_range == "between") {
+        if ($activation_obj->min > $raw_data_info->{$activation_obj->board_type_field} || $activation_obj->max < $raw_data_info->{$activation_obj->board_type_field}  ) {
+            $_txt = "";
+            $array[$key]['member_idx'] = $activation_obj->member_idx;
+            $array[$key]['member_name'] = $activation_obj->member_name;
+            $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
 
-    if ($activation_obj->min > $raw_data_info->{$activation_obj->board_type_field} || $activation_obj->max < $raw_data_info->{$activation_obj->board_type_field}  ) {
-        $_txt = "";
-        $array[$key]['member_idx'] = $activation_obj->member_idx;
-        $array[$key]['member_name'] = $activation_obj->member_name;
-        $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
+            $array[$key]['device_idx'] =  $activation_obj->device_idx;
+            $array[$key]['board_type_field'] = $activation_obj->board_type_field;
+            $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
-        $array[$key]['device_idx'] =  $activation_obj->device_idx;
-        $array[$key]['board_type_field'] = $activation_obj->board_type_field;
-        $array[$key]['board_type_name'] = $activation_obj->board_type_name;
+            $array[$key]['alarm_idx'] = $activation_obj->min;
+            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생";
+            $array[$key]['alarm_contents'] = $_txt;
+            $array[$key]['min'] = $activation_obj->min;
+            $array[$key]['max'] = $activation_obj->max;
 
-        $array[$key]['alarm_idx'] = $activation_obj->min;
-        $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생";
-        $array[$key]['alarm_contents'] = $_txt;
-        $array[$key]['min'] = $activation_obj->min;
-        $array[$key]['max'] = $activation_obj->max;
+            $array[$key]['raw_data_idx'] = $raw_data_info->idx;
+            $array[$key]['raw_data_value'] = $raw_data_info->{$activation_obj->board_type_field};
+            $array[$key]['raw_data_created_at'] = $raw_data_info->created_at;
+        }
 
-        $array[$key]['raw_data_idx'] = $raw_data_info->idx;
-        $array[$key]['raw_data_value'] = $raw_data_info->{$activation_obj->board_type_field};
-        $array[$key]['raw_data_created_at'] = $raw_data_info->created_at;
+    } else if ($activation_obj->alarm_range == "up") {
+        if ($activation_obj->max < $raw_data_info->{$activation_obj->board_type_field} ) {
+            $_txt = "";
+            $array[$key]['member_idx'] = $activation_obj->member_idx;
+            $array[$key]['member_name'] = $activation_obj->member_name;
+            $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
+
+            $array[$key]['device_idx'] =  $activation_obj->device_idx;
+            $array[$key]['board_type_field'] = $activation_obj->board_type_field;
+            $array[$key]['board_type_name'] = $activation_obj->board_type_name;
+
+            $array[$key]['alarm_idx'] = $activation_obj->min;
+            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생";
+            $array[$key]['alarm_contents'] = $_txt;
+            $array[$key]['min'] = $activation_obj->min;
+            $array[$key]['max'] = $activation_obj->max;
+
+            $array[$key]['raw_data_idx'] = $raw_data_info->idx;
+            $array[$key]['raw_data_value'] = $raw_data_info->{$activation_obj->board_type_field};
+            $array[$key]['raw_data_created_at'] = $raw_data_info->created_at;
+        }
+    } else if ($activation_obj->alarm_range == "down") {
+        if ($activation_obj->min > $raw_data_info->{$activation_obj->board_type_field}) {
+            $_txt = "";
+            $array[$key]['member_idx'] = $activation_obj->member_idx;
+            $array[$key]['member_name'] = $activation_obj->member_name;
+            $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
+
+            $array[$key]['device_idx'] =  $activation_obj->device_idx;
+            $array[$key]['board_type_field'] = $activation_obj->board_type_field;
+            $array[$key]['board_type_name'] = $activation_obj->board_type_name;
+
+            $array[$key]['alarm_idx'] = $activation_obj->min;
+            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 알람 발생";
+            $array[$key]['alarm_contents'] = $_txt;
+            $array[$key]['min'] = $activation_obj->min;
+            $array[$key]['max'] = $activation_obj->max;
+
+            $array[$key]['raw_data_idx'] = $raw_data_info->idx;
+            $array[$key]['raw_data_value'] = $raw_data_info->{$activation_obj->board_type_field};
+            $array[$key]['raw_data_created_at'] = $raw_data_info->created_at;
+        }
     }
+
+
 
     $key++;
 }

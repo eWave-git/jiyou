@@ -244,6 +244,7 @@ class Alarm extends Page {
         $obj_1->board_type_field = $board_type['field'];
         $obj_1->board_type_name = $board_type['name'];
 
+        $obj_1->alarm_range = $postVars['alarm_range'];
         $obj_1->min = $postVars['min'];
         $obj_1->max = $postVars['max'];
         $obj_1->activation = empty($postVars['activation']) ? 'N' : $postVars['activation'];

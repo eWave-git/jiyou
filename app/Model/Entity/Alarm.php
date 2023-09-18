@@ -10,15 +10,13 @@ class Alarm {
 
     public $device_idx;
 
-    public $address;
 
-    public $board_type;
-
-    public $board_number;
 
     public $board_type_field;
 
     public $board_type_name;
+
+    public $alarm_range;
 
     public $min;
 
@@ -41,9 +39,8 @@ class Alarm {
         $this->idx = (new Database('alarm'))->insert([
             'member_idx' => $this->member_idx,
             'device_idx' => $this->device_idx,
-            'address' => $this->address,
-            'board_type' => $this->board_type,
-            'board_number' => $this->board_number,
+
+            'alarm_range' => $this->alarm_range,
             'board_type_field' => $this->board_type_field,
             'board_type_name' => $this->board_type_name,
             'min' => $this->min,
@@ -59,9 +56,8 @@ class Alarm {
         $this->idx = (new Database('alarm'))->update('idx = '.$this->idx,[
             'member_idx' => $this->member_idx,
             'device_idx' => $this->device_idx,
-            'address' => $this->address,
-            'board_type' => $this->board_type,
-            'board_number' => $this->board_number,
+
+            'alarm_range' => $this->alarm_rangem,
             'board_type_field' => $this->board_type_field,
             'board_type_name' => $this->board_type_name,
             'min' => $this->min,
