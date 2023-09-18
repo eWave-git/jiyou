@@ -63,6 +63,7 @@ class Alarm extends Page {
                     $array[$_i]['idx'] = $obj_1->idx;
                     $array[$_i]['device_name'] = $device_obj->device_name;
                     $array[$_i]['board_type_name'] = $obj_1->board_type_name;
+                    $array[$_i]['alarm_range'] = $obj_1->alarm_range;
 
 
                     $array[$_i]['min'] = $obj_1->min;
@@ -86,18 +87,30 @@ class Alarm extends Page {
 
         $item = "";
 
+        $total = count($array);
         foreach ($array as $k => $v) {
+
+            if ($v['alarm_range'] == "between") {
+                $MinAtMax = $v['min']." 이상 ~ ".$v['max']." 이하";
+            } else if ($v['alarm_range'] == "up") {
+                $MinAtMax = $v['max']." 이상";
+            } else if ($v['alarm_range'] == "down") {
+                $MinAtMax = $v['min']." 이하";
+            }
+
+
             $item .= View::render('manager/modules/alarm/alarm_list_item', [
                 'idx'   => $v['idx'],
-                'number' => $k+1,
+                'number' => $total,
                 'device_name' => $v['device_name'],
                 'field' => $v['board_type_name'],
-                'MinAtMax' => $v['min']."~".$v['max'],
+                'MinAtMax' => $MinAtMax,
                 'member' => $v['member'],
                 'activation' => $v['activation'],
                 'checked'       => $v['activation'] == 'Y'? 'checked' : '' ,
                 'created_at' => $v['create'],
             ]);
+            $total--;
         }
 
         return $item;
@@ -236,6 +249,17 @@ class Alarm extends Page {
 
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
 
+        if ($postVars['alarm_range'] == "between") {
+            $min = $postVars['between_min'];
+            $max = $postVars['between_max'];
+        } else if ($postVars['alarm_range'] == "up") {
+            $min = 0;
+            $max = $postVars['up_max'];
+        } else if ($postVars['alarm_range'] == "down") {
+            $min = $postVars['down_min'];
+            $max = 0;
+        }
+
         $obj_1 = new EntityAlarm;
         $obj_1->member_idx = $_userInfo->idx;
         $obj_1->device_idx = $device_info->idx;
@@ -245,8 +269,8 @@ class Alarm extends Page {
         $obj_1->board_type_name = $board_type['name'];
 
         $obj_1->alarm_range = $postVars['alarm_range'];
-        $obj_1->min = $postVars['min'];
-        $obj_1->max = $postVars['max'];
+        $obj_1->min = $min;
+        $obj_1->max = $max;
         $obj_1->activation = empty($postVars['activation']) ? 'N' : $postVars['activation'];
         $obj_1->created();
 
@@ -313,4 +337,9 @@ class Alarm extends Page {
         return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
     }
 
+    public static function AlarmDelete($request, $idx) {
+        $obj = EntityAlarm::getAlarmByIdx($idx);
+        $obj->deleted();
+        $request->getRouter()->redirect('/manager/alarm_list');
+    }
 }

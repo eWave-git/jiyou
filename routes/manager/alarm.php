@@ -76,3 +76,12 @@ $obRouter->post('/manager/alarm/setActiveChange',[
         return new Response(200, Manager\Alarm::setActiveChange($request), 'application/json');
     }
 ]);
+
+$obRouter->get('/manager/alarm/{idx}/delete',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Alarm::AlarmDelete($request, $idx));
+    }
+]);

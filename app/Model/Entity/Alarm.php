@@ -10,8 +10,6 @@ class Alarm {
 
     public $device_idx;
 
-
-
     public $board_type_field;
 
     public $board_type_name;
@@ -67,7 +65,7 @@ class Alarm {
     }
 
     public static function getAlarmByDeviceIdx($idx) {
-        return self::getAlarm('device_idx ='.$idx);
+        return self::getAlarm('device_idx ='.$idx,'created_at desc');
     }
     public static function getAlarmByIdx($idx) {
         return self::getAlarm('idx ='.$idx)->fetchObject(self::class);
