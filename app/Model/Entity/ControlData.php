@@ -87,7 +87,7 @@ class ControlData {
     }
 
     public static function getControlDataByMemberIdx($idx) {
-        return self::getControlData('member_idx ='.$idx);
+        return self::getControlData('member_idx ='.$idx, 'create_at desc');
     }
 
 

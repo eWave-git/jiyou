@@ -98,7 +98,6 @@ class Alarm extends Page {
                 $MinAtMax = $v['min']." 이하";
             }
 
-
             $item .= View::render('manager/modules/alarm/alarm_list_item', [
                 'idx'   => $v['idx'],
                 'number' => $total,

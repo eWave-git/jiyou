@@ -48,28 +48,47 @@ class Control extends Page {
     public static function getSwitchList($user_idx) {
 
         $member_constrols = EntityControlData::getControlDataByMemberIdx($user_idx);
-        $item = '';
+
         $k = 0;
+        $array = array();
 
         while ($obj = $member_constrols->fetchObject(EntityControlData::class)) {
             if ($obj->control_type == 'switch') {
                 $device_obj = EntityDevice::getDevicesByIdx($obj->device_idx);
 
-                $item .= View::render('manager/modules/control/switch_list_item', [
-                    'idx' => $obj->idx,
-                    'number' => $k+1,
-                    'name' => $obj->name,
-                    'device_naem' => $device_obj->device_name,
-                    'text'  => $obj->{$obj->type} == 1 ? "ON" : "OFF",
-                    'checked' => $obj->{$obj->type} == 1 ? "checked" : "",
-                    'field' => $obj->type,
-                    'update_at' => $obj->update_at,
-                    'created_at' => $obj->create_at,
-                ]);
+                $array[$k]['idx'] = $obj->idx;
+
+                $array[$k]['name'] = $obj->name;
+                $array[$k]['device_naem'] = $device_obj->device_name;
+                $array[$k]['text'] = $obj->{$obj->type} == 1 ? "ON" : "OFF";
+                $array[$k]['checked'] = $obj->{$obj->type} == 1 ? "checked" : "";
+                $array[$k]['field'] = $obj->type;
+                $array[$k]['update_at'] = $obj->update_at;
+                $array[$k]['create_at'] = $obj->create_at;
+
+
 
                 $k++;
             }
         }
+
+        $item = '';
+        $total = count($array);
+        foreach ($array as $k => $v) {
+                $item .= View::render('manager/modules/control/switch_list_item', [
+                    'idx' => $v['idx'],
+                    'number' => $total,
+                    'name' => $v['name'],
+                    'device_naem' => $v['device_naem'],
+                    'text'  => $v['text'],
+                    'checked' => $v['checked'],
+                    'field' => $v['field'],
+                    'update_at' => $v['update_at'],
+                    'create_at' => $v['create_at'],
+                ]);
+                $total--;
+        }
+
 
         return $item;
     }
@@ -156,7 +175,9 @@ class Control extends Page {
 
     public static function getCommandList($user_idx) {
         $member_constrols = EntityControlData::getControlDataByMemberIdx($user_idx);
-        $item = '';
+
+
+        $array = array();
         $k = 0;
 
         while ($obj = $member_constrols->fetchObject(EntityControlData::class)) {
@@ -166,20 +187,35 @@ class Control extends Page {
                 $result = EntityRawData::LastLimitOne($device_obj->address, $device_obj->board_type, $device_obj->board_number);
                 $obj_temperature = $result->fetchObject(EntityRawData::class);
 
-                $item .= View::render('manager/modules/control/command_list_item', [
-                    'idx' => $obj->idx,
-                    'number' => $k+1,
-                    'name' => $obj->name,
-                    'topic' => $device_obj->address."/".$device_obj->board_type."/".$device_obj->board_number,
-                    'data1'  => $obj_temperature->data1,
-                    'data2' => $obj_temperature->data2,
-                    'field' => $obj->type,
-                    'update_at' => $obj->update_at,
-                    'created_at' => $obj->create_at,
-                ]);
+                $array[$k]['idx'] = $obj->idx;
+                $array[$k]['name'] = $obj->name;
+                $array[$k]['topic'] = $device_obj->address."/".$device_obj->board_type."/".$device_obj->board_number;
+                $array[$k]['data1'] = $obj_temperature->data1;
+                $array[$k]['data2'] = $obj_temperature->data2;
+                $array[$k]['field'] = $obj->type;
+                $array[$k]['update_at'] = $obj->update_at;
+                $array[$k]['create_at'] = $obj->create_at;
 
                 $k++;
             }
+        }
+        $item = '';
+
+        $total = count($array);
+
+        foreach ($array as $k => $v) {
+            $item .= View::render('manager/modules/control/command_list_item', [
+                'idx' => $v['idx'],
+                'number' => $total,
+                'name' => $v['name'],
+                'topic' => $v['topic'],
+                'data1'  => $v['data1'],
+                'data2' => $v['data2'],
+                'field' => $v['field'],
+                'update_at' => $v['update_at'],
+                'create_at' => $v['create_at'],
+            ]);
+            $total--;
         }
 
         return $item;
@@ -249,4 +285,17 @@ class Control extends Page {
         ];
     }
 
+
+    public static function ControlDelete($request, $idx, $mode) {
+
+        $obj = EntityControlData::getControlDataByIdx($idx);
+        $obj->deleted();
+
+        if ($mode == "switch") {
+            $request->getRouter()->redirect('/manager/control/switch');
+        } else if ($mode == "command") {
+            $request->getRouter()->redirect('/manager/control/command');
+        }
+
+    }
 }

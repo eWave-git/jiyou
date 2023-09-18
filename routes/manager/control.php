@@ -77,3 +77,12 @@ $obRouter->post('/manager/get_control_temperature_change',[
         return new Response(200, Manager\Control::getControlTemperatureChange($request), 'application/json');
     }
 ]);
+
+$obRouter->get('/manager/control/{idx}/delete/{mode}',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx, $mode) {
+        return new Response(200, Manager\Control::ControlDelete($request, $idx,$mode));
+    }
+]);
