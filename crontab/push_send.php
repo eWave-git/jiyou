@@ -40,7 +40,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_field'] = $activation_obj->board_type_field;
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
-            $array[$key]['alarm_idx'] = $activation_obj->min;
+            $array[$key]['alarm_idx'] = $activation_obj->idx;
             $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
