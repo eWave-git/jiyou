@@ -2,7 +2,6 @@
 
 namespace App\Controller\Manager;
 
-use \app\Utils\Common;
 use \App\Utils\View;
 use \App\Model\Entity\Member;
 use \App\Session\Manager\Login as SessionManagerLogin;
@@ -23,6 +22,7 @@ class Login extends Page {
         $postVars = $request->getPostVars();
         $member_id    = $postVars['member_id'] ?? '';
         $member_password    = $postVars['member_password'] ?? '';
+        $auto_login    = isset($postVars['auto_login']) ? 'Y': 'N';
 
         $obUser = Member::getManagerMemberById($member_id);
 
@@ -34,12 +34,20 @@ class Login extends Page {
             return  self::getLogin($request, 'password Error');
         }
 
+        if ($auto_login == "Y") {
+            setcookie("cookie_id",$obUser->member_id,(time()+3600*24*30*365*10),"/"); // 십년간 자동로그인 유지
+        }
+
         SessionManagerLogin::login($obUser);
 
         $request->getRouter()->redirect('/manager/dashboard');
     }
 
     public static function setLogout($request) {
+        if (isset($_COOKIE['cookie_id'])) {
+            setcookie('cookie_id', '', time() - 100, '/');
+        }
+
         SessionManagerLogin::logout();
 
         $request->getRouter()->redirect('/manager/login');

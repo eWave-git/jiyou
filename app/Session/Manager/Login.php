@@ -2,6 +2,10 @@
 
 namespace App\Session\Manager;
 
+use App\Model\Entity\Member;
+use App\Session\Manager\Login as SessionManagerLogin;
+use app\Utils\Common;
+
 class Login {
 
     private static function init() {
@@ -26,6 +30,11 @@ class Login {
     public static function isLogged() {
 
         self::init();
+
+        if (isset($_COOKIE['cookie_id']) && !isset(['manager']['user']['id'])) {
+            $obUser = Member::getManagerMemberById($_COOKIE['cookie_id']);
+            SessionManagerLogin::login($obUser);
+        }
 
         return isset($_SESSION['manager']['user']['id']);
     }
