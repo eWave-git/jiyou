@@ -56,19 +56,20 @@ class Control extends Page {
             if ($obj->control_type == 'switch') {
                 $device_obj = EntityDevice::getDevicesByIdx($obj->device_idx);
 
-                $array[$k]['idx'] = $obj->idx;
+                if ($device_obj) {
+                    $array[$k]['idx'] = $obj->idx;
 
-                $array[$k]['name'] = $obj->name;
-                $array[$k]['device_naem'] = $device_obj->device_name;
-                $array[$k]['text'] = $obj->{$obj->type} == 1 ? "ON" : "OFF";
-                $array[$k]['checked'] = $obj->{$obj->type} == 1 ? "checked" : "";
-                $array[$k]['field'] = $obj->type;
-                $array[$k]['update_at'] = $obj->update_at;
-                $array[$k]['create_at'] = $obj->create_at;
+                    $array[$k]['name'] = $obj->name;
+                    $array[$k]['device_name'] = $device_obj->device_name;
+                    $array[$k]['text'] = $obj->{$obj->type} == 1 ? "ON" : "OFF";
+                    $array[$k]['checked'] = $obj->{$obj->type} == 1 ? "checked" : "";
+                    $array[$k]['field'] = $obj->type;
+                    $array[$k]['update_at'] = $obj->update_at;
+                    $array[$k]['create_at'] = $obj->create_at;
 
 
-
-                $k++;
+                    $k++;
+                }
             }
         }
 
@@ -79,7 +80,7 @@ class Control extends Page {
                     'idx' => $v['idx'],
                     'number' => $total,
                     'name' => $v['name'],
-                    'device_naem' => $v['device_naem'],
+                    'device_name' => $v['device_name'],
                     'text'  => $v['text'],
                     'checked' => $v['checked'],
                     'field' => $v['field'],

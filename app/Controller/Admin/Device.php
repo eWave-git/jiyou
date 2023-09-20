@@ -7,6 +7,7 @@ use \App\Model\Entity\Farm as EntityFarm;
 use \App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 
 use \App\Model\Entity\Widget as EntityWidget;
+use \App\Model\Entity\WidgetBoardType as EntityWidgetBoardType;
 
 use App\Model\Entity\FarmAddress as EntityFarmAddress;
 
@@ -71,7 +72,7 @@ class Device extends Page {
     private static function getDevieListItems($request) {
         $items = '';
 
-        $results = EntityDevice::getDevices(null, 'idx DESC', null);
+        $results = EntityDevice::getDevicesJoinWidget();
 
         while ($obDevice = $results->fetchObject(EntityDevice::class)) {
             $items .= View::render('admin/modules/device/device_item', [
@@ -122,11 +123,10 @@ class Device extends Page {
     }
 
     public static function Device_Create($request) {
-        $postVars = $request->getPostVars();
+        $postVars = $request->getPostVars();;
 
         $obj = new EntityDevice();
         $obj->farm_idx = $postVars['farm_idx'];
-        $obj->device_name = $postVars['device_name'];
         $obj->address = $postVars['address'];
         $obj->board_type = $postVars['board_type'];
         $obj->board_number = $postVars['board_number'];
@@ -139,9 +139,25 @@ class Device extends Page {
         $widget_obj->widget_name = $postVars['device_name'];
         $widget_obj->device_idx = $device_idx;
         $widget_obj->address = $postVars['address'];
+        $widget_obj->address = $postVars['address'];
         $widget_obj->board_type = $postVars['board_type'];
         $widget_obj->board_number = $postVars['board_number'];
-        $widget_obj->created();
+        $widget_idx = $widget_obj->created();
+
+
+        $board_type_obj = Common::getBoardTypeNameArray($postVars['board_type']);
+        $widget_board_type_obj = new EntityWidgetBoardType();
+        $widget_board_type_obj->widget_idx = $widget_idx;
+        foreach ($board_type_obj as $k=>$v) {
+            $name = $v['field']."_name";
+            $display = $v['field']."_display";
+            $symbol = $v['field']."_symbol";
+
+            $widget_board_type_obj->{$name} = $v['name'];
+            $widget_board_type_obj->{$display} = 'Y';
+            $widget_board_type_obj->{$symbol} = Common::findSymbol($v['name'])['symbol'] ?? "";
+        }
+        $widget_board_type_obj->created();
 
 
         $request->getRouter()->redirect('/admin/device_list');

@@ -35,7 +35,7 @@ class Member {
     }
 
     public static function getMembersDevice($member_idx) {
-        return (new Database('member'))->execute("select * from member as m left join farm as f on m.idx = f.member_idx left join device as d on f.idx = d.farm_idx where m.member_type='manager' and f.idx is not null and m.idx=".$member_idx."");
+        return (new Database('member'))->execute("select *, d.idx as idx, w.widget_name as device_name from member as m left join farm as f on m.idx = f.member_idx left join device as d on f.idx = d.farm_idx left join widget as w on w.device_idx = d.idx where m.member_type='manager' and f.idx is not null and m.idx=".$member_idx."");
     }
 
     public static function getMembersFarm($member_idx) {

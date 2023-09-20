@@ -25,9 +25,12 @@ class Device {
     }
 
     public static function getDevicesByIdx($idx) {
-        return self::getDevices('idx = '.$idx)->fetchObject(self::class);
+        return (new Database('device'))->execute("select *, w.widget_name as device_name from device as d left join widget as w on d.idx = w.device_idx where d.idx =".$idx."")->fetchObject(self::class);
     }
 
+    public static function getDevicesJoinWidget() {
+        return (new Database('device'))->execute("select *, w.widget_name as device_name from device as d left join widget as w on d.idx = w.device_idx order by d.created_at desc ");
+    }
     public static function getDevices($where = null, $order = null, $limit = null, $fields = '*') {
         return (new Database('device'))->select($where, $order, $limit, $fields);
     }

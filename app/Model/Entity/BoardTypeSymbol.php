@@ -8,7 +8,6 @@ class BoardTypeSymbol {
     public $idx;
     public $name;
     public $symbol;
-    public $standard;
     public $created_at;
 
 
@@ -23,7 +22,6 @@ class BoardTypeSymbol {
         $this->idx = (new Database('board_type_symbol'))->insert([
             'name' => $this->name,
             'symbol' => $this->symbol,
-            'standard' => $this->standard,
             'created_at' => $this->created_at,
         ]);
     }
@@ -32,7 +30,6 @@ class BoardTypeSymbol {
         $this->idx = (new Database('board_type_symbol'))->update('idx ='.$this->idx,[
             'name' => $this->name,
             'symbol' => $this->symbol,
-            'standard' => $this->standard,
         ]);
     }
 
