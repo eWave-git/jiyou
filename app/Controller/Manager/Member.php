@@ -10,35 +10,6 @@ use \App\Utils\View;
 
 class Member extends Page {
 
-
-    public static function getMembersControlDevice($member_idx) {
-        $arr  = array();
-
-        $result = EntityMmeber::getMembersControlDevice($member_idx);
-        $_i = 0;
-        while ($obj = $result->fetchObject(EntityMmeber::class)) {
-            $arr[$_i] = (array) $obj;
-            $arr[$_i]['board_name'] =  BoardTypeRef::getBoardTypeName($obj->board_type);
-            $_i++;
-        }
-
-        return $arr;
-    }
-
-//    public static function getMembersDevice($member_idx) {
-//        $arr  = array();
-//
-//        $result = EntityMmeber::getMembersDevice($member_idx);
-//        $_i = 0;
-//        while ($obj = $result->fetchObject(EntityMmeber::class)) {
-//            $arr[$_i] = (array) $obj;
-//            $arr[$_i]['board_name'] =  BoardTypeRef::getBoardTypeName($obj->board_type);
-//            $_i++;
-//        }
-//
-//        return $arr;
-//    }
-
     private static function getMemberJoinFarm() {
         $options = '';
 

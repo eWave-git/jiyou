@@ -35,8 +35,7 @@
 </div>
 
 
-<div class="modal modal-blur fade" id="modal-widget" tabindex="-1" style="display: none;" aria-hidden="true">
-    <input type="hidden" name="idx" value="">
+<div class="modal modal-blur fade" id="modal-widget" tabindex="-1" style="display: none;" aria-hidden="true" >
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -44,20 +43,43 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">장치 이름</label>
-                    <input type="text" class="form-control" name="widget_name" placeholder="장치 이름">
-                </div>
-            </div>
+                <form name="frm">
+                    <input type="hidden" name="idx" value="">
+                    <div class="mb-3">
+                        <label class="form-label">장치 이름</label>
+                        <input type="text" class="form-control" name="widget_name" placeholder="장치 이름">
+                    </div>
 
-            <div class="modal-footer">
-                <button href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                    Cancel
-                </button>
-                <button name="modal_submit" class="btn btn-primary ms-auto" >
-                    수정
-                </button>
-            </div>
+                    <div class="row">
+                        <table class="table table-vcenter card-table">
+                            <colgroup>
+                                <col width="15%">
+                                <col width="">
+                                <col width="20%">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>사용유무</th>
+                                <th>이름</th>
+                                <th>단위</th>
+                            </tr>
+                            </thead>
+                            <tbody id="dynamicTbody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <button href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button name="modal_submit" class="btn btn-primary ms-auto" >
+                        수정
+                    </button>
+                </div>
+
         </div>
     </div>
 </div>
@@ -88,7 +110,5 @@
 
 
     });
-
-
 
 </script>

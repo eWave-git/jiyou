@@ -25,6 +25,7 @@
                             <label class="col-2 col-form-label required">장치</label>
                             <div class="col">
                                 <select class="form-select" name="device" id="device">
+                                    <option value="">선택하세요.</option>
                                     {{device_options}}
                                 </select>
                             </div>
@@ -33,6 +34,7 @@
                             <label class="col-2 col-form-label required">데이터</label>
                             <div class="col">
                                 <select class="form-select" name="board" id="board">
+                                    <option value="">선택하세요.</option>
                                     {{board_options}}
                                 </select>
                             </div>
@@ -125,9 +127,7 @@
 
         });
 
-
         $("#device").change(function () {
-            // alert($(this).val());
             $("#board").empty()
             $.ajax({
                 url:'/manager/alarm_form/getBoardType',

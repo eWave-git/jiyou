@@ -2,10 +2,12 @@
 
 namespace App\Controller\Manager;
 
+use App\Model\Entity\BoardTypeSymbol;
 use App\Model\Entity\Device as EntityDevice;
 use App\Model\Entity\Member as EntityMmeber;
 use App\Model\Entity\RawData as EntityRawData;
 use App\Model\Entity\Widget as EntityWidget;
+use App\Model\Entity\WidgetBoardType as EntityWidgetBoardType;
 use app\Utils\Common;
 use App\Utils\View;
 
@@ -169,21 +171,23 @@ class Dashboard extends Page {
         $item = "";
 
         if (is_array((array)$rew_obj)) {
+            $_cnt = 0;
             foreach ($board_name as $k => $v) {
-                $symbol = '%';
-                $symbol_array = Common::findSymbol($v['name']);
+                if ($v['display'] == 'Y') {
+                    if (!$v['symbol']) {
+                        $v['symbol'] = "&nbsp;&nbsp;";
+                    }
 
-                if (is_array($symbol_array)) {
-                    $symbol = $symbol_array['symbol'];
+                    $item .= View::render('manager/modules/dashboard/widget_card_item', [
+                        'name' => $v['name'],
+                        'value' => round($rew_obj->{$v['field']},1) . " " . $v['symbol'],
+                    ]);
+
+                    $_cnt++;
                 }
-
-                $item .= View::render('manager/modules/dashboard/widget_card_item', [
-                    'name' => $v['name'],
-                    'value' => round($rew_obj->{$v['field']},1) . " " . $symbol,
-                ]);
             }
 
-            for ($i = count($board_name); $i < 8; $i++) {
+            for ($i = $_cnt; $i < 8; $i++) {
                 $item .= View::render('manager/modules/dashboard/widget_card_item', [
                     'name' => '&nbsp;',
                     'value' => '&nbsp',
@@ -201,10 +205,8 @@ class Dashboard extends Page {
 
         if (is_array((array)$obj)) {
             foreach ($obj as $k => $v) {
-                // TODO: 디바이스 이이디로 갖고 오기
-//                $device_obj = EntityDevice::getDevicesByIdx($v['device_idx']);
-//                $result = EntityRawData::LastLimitOne($device_obj->address, $device_obj->board_type, $device_obj->board_number);
-                $result = EntityRawData::LastLimitOne($v['address'], $v['board_type'], $v['board_number']);
+                $device_obj = EntityDevice::getDevicesByIdx($v['device_idx']);
+                $result = EntityRawData::LastLimitOne($device_obj->address, $device_obj->board_type, $device_obj->board_number);
                 $rew_obj = $result->fetchObject(EntityRawData::class);
 
                 $card .= View::render('manager/modules/dashboard/widget_card', [
@@ -273,7 +275,6 @@ class Dashboard extends Page {
         $_userInfo = EntityMmeber::getMemberById($_user);
 
         $_farm_Info = EntityMmeber::getMembersFarm($_userInfo->idx)->fetchObject(EntityMmeber::class);
-
 
         $widget_obj = EntityWidget::getWidgetByIdx($idx)->fetchObject(EntityWidget::class);
         $board_type_array = Common::getBoardTypeNameArray($widget_obj->board_type);
@@ -423,14 +424,70 @@ class Dashboard extends Page {
 //        ];
 //    }
 
+
+    public static function getWidgetItems($request) {
+        $postVars = $request->getPostVars();
+        $postVars['widget_idx'];
+
+        $obj = EntityWidget::getWidgetByIdx($postVars['widget_idx'])->fetchObject(EntityWidget::class);
+
+        $board_type = Common::getbordTypeNameByWidgetNameArray($obj->device_idx, $obj->board_type);
+
+        $symbols = Common::getBoardTypeSymbol();
+
+        return [
+            'success' => true,
+            'board_type' => $board_type,
+            'symbols' => $symbols,
+        ];
+    }
+
     public static function widgetNameChange($request) {
         $postVars = $request->getPostVars();
+
         EntityWidget::UpdateWidgetName($postVars['idx'], $postVars['widget_name']);
 
-        $reslut = EntityWidget::getWidgetByIdx($postVars['idx']);
-        $obj = $reslut->fetchObject(EntityWidget::class);
-        EntityDevice::UpdateDeviceName($obj->device_idx, $postVars['widget_name']);
+        $widget_obj = EntityWidget::getWidgetByIdx($postVars['idx'])->fetchObject(EntityWidget::class);
+        $board_type_obj = Common::getBoardTypeNameArray($widget_obj->board_type);
+        $widgetBoardType = EntityWidgetBoardType::getWidgetBoardTypeByWidgetIdx($postVars['idx'])->fetchObject(EntityWidgetBoardType::class);
 
+        if (isset($widgetBoardType->idx)) {
+            foreach ($board_type_obj as $k => $v) {
+                $name = $v['field']."_name";
+                $display = $v['field']."_display";
+                $symbol = $v['field']."_symbol";
+
+                if (!isset($postVars[$display])) {
+                    $postVars[$display] = 'N';
+                }
+                $postVars[$symbol] = BoardTypeSymbol::getSymbolByIdx($postVars[$symbol])->symbol;
+
+                $widgetBoardType->{$display} = $postVars[$display];
+                $widgetBoardType->{$name} = $postVars[$name];
+                $widgetBoardType->{$symbol} = $postVars[$symbol];
+            }
+
+            $widgetBoardType->updated();
+
+        } else {
+            $widget_board_type_obj = new EntityWidgetBoardType();
+            $widget_board_type_obj->widget_idx = $postVars['idx'];
+            foreach ($board_type_obj as $k=>$v) {
+                $name = $v['field']."_name";
+                $display = $v['field']."_display";
+                $symbol = $v['field']."_symbol";
+
+                if (!isset($postVars[$display])) {
+                    $postVars[$display] = 'N';
+                }
+                $postVars[$symbol] = BoardTypeSymbol::getSymbolByIdx($postVars[$symbol])->symbol;
+
+                $widget_board_type_obj->{$display} = $postVars[$display];
+                $widget_board_type_obj->{$name} = $postVars[$name];
+                $widget_board_type_obj->{$symbol} = $postVars[$symbol];
+            }
+            $widget_board_type_obj->created();
+        }
 
         return [
             'success' => true,

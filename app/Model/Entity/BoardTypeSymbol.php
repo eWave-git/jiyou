@@ -11,6 +11,10 @@ class BoardTypeSymbol {
     public $created_at;
 
 
+    public static function getSymbolByIdx($idx) {
+        return self::getBoardTypeSymbol('idx ='.$idx,'','','symbol')->fetchObject(self::class);
+    }
+
     public static function getBoardTypeSymbol($where = null, $order = null, $limit = null, $fields = '*') {
 
         return (new Database('board_type_symbol'))->select($where, $order, $limit, $fields);

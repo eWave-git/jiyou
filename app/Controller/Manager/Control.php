@@ -2,31 +2,26 @@
 
 namespace App\Controller\Manager;
 
-use App\Model\Entity\Alarm as EntityAlarm;
-use App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 use App\Model\Entity\ControlData as EntityControlData;
 use App\Model\Entity\Device as EntityDevice;
 use App\Model\Entity\Member as EntityMmeber;
 use App\Model\Entity\RawData as EntityRawData;
+use App\Model\Entity\Widget as EntityWidget;
 use app\Utils\Common;
 use \App\Utils\View;
 
 class Control extends Page {
 
-    private static function getMemberDevice($member_devices, $device = '', $control_type) {
+    private static function getMemberDevice($member_devices,  $control_type) {
         $option = "";
 
-        if ($member_devices[0]['idx']) {
-            if (is_array($member_devices[0])) {
-                foreach ($member_devices as $k => $v) {
-                    if ($v['control_type'] == $control_type) {
-                        $option .= View::render('manager/modules/dashboard/widget_add_form_options', [
-                            'value' => $v['idx'],
-                            'text'  => $v['device_name'],
-                            'selected' => ($v['idx'] == $device) ? 'selected' : '',
-                        ]);
-                    }
-                }
+        foreach ($member_devices as $k => $v) {
+            if ($v['control_type'] == $control_type) {
+                $option .= View::render('manager/modules/dashboard/widget_add_form_options', [
+                    'value' => $v['idx'],
+                    'text'  => $v['device_name'],
+                    'selected' => '',
+                ]);
             }
         }
 
@@ -67,7 +62,6 @@ class Control extends Page {
                     $array[$k]['update_at'] = $obj->update_at;
                     $array[$k]['create_at'] = $obj->create_at;
 
-
                     $k++;
                 }
             }
@@ -99,14 +93,11 @@ class Control extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        $member_devices = Member::getMembersControlDevice($_userInfo->idx);
-        $device = $objAlarm->device_idx ?? '';
-
-        $idx = $objAlarm->idx ?? '';
+        $member_devices = Common::getMembersControlDevice($_userInfo->idx);
 
         $content = View::render('manager/modules/control/switch_form', [
-            'device_options' => self::getMemberDevice($member_devices, $device, 'R'),
-            'action'        => $idx == '' ? '/manager/switch_create' : '/manager/switch_create/'.$idx.'/edit',
+            'device_options' => self::getMemberDevice($member_devices,  'R'),
+            'action'        => '/manager/switch_create',
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'control');
@@ -139,7 +130,7 @@ class Control extends Page {
 
         $obj = new EntityControlData;
         $obj->member_idx = $_userInfo->idx;
-        $obj->device_idx = $device_info->idx;
+        $obj->device_idx = $device_info->device_idx;
 
         $obj->address = $device_info->address;
         $obj->board_type = $device_info->board_type;
@@ -181,7 +172,6 @@ class Control extends Page {
 
     public static function getCommandList($user_idx) {
         $member_constrols = EntityControlData::getControlDataByMemberIdx($user_idx);
-
 
         $array = array();
         $k = 0;
@@ -231,14 +221,11 @@ class Control extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        $member_devices = Member::getMembersControlDevice($_userInfo->idx);
-        $device = $objAlarm->device_idx ?? '';
-
-        $idx = $objAlarm->idx ?? '';
+        $member_devices = Common::getMembersControlDevice($_userInfo->idx);
 
         $content = View::render('manager/modules/control/command_form', [
-            'device_options' => self::getMemberDevice($member_devices, $device, 'T'),
-            'action'        => $idx == '' ? '/manager/command_create' : '/manager/command_create/'.$idx.'/edit',
+            'device_options' => self::getMemberDevice($member_devices,  'T'),
+            'action'        => '/manager/command_create',
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'control');
@@ -250,11 +237,16 @@ class Control extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
+        $device_info = EntityWidget::getWidgetByDeviceIdx($postVars['device'])->fetchObject(EntityWidget::class);
 
         $obj = new EntityControlData;
         $obj->member_idx = $_userInfo->idx;
-        $obj->device_idx = $device_info->idx;
+        $obj->device_idx = $device_info->device_idx;
+
+        $obj->address = $device_info->address;
+        $obj->board_type = $device_info->board_type;
+        $obj->board_number = $device_info->board_number;
+
         $obj->name = $postVars['name'];
         $obj->control_type = $postVars['control_type'];
         $obj->type = '';

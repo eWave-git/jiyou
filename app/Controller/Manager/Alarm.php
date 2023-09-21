@@ -27,15 +27,16 @@ class Alarm extends Page {
         $postVars = $request->getPostVars();
 
         $device_obj = EntityDevice::getDevicesByIdx($postVars['device_idx']);
-        $board_array =  Common::getBoardTypeNameArray($device_obj->board_type);
-
+        $board_array = Common::getbordTypeNameByWidgetNameArray($device_obj->device_idx, $device_obj->board_type);
 
         $arr = array();
         if ($board_array) {
             $success = true;
             foreach ($board_array as $k => $v) {
-                $arr['field'][] = $v['field'];
-                $arr['name'][] = $v['name'];
+                if ($v['display'] == 'Y') {
+                    $arr['field'][] = $v['field'];
+                    $arr['name'][] = $v['name'];
+                }
             }
         } else {
             $success = false;
@@ -51,38 +52,31 @@ class Alarm extends Page {
 
     public static function getAlarmList($user_idx) {
 
-        $member_devices = Common::getMembersDevice($user_idx);
-
+        $result = EntityAlarm::getAlarmByMemberIdx($user_idx);
         $array = array();
         $_i = 0;
-        foreach ($member_devices as $k_1 => $v_1) {
-            if ($v_1['idx']) {
-                $result_1 = EntityAlarm::getAlarmByDeviceIdx($v_1['idx']);
-                while ($obj_1 = $result_1->fetchObject(EntityAlarm::class)) {
-                    $device_obj = EntityDevice::getDevicesByIdx($obj_1->device_idx);
-                    $array[$_i]['idx'] = $obj_1->idx;
-                    $array[$_i]['device_name'] = $device_obj->device_name;
-                    $array[$_i]['board_type_name'] = $obj_1->board_type_name;
-                    $array[$_i]['alarm_range'] = $obj_1->alarm_range;
+        while ($obj = $result->fetchObject(EntityAlarm::class)) {
+            $device_obj = EntityDevice::getDevicesByIdx($obj->device_idx);
+            $array[$_i]['idx'] = $obj->idx;
+            $array[$_i]['device_name'] = $device_obj->device_name ?? '';
+            $array[$_i]['board_type_name'] = $obj->board_type_name;
+            $array[$_i]['alarm_range'] = $obj->alarm_range;
 
+            $array[$_i]['min'] = $obj->min;
+            $array[$_i]['max'] = $obj->max;
+            $array[$_i]['activation'] = $obj->activation;
+            $array[$_i]['create'] = $obj->created_at;
 
-                    $array[$_i]['min'] = $obj_1->min;
-                    $array[$_i]['max'] = $obj_1->max;
-                    $array[$_i]['activation'] = $obj_1->activation;
-                    $array[$_i]['create'] = $obj_1->created_at;
-
-                    $result_2 = EntityAlarmMember::getAlarmMemberByIdx($obj_1->idx);
-
-                    $_temp = "";
-                    while ($obj_2 = $result_2->fetchObject(EntityAlarmMember::class)) {
-                        $member = Common::get_member_info($obj_2->member_idx);
-                        $_temp .= $member['member_name'] . " ";
-                    }
-
-                    $array[$_i]['member'] = $_temp;
-                    $_i++;
-                }
+            $result_2 = EntityAlarmMember::getAlarmMemberByIdx($obj->idx);
+            $_temp = "";
+            while ($obj_2 = $result_2->fetchObject(EntityAlarmMember::class)) {
+                $member = Common::get_member_info($obj_2->member_idx);
+                $_temp .= $member['member_name'] . " ";
             }
+
+            $array[$_i]['member'] = $_temp;
+
+            $_i++;
         }
 
         $item = "";
@@ -115,7 +109,6 @@ class Alarm extends Page {
         return $item;
     }
 
-
     public static function getAlarm($request) {
 
         $_user = Common::get_manager();
@@ -128,34 +121,17 @@ class Alarm extends Page {
         return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
     }
 
-    private static function getMemberDevice($member_devices, $device = '') {
+    private static function getMemberDevice($user_idx) {
         $option = "";
 
-        if ($member_devices[0]['idx']) {
-            if (is_array($member_devices[0])) {
-                foreach ($member_devices as $k => $v) {
-                    $option .= View::render('manager/modules/dashboard/widget_add_form_options', [
-                        'value' => $v['idx'],
-                        'text'  => $v['device_name'],
-                        'selected' => ($v['idx'] == $device) ? 'selected' : '',
-                    ]);
-                }
+        if ($user_idx) {
+            foreach (Common::getMembersWidget($user_idx) as $k => $v) {
+                $option .= View::render('manager/modules/dashboard/widget_add_form_options', [
+                    'value' => $v['device_idx'],
+                    'text'  => $v['widget_name'],
+                    'selected' => '',
+                ]);
             }
-        }
-
-        return $option;
-    }
-
-    private static function getMemberBoardType($obj, $board) {
-
-        $results = Management::getBoardTypeName($obj->board_type);
-        $option = "";
-        foreach ($results as $k => $v) {
-            $option .= View::render('manager/modules/dashboard/widget_add_form_options', [
-                'value' => $v['field'],
-                'text'  => $v['name'],
-                'selected' => ($v['field'] == $board) ? 'selected' : '',
-            ]);
         }
 
         return $option;
@@ -200,41 +176,15 @@ class Alarm extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        $member_devices = Common::getMembersDevice($_userInfo->idx);
-
-        $device = $objAlarm->device_idx ?? '';
-        $board = $objAlarm->board_type_field ?? '';
-
-        $_idx = !$device ? $member_devices[0]['idx'] : $device;
-        $obj = EntityDevice::getDevicesByIdx($_idx);
-
-        $board_type = $obj->board_type;
-        $board_type_info = Management::getBoardTypeName($board_type);
-
-        if ($board) {
-            foreach($board_type_info as $k => $v) {
-                if ($board == $v['field']) {
-                    $board_type_field = $board_type_info[$k]['field'];
-                    $board_type_name = $board_type_info[$k]['name'];
-                }
-            }
-        } else {
-            $board_type_field = $board_type_info[0]['field'];
-            $board_type_name = $board_type_info[0]['name'];
-
-        }
-        $idx = $objAlarm->idx ?? '';
-        $activation = $objAlarm->activation ?? '';
-
 
         $content = View::render('manager/modules/alarm/alarm_form', [
-            'device_options' => self::getMemberDevice($member_devices, $device),
-            'board_options' => self::getMemberBoardType($obj, $board),
-            'min'           => $objAlarm->min ?? '',
-            'max'           => $objAlarm->max ?? '',
+            'device_options' => self::getMemberDevice($_userInfo->idx),
+            'board_options' => '',
+            'min'           => '',
+            'max'           => '',
             'target_user'   => $_userInfo->idx,
-            'checked'       => $activation == 'Y'? 'checked' : '' ,
-            'action'        => $idx == '' ? '/manager/alarm_form_create' : '/manager/alarm_form/'.$idx.'/edit',
+            'checked'       => 'Y',
+            'action'        => '/manager/alarm_form_create',
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
@@ -261,9 +211,9 @@ class Alarm extends Page {
 
         $obj_1 = new EntityAlarm;
         $obj_1->member_idx = $_userInfo->idx;
-        $obj_1->device_idx = $device_info->idx;
+        $obj_1->device_idx = $device_info->device_idx;
+        $board_type = Common::getBoardTypeNameSelect($device_info->device_idx, $device_info->board_type, $postVars['board']);
 
-        $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
         $obj_1->board_type_field = $board_type['field'];
         $obj_1->board_type_name = $board_type['name'];
 

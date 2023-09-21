@@ -6,6 +6,7 @@ use App\Controller\Admin\BoardTypeRef;
 use App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 use App\Model\Entity\Member as EntityMmeber;
 use App\Model\Entity\Widget as EntityWidget;
+use App\Model\Entity\WidgetBoardType as EntityWidgetBoardType;
 use App\Model\Entity\BoardTypeSymbol as EntityBoardTypeSymbol;
 use App\Model\Entity\PushSendLog as EntityPushSendLog;
 use DateInterval;
@@ -143,10 +144,10 @@ class Common{
         exit;
     }
 
-    public static function getBoardTypeNameSelect($board_type, $field) {
+    public static function getBoardTypeNameSelect($device_idx, $board_type, $field) {
         $array = array();
 
-        foreach (Common::getBoardTypeNameArray($board_type) as $k => $v) {
+        foreach (Common::getbordTypeNameByWidgetNameArray($device_idx, $board_type) as $k => $v) {
             if ($v['field'] == $field) {
                 $array = $v;
             }
@@ -208,15 +209,64 @@ class Common{
         $result = EntityWidget::getWidgetByMemberIdx($member_idx);
         $_i = 0;
         while ($obj = $result->fetchObject(EntityWidget::class)) {
-
             $arr[$_i] = (array) $obj;
-            $arr[$_i]['board_name'] =  Common::getBoardTypeNameArray($obj->board_type);
+            $arr[$_i]['board_name'] =  Common::getbordTypeNameByWidgetNameArray($obj->device_idx, $obj->board_type);
 
             $_i++;
         }
 
         return $arr;
     }
+
+    public static function getbordTypeNameByWidgetNameArray($device_idx, $board_type) {
+
+        $array = array();
+        $objBoardTypeRefOrg = EntityBoardTypeRef::getBoardTypeRefByBoardType($board_type);
+        $objBoardTypeRef = EntityWidgetBoardType::getWidgetWithWidgetBoardTypeByIdx($device_idx);
+
+        if ($objBoardTypeRefOrg) {
+            $i = 0;
+            foreach($objBoardTypeRefOrg as $column_name=>$column_value){
+                if (preg_match('/data/',$column_name, $match) && $column_value) {
+                    $type_name = $column_name."_name";
+                    $type_display = $column_name."_display";
+                    $type_symbol = $column_name."_symbol";
+
+                    $array[$i]['field'] = $column_name;
+                    $array[$i]['org_name'] = $column_value;
+                    $array[$i]['name'] = $objBoardTypeRef->{$type_name} ?? $column_value;
+                    $array[$i]['display'] = $objBoardTypeRef->{$type_display} ?? 'Y';
+
+                    $symbol = '';
+                    if (!isset($objBoardTypeRef->{$type_symbol})) {
+                        $_symbol = Common::findSymbol($column_value);
+                        $symbol = !isset($_symbol['symbol']) ? '' : $_symbol['symbol'];
+                    } else {
+                        $symbol = $objBoardTypeRef->{$type_symbol};
+                    }
+
+                    $array[$i]['symbol'] =  $symbol;
+                    $i++;
+                }
+            }
+        }
+
+        return $array;
+    }
+
+    public static function getMembersControlDevice($user_idx) {
+        $arr  = array();
+
+        $result = EntityMmeber::getMembersControlDevice($user_idx);
+        $_i = 0;
+        while ($obj = $result->fetchObject(EntityMmeber::class)) {
+            $arr[$_i] = (array) $obj;
+            $_i++;
+        }
+
+        return $arr;
+    }
+
 
     public static function getBoardTypeNameArray($board_type) {
         $array = array();

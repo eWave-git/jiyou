@@ -31,6 +31,16 @@ $obRouter->post('/manager/dashboard/widgetNameChange',[
     }
 ]);
 
+$obRouter->post('/manager/dashboard/getWidgetItems',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Dashboard::getWidgetItems($request), 'application/json');
+    }
+]);
+
 
 
 //$obRouter->post('/manager/dashboard/widgetadd',[

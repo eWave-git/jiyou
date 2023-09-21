@@ -37,7 +37,6 @@ class Alarm {
         $this->idx = (new Database('alarm'))->insert([
             'member_idx' => $this->member_idx,
             'device_idx' => $this->device_idx,
-
             'alarm_range' => $this->alarm_range,
             'board_type_field' => $this->board_type_field,
             'board_type_name' => $this->board_type_name,
@@ -54,7 +53,6 @@ class Alarm {
         $this->idx = (new Database('alarm'))->update('idx = '.$this->idx,[
             'member_idx' => $this->member_idx,
             'device_idx' => $this->device_idx,
-
             'alarm_range' => $this->alarm_rangem,
             'board_type_field' => $this->board_type_field,
             'board_type_name' => $this->board_type_name,
@@ -62,6 +60,10 @@ class Alarm {
             'max' => $this->max,
             'activation' => $this->activation,
         ]);
+    }
+
+    public static function getAlarmByMemberIdx($member_idx) {
+        return self::getAlarm('member_idx ='.$member_idx,'created_at desc');
     }
 
     public static function getAlarmByDeviceIdx($idx) {

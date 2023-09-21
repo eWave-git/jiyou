@@ -31,7 +31,8 @@ class Member {
     }
 
     public static function getMembersControlDevice($member_idx) {
-        return (new Database('member'))->execute("select *, d.idx as idx from member as m left join farm as f on m.idx = f.member_idx left join device as d on f.idx = d.farm_idx left join board_type_ref btr on d.board_type = btr.board_type where m.member_type = 'manager' and f.idx is not null and btr.control_type !='' and m.idx=".$member_idx."");
+//        return (new Database('member'))->execute("select *, d.idx as idx from member as m left join farm as f on m.idx = f.member_idx left join device as d on f.idx = d.farm_idx left join board_type_ref btr on d.board_type = btr.board_type where m.member_type = 'manager' and f.idx is not null and btr.control_type !='' and m.idx=".$member_idx."");
+        return (new Database('member'))->execute("select  d.idx as idx, w.widget_name as device_name, btr.control_type from member as m left join farm as f on m.idx = f.member_idx left join device as d on f.idx = d.farm_idx left join board_type_ref as btr on d.board_type = btr.board_type left join widget as w on d.idx = w.device_idx where m.member_type = 'manager' and f.idx is not null and btr.control_type != '' and m.idx =".$member_idx."");
     }
 
     public static function getMembersDevice($member_idx) {
