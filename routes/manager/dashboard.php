@@ -21,6 +21,15 @@ $obRouter->get('/manager/dashboard/table/{idx}',[
     }
 ]);
 
+$obRouter->get('/manager/dashboard/chart/{idx}',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request, $idx) {
+        return new Response(200, Manager\Dashboard::getDashboardChart($request, $idx));
+    }
+]);
+
 $obRouter->post('/manager/dashboard/widgetNameChange',[
     'middlewares' => [
         'api',
@@ -41,6 +50,15 @@ $obRouter->post('/manager/dashboard/getWidgetItems',[
     }
 ]);
 
+$obRouter->post('/manager/dashboard/getChart',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Dashboard::getChart($request), 'application/json');
+    }
+]);
 
 
 //$obRouter->post('/manager/dashboard/widgetadd',[

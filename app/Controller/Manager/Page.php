@@ -11,9 +11,10 @@ class Page {
     public static function getPage($title, $content) {
 
         $REQUEST_URI = explode('?',$_SERVER['REQUEST_URI'])[0];
+        $FILE_NAME = (explode('/',$_SERVER['REQUEST_URI']))[2];
 
-        if (file_exists("resources/dynamic/".$REQUEST_URI.".js")) {
-            $javascript_file = "<script src='".URL."/resources/dynamic".$REQUEST_URI.".js' defer></script>";
+        if (file_exists("resources/dynamic/manager/".$FILE_NAME.".js")) {
+            $javascript_file = "<script src='".URL."/resources/dynamic/manager/".$FILE_NAME.".js' defer></script>";
         } else {
             $javascript_file = "";
         }

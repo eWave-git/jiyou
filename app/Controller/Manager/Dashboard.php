@@ -272,16 +272,13 @@ class Dashboard extends Page {
 
 
     public static function getDashboardTable($request, $idx) {
-
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
         $_farm_Info = EntityMmeber::getMembersFarm($_userInfo->idx)->fetchObject(EntityMmeber::class);
 
         $widget_obj = EntityWidget::getWidgetByIdx($idx)->fetchObject(EntityWidget::class);
-//        $board_type_array = Common::getBoardTypeNameArray($widget_obj->board_type);
         $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
-
 
         $content = View::render('manager/modules/dashboard/table_in_widget', [
             'farm_name' => $_farm_Info->farm_name,
@@ -290,6 +287,24 @@ class Dashboard extends Page {
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'dashboard');
+    }
+
+    public static function getDashboardChart($request, $idx) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $_farm_Info = EntityMmeber::getMembersFarm($_userInfo->idx)->fetchObject(EntityMmeber::class);
+
+        $content = View::render('manager/modules/dashboard/chart_in_widget', [
+            'farm_name' => $_farm_Info->farm_name,
+            'idx' => $idx,
+        ]);
+
+        return parent::getPanel('Home > DASHBOARD', $content, 'dashboard');
+    }
+
+    public static function getChart($request) {
+        $postVars = $request->getPostVars();
     }
 
 
