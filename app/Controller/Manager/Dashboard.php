@@ -241,18 +241,20 @@ class Dashboard extends Page {
 
         $data = "";
         foreach ($board_type_array as $k => $v) {
-            $result_1 = EntityRawData::LastLimitDataOne($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name']);
-            $obj_1 = $result_1->fetchObject(EntityRawData::class);
+            if ($v['display'] == 'Y') {
+                $result_1 = EntityRawData::LastLimitDataOne($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name']);
+                $obj_1 = $result_1->fetchObject(EntityRawData::class);
 
-            $array[$k]['name'] = $v['name'];
-            $array[$k]['now'] = $obj_1->{$v['name']};
+                $array[$k]['name'] = $v['name'];
+                $array[$k]['now'] = $obj_1->{$v['name']};
 
-            $result_2=  EntityRawData::LastTotal($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], 24);
-            $obj_2 = $result_2->fetchObject(EntityRawData::class);
+                $result_2 = EntityRawData::LastTotal($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], 24);
+                $obj_2 = $result_2->fetchObject(EntityRawData::class);
 
-            $array[$k]['min'] = $obj_2->min;
-            $array[$k]['max'] = $obj_2->max;
-            $array[$k]['avg'] = $obj_2->avg;
+                $array[$k]['min'] = $obj_2->min;
+                $array[$k]['max'] = $obj_2->max;
+                $array[$k]['avg'] = $obj_2->avg;
+            }
         }
 
         foreach ($array as $k => $v) {
@@ -277,7 +279,9 @@ class Dashboard extends Page {
         $_farm_Info = EntityMmeber::getMembersFarm($_userInfo->idx)->fetchObject(EntityMmeber::class);
 
         $widget_obj = EntityWidget::getWidgetByIdx($idx)->fetchObject(EntityWidget::class);
-        $board_type_array = Common::getBoardTypeNameArray($widget_obj->board_type);
+//        $board_type_array = Common::getBoardTypeNameArray($widget_obj->board_type);
+        $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
+
 
         $content = View::render('manager/modules/dashboard/table_in_widget', [
             'farm_name' => $_farm_Info->farm_name,
