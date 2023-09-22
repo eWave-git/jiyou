@@ -37,7 +37,8 @@ class RawData {
                 address={$address} 
               and board_type={$board_type} 
               and board_number={$board_number}
-              and created_at >= (now() - INTERVAL {$ago} HOUR)
+              and created_at > (now() - INTERVAL {$ago} HOUR)
+              and created_at < now()
             order by created_at desc
         ");
     }
@@ -60,6 +61,15 @@ class RawData {
         ");
     }
 
+    public static function NowLastLimitDataOne($address, $board_type, $board_number, $field, $name) {
+        return (new Database('raw_data'))->execute("
+            select {$field} as '{$name}'
+            from raw_data
+            where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at > (now() - INTERVAL 1 minute )
+            order by idx desc limit 1
+        ");
+    }
+
     public static function AccumulateDatas($address, $board_type, $field, $name, $ago, $interval) {
         return (new Database('raw_data'))->execute("
             select
@@ -71,13 +81,13 @@ class RawData {
             order BY idx asc
         ");
     }
-    public static function AvgDatas($address, $board_type, $field, $name, $ago, $interval) {
+    public static function AvgDatas($address, $board_type, $board_number, $field, $name, $ago, $interval) {
         return (new Database('raw_data'))->execute("
             select
                 DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:00') as created,
                 avg({$field}) as '{$name}'
             from raw_data
-            where address={$address} and board_type={$board_type} and  created_at <= (now() - INTERVAL {$ago} HOUR )
+            where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at > (now() - INTERVAL {$ago} HOUR ) and created_at < now()
             group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/{$interval})*10
             order by created asc
         ");

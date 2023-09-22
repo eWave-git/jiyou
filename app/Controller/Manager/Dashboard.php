@@ -242,11 +242,11 @@ class Dashboard extends Page {
         $data = "";
         foreach ($board_type_array as $k => $v) {
             if ($v['display'] == 'Y') {
-                $result_1 = EntityRawData::LastLimitDataOne($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name']);
+                $result_1 = EntityRawData::NowLastLimitDataOne($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name']);
                 $obj_1 = $result_1->fetchObject(EntityRawData::class);
 
                 $array[$k]['name'] = $v['name'];
-                $array[$k]['now'] = $obj_1->{$v['name']};
+                $array[$k]['now'] = $obj_1->{$v['name']} ?? 0;
 
                 $result_2 = EntityRawData::LastTotal($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], 24);
                 $obj_2 = $result_2->fetchObject(EntityRawData::class);
@@ -305,6 +305,35 @@ class Dashboard extends Page {
 
     public static function getChart($request) {
         $postVars = $request->getPostVars();
+
+        $widgetObj = EntityWidget::getWidgetByIdx($postVars['widget_idx'])->fetchObject(EntityWidget::class);
+
+        $obj = Common::getbordTypeNameByWidgetNameArray($widgetObj->device_idx,$widgetObj->board_type);
+        $array = array();
+        $fields = array();
+        foreach($obj as $k => $v) {
+            if ($v['display'] == 'Y') {
+                $row = EntityRawData::AvgDatas($widgetObj->address, $widgetObj->board_type, $widgetObj->board_number, $v['field'], $v['name'], 24, 0);
+                $kk = 0;
+                while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                    $array[$kk]['dates'] = $row_obj->created;
+                    $array[$kk][$v['field']] = $row_obj->{$v['name']};
+                    $kk++;
+                }
+
+                $fields[$k]['field'] = $v['field'];
+                $fields[$k]['name'] = $v['name'];
+                $fields[$k]['series'] = 'series'.$k;
+                $fields[$k]['yAxis'] = 'yAxis'.$k;
+            }
+        }
+
+        return [
+            'success' => true,
+            'obj' => $array,
+            'fields' => $fields,
+        ];
+        return $array;
     }
 
 
