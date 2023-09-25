@@ -306,14 +306,14 @@ class Dashboard extends Page {
     public static function getChart($request) {
         $postVars = $request->getPostVars();
 
-        $widgetObj = EntityWidget::getWidgetByIdx($postVars['widget_idx'])->fetchObject(EntityWidget::class);
+        $widget_obj = EntityWidget::getWidgetByIdx($postVars['widget_idx'])->fetchObject(EntityWidget::class);
 
-        $obj = Common::getbordTypeNameByWidgetNameArray($widgetObj->device_idx,$widgetObj->board_type);
+        $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx,$widget_obj->board_type);
         $array = array();
         $fields = array();
-        foreach($obj as $k => $v) {
+        foreach($board_type_array as $k => $v) {
             if ($v['display'] == 'Y') {
-                $row = EntityRawData::AvgDatas($widgetObj->address, $widgetObj->board_type, $widgetObj->board_number, $v['field'], $v['name'], 24, 0);
+                $row = EntityRawData::AvgDatas($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], 24, 0);
                 $kk = 0;
                 while ($row_obj = $row->fetchObject(EntityRawData::class)) {
                     $array[$kk]['dates'] = $row_obj->created;

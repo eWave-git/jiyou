@@ -35,7 +35,10 @@ class Page {
         [
             'label' => 'inquiry',
             'title' => '조회',
-            'link'  => URL."/manager/inquiry",
+            'submenu'=>[
+                ['label' => 'inquiry', 'title' => '그래프 조회', 'link' => "javascript:alert('준비중')"],
+                ['label' => 'inquiry', 'title' => '표 조회', 'link' => URL.'/manager/table_inquiry'],
+            ],
         ],
         [
             'label' => 'alarm',
