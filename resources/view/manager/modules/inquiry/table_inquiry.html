@@ -16,7 +16,7 @@
         <div class="row row-cards">
 
             <div class="col-12">
-                <form class="card" method="get" action="/manager/table_search" >
+                <form class="card" name="frm" method="get"  action="" >
                     <div class="card-body">
                         <div class="form-group row">
 
@@ -36,19 +36,31 @@
                                 </div>
 
                             <div class="col-2 text-lg-end" >
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                                    <path d="M21 21l-6 -6"></path>
-                                    <path d="M10 13l0 .01"></path>
-                                    <path d="M10 10a1.5 1.5 0 1 0 -1.14 -2.474"></path>
-                                </svg>
-                                조회
-                            </button>
+                                <button type="button" name="search" class="btn btn-primary" >
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                        <path d="M21 21l-6 -6"></path>
+                                        <path d="M10 13l0 .01"></path>
+                                        <path d="M10 10a1.5 1.5 0 1 0 -1.14 -2.474"></path>
+                                    </svg>
+                                    조회
+                                </button>
                             </div>
-
+                            <div class="col-2 text-lg-end" >
+                                <button type="button" name="excel_download" class="btn btn-primary" >
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                        <path d="M21 21l-6 -6"></path>
+                                        <path d="M10 13l0 .01"></path>
+                                        <path d="M10 10a1.5 1.5 0 1 0 -1.14 -2.474"></path>
+                                    </svg>
+                                    엑셀 다운로드
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -58,7 +70,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="table-responsive" >
-                        <table id="list" class="table table-vcenter card-table">
+                        <table id="list" class="table table-vcenter card-table table-striped">
                             <colgroup>
                                 <col width="5%">
                                 <col width="20%">
@@ -73,7 +85,7 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <th>idx</th>
+                                <th>번호</th>
                                 <th>날짜 시간</th>
                                 <th>{{data_1}}</th>
                                 <th>{{data_2}}</th>
@@ -123,6 +135,14 @@
             showDropdowns: true,                     // 년월 수동 설정 여부
             autoApply: true,                         // 확인/취소 버튼 사용여부
             timePicker24Hour: true,                  // 24시간 노출 여부(ex> true : 23:50, false : PM 11:50)
+        })
+
+        $("[name='search']").click(function () {
+            $("[name='frm']").attr("action", " /manager/table_search").submit();
+        })
+
+        $("[name='excel_download']").click(function () {
+            $("[name='frm']").attr("action", " /manager/table_excel_download").submit();
         })
 
     });

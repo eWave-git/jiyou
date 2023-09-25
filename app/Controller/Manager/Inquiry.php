@@ -9,6 +9,8 @@ use App\Model\Entity\RawData as EntityRawData;
 use App\Model\Entity\Widget as EntityWidget;
 use app\Utils\Common;
 use \App\Utils\View;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class Inquiry extends Page {
 
@@ -54,11 +56,9 @@ class Inquiry extends Page {
     }
 
     public static function getTableSearch($request) {
-        header( "Content-type: application/vnd.ms-excel; charset=utf-8");
-        header( "Content-Disposition: attachment; filename = excel_test.xls" );     //filename = 저장되는 파일명을 설정합니다.
-        header( "Content-Description: PHP4 Generated Data" );
         $_user = Common::get_manager();
-        $_userInfo = EntityMmeber::getMemberById($_user); $queryParams = $request->getQueryParams();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+        $queryParams = $request->getQueryParams();
         $idx = $queryParams['device'] ?? '';
 
         $widget_obj = EntityWidget::getWidgetByIdx($queryParams['device'])->fetchObject(EntityWidget::class);
@@ -90,8 +90,6 @@ class Inquiry extends Page {
             }
         }
 
-
-
         $content = View::render('manager/modules/inquiry/table_inquiry', [
             'device_options' => self::getMemberDevice($_userInfo->idx, $idx),
             'sdateAtedate'=>$queryParams['sdateAtedate'],
@@ -108,7 +106,6 @@ class Inquiry extends Page {
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'inquiry');
-
     }
 
 
@@ -136,6 +133,67 @@ class Inquiry extends Page {
 
 
         return $data;
+    }
+
+    public static function getTableExcelDownload($request) {
+        $queryParams = $request->getQueryParams();
+
+        $widget_obj = EntityWidget::getWidgetByIdx($queryParams['device'])->fetchObject(EntityWidget::class);
+        $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
+
+        list ($start_date, $end_date)  = explode(" - ", $queryParams['sdateAtedate']);
+
+        $array = array();
+        $fields = array();
+
+        foreach ($board_type_array as $k => $v) {
+            if ($v['display'] == 'Y') {
+                $row = EntityRawData::DatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
+                $kk = 0;
+                while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                    $array[$kk]['dates'] = $row_obj->created;
+                    $array[$kk][$v['field']] = $row_obj->{$v['name']};
+                    $kk++;
+                }
+
+                $fields[$k]['field'] = $v['field'];
+                $fields[$k]['name'] = $v['name'];
+            }
+        }
+
+        $cells = array('C','D','E','F','G','H','I','J');
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->setActiveSheetIndex(0);
+
+        $out_put_file_full_name = $widget_obj->widget_name;
+
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue("A1", "번호");
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue("B1", "날짜시간");
+
+        foreach ($fields as $k => $v) {
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue($cells[$k]."1", $v['name']);
+        }
+
+        $cellsRow = 2;
+        foreach ($array as $k => $v) {
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue("A".$cellsRow, $k+1);
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue("B".$cellsRow, $v['dates']);
+
+            foreach ($fields as $kk => $vv) {
+                $spreadsheet->setActiveSheetIndex(0)->setCellValue($cells[$kk].$cellsRow, $v[$vv['field']]);
+            }
+
+            $cellsRow++;
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="'.$out_put_file_full_name.'.xlsx"');
+
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit;
     }
 
 //    public static function getMyChart($request) {

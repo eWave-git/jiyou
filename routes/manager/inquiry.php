@@ -48,3 +48,12 @@ $obRouter->get('/manager/table_search',[
         return new Response(200, Manager\Inquiry::getTableSearch($request));
     }
 ]);
+
+$obRouter->get('/manager/table_excel_download',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Inquiry::getTableExcelDownload($request));
+    }
+]);
