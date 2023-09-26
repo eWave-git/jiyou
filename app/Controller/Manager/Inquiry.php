@@ -61,7 +61,7 @@ class Inquiry extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
-        if (!isset($queryParams['device'])) {
+        if (!empty($queryParams['device'])) {
             $idx = $queryParams['device'] ?? '';
 
             $widget_obj = EntityWidget::getWidgetByIdx($queryParams['device'])->fetchObject(EntityWidget::class);
@@ -157,7 +157,7 @@ class Inquiry extends Page {
     public static function getTableExcelDownload($request) {
         $queryParams = $request->getQueryParams();
 
-        if (!isset($queryParams['device'])) {
+        if (!empty($queryParams['device'])) {
 
             $widget_obj = EntityWidget::getWidgetByIdx($queryParams['device'])->fetchObject(EntityWidget::class);
             $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
