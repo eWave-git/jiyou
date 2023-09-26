@@ -240,8 +240,9 @@ class Dashboard extends Page {
         $array = array();
 
         $data = "";
+
         foreach ($board_type_array as $k => $v) {
-            if ($v['display'] == 'Y') {
+            if ($v['display'] == 'Y' && $v['symbol'] != 'L') {
                 $result_1 = EntityRawData::NowLastLimitDataOne($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name']);
                 $obj_1 = $result_1->fetchObject(EntityRawData::class);
 
@@ -270,6 +271,65 @@ class Dashboard extends Page {
         return $data;
     }
 
+    public static function getTableInWidgetDataWater($widget_obj, $board_type_array) {
+        $array = array();
+
+        $data = "";
+
+        $array = array();
+        $fields = array();
+
+        foreach ($board_type_array as $k => $v) {
+            if ($v['display'] == 'Y' && $v['symbol'] == 'L') {
+                $result_1 = EntityRawData::WaterDatesDay($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['field'], 7, 1);
+                $kk = 1;
+
+                $array[$k][] = $v['name'];
+
+                while ($obj_1 = $result_1->fetchObject(EntityRawData::class)) {
+
+                    $fields[$kk] = $obj_1->created;
+                    $array[$k][] = $obj_1->{$v['field']};
+                    $kk++;
+                }
+
+            }
+        }
+
+        $data = View::render('manager/modules/dashboard/table_in_widget_water_fields', [
+            'fields_1' => $fields[1] ?? '',
+            'fields_2' => $fields[2] ?? '',
+            'fields_3' => $fields[3] ?? '',
+            'fields_4' => $fields[4] ?? '',
+            'fields_5' => $fields[5] ?? '',
+            'fields_6' => $fields[6] ?? '',
+            'fields_7' => $fields[7] ?? '',
+            'row_datas' => self::getTAbleInWidgetDataWaterRows($array),
+        ]);
+
+        return $data;
+    }
+
+    public static function getTAbleInWidgetDataWaterRows($array) {
+
+        $rows = "";
+
+        foreach ($array as $k => $v) {
+
+            $rows .= View::render('manager/modules/dashboard/table_in_widget_water_rows', [
+                'row_1' => $v[0],
+                'row_2' => $v[1],
+                'row_3' => $v[2],
+                'row_4' => $v[3],
+                'row_5' => $v[4],
+                'row_6' => $v[5],
+                'row_7' => $v[6],
+                'row_8' => $v[7],
+            ]);
+        }
+
+        return $rows;
+    }
 
     public static function getDashboardTable($request, $idx) {
         $_user = Common::get_manager();
@@ -280,10 +340,24 @@ class Dashboard extends Page {
         $widget_obj = EntityWidget::getWidgetByIdx($idx)->fetchObject(EntityWidget::class);
         $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
 
+        $data_arr = array_filter($board_type_array, function ($v, $k) {
+            return $v['display'] == "Y" && $v['symbol'] != 'L';
+        }, ARRAY_FILTER_USE_BOTH );
+
+        $data_water_arr = array_filter($board_type_array, function ($v, $k) {
+            return $v['display'] == "Y" && $v['symbol'] == 'L';
+        }, ARRAY_FILTER_USE_BOTH );
+
+        $data_display = count($data_arr) > 0 ? 'block' : 'none';
+        $data_water_display = count($data_water_arr) > 0 ? 'block' : 'none';
+
         $content = View::render('manager/modules/dashboard/table_in_widget', [
             'farm_name' => $_farm_Info->farm_name,
             'widget_name' => $widget_obj->widget_name,
             'data'  => self::getTableInWidgetData($widget_obj, $board_type_array),
+            'data_water' => self::getTableInWidgetDataWater($widget_obj, $board_type_array),
+            'data_display' => $data_display,
+            'data_water_display' => $data_water_display,
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'dashboard');

@@ -70,6 +70,19 @@ class RawData {
         ");
     }
 
+    public static function WaterDatesDay($address, $board_type, $board_number, $field, $name, $ago, $interval) {
+        return (new Database('raw_data'))->execute("
+            select
+                date_format(created_at, '%Y-%m-%d') as created,
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
+            from raw_data
+            where address={$address} and board_type={$board_type} and board_number={$board_number} and created_at >= (now() - INTERVAL {$ago} day )
+            group by FLOOR(DAY(created_at)/{$interval})*10
+            order BY idx asc  limit  1, {$ago};        
+        ");
+    }
+
+
     public static function AccumulateDatas($address, $board_type, $field, $name, $ago, $interval) {
         return (new Database('raw_data'))->execute("
             select

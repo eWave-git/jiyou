@@ -23,7 +23,10 @@
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
-        <div class="card">
+
+
+        <div class="" style="display: {{data_display}}">
+            <div class="card">
             <div class="table-responsive">
                 <table class="table table-vcenter table-bordered table-nowrap card-table">
                     <thead>
@@ -53,6 +56,27 @@
                     </tbody>
 
                 </table>
+
+            </div>
+        </div>
+        </div>
+
+        <div class=" mt-5" style="display: {{data_water_display}}">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-vcenter table-bordered table-nowrap card-table">
+                        <thead>
+                        <tr class="bg-light">
+                            <td colspan="4" class="subheader"><h3 class="card-title">{{widget_name}}</h3></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {{data_water}}
+                        </tbody>
+
+                    </table>
+
+                </div>
             </div>
         </div>
     </div>
