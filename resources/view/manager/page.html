@@ -3,6 +3,14 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+
+    <!-- 캐시를 바로 만료시킴. -->
+    <meta http-equiv="Expires" content="-1" />
+    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
+    <meta http-equiv="Pragma" content="no-cache" />
+    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
+    <meta http-equiv="Cache-Control" content="no-cache" />
+
     <title>{{title}}</title>
     <!-- CSS files -->
     <link href="{{URL}}/resources/dist/css/tabler.min.css?1684106062" rel="stylesheet"/>

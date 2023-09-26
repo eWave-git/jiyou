@@ -14,7 +14,7 @@ class Page {
         $FILE_NAME = (explode('/',$_SERVER['REQUEST_URI']))[2];
 
         if (file_exists("resources/dynamic/manager/".$FILE_NAME.".js")) {
-            $javascript_file = "<script src='".URL."/resources/dynamic/manager/".$FILE_NAME.".js' defer></script>";
+            $javascript_file = "<script src='".URL."/resources/dynamic/manager/".$FILE_NAME.".js?".date('U')."' defer></script>";
         } else {
             $javascript_file = "";
         }
