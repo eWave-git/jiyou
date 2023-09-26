@@ -3,7 +3,7 @@
 namespace App\Controller\Manager;
 
 use App\Model\Entity\Device as EntityDevice;
-use App\Model\Entity\Member as EntityMmeber;
+use App\Model\Entity\Member as EntityMember;
 use App\Model\Entity\RawData as EntityRawData;
 
 use App\Model\Entity\Widget as EntityWidget;
@@ -34,7 +34,7 @@ class Inquiry extends Page {
     public static function getTableInquiry($request) {
 
         $_user = Common::get_manager();
-        $_userInfo = EntityMmeber::getMemberById($_user);
+        $_userInfo = EntityMember::getMemberById($_user);
 
         $sdateAtedate = $postVars['sdateAtedate'] ?? date("Y-m-d")." - ".date("Y-m-d");
 
@@ -59,7 +59,7 @@ class Inquiry extends Page {
         $queryParams = $request->getQueryParams();
 
         $_user = Common::get_manager();
-        $_userInfo = EntityMmeber::getMemberById($_user);
+        $_userInfo = EntityMember::getMemberById($_user);
 
         if (!empty($queryParams['device'])) {
             $idx = $queryParams['device'] ?? '';
@@ -71,27 +71,42 @@ class Inquiry extends Page {
 
             $array = array();
             $fields = array();
+
             foreach ($board_type_array as $k => $v) {
                 if ($v['display'] == 'Y') {
-                    $row = EntityRawData::DatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
-                    $kk = 0;
-                    while ($row_obj = $row->fetchObject(EntityRawData::class)) {
-                        $array[$kk]['dates'] = $row_obj->created;
-                        $array[$kk][$v['field']] = $row_obj->{$v['name']};
-                        $kk++;
+                    if ($v['symbol'] != 'L') {
+                        $row = EntityRawData::DatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
+                        $kk = 0;
+                        while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                            $array[$kk]['dates'] = $row_obj->created;
+                            $array[$kk][$v['field']] = $row_obj->{$v['name']};
+                            $kk++;
+                        }
+
+                        $fields[$k]['field'] = $v['field'];
+                        $fields[$k]['name'] = $v['name'];
+                    } else {
+                        $row = EntityRawData::WaterDatesBetweenDatesMinute($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
+                        $kk = 0;
+                        while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                            $array[$kk]['dates'] = $row_obj->created;
+                            $array[$kk][$v['field']] = $row_obj->{$v['name']};
+                            $kk++;
+                        }
+
+                        $fields[$k]['field'] = $v['field'];
+                        $fields[$k]['name'] = $v['name'];
                     }
-
-                    $fields[$k]['field'] = $v['field'];
-                    $fields[$k]['name'] = $v['name'];
                 }
             }
 
-            if (count($fields) < 9) {
-                for ($i = count($fields); $i < 9; $i++) {
-                    $fields[$i]['filed'] = 'data' . $i;
-                    $fields[$i]['name'] = '';
-                }
-            }
+            // TODO : $fields[$i]['filed'] -> $fields[$i]['field'] 수정 해야함.
+//            if (count($fields) < 9) {
+//                for ($i = count($fields); $i < 9; $i++) {
+//                    $fields[$i]['filed'] = 'data' . $i;
+//                    $fields[$i]['name'] = '';
+//                }
+//            }
 
             $content = View::render('manager/modules/inquiry/table_inquiry', [
                 'device_options' => self::getMemberDevice($_userInfo->idx, $idx),
@@ -105,7 +120,6 @@ class Inquiry extends Page {
                 'data_7' => $fields[6]['name'] ?? '',
                 'data_8' => $fields[7]['name'] ?? '',
                 'table_datas' => self::getTableSearchDetail($array, $fields),
-
             ]);
         } else {
             $content = View::render('manager/modules/inquiry/table_inquiry', [
@@ -120,7 +134,6 @@ class Inquiry extends Page {
                 'data_7' => '',
                 'data_8' => '',
                 'table_datas' => self::getTableSearchDetail(array(), ''),
-
             ]);
         }
 
@@ -135,14 +148,14 @@ class Inquiry extends Page {
                 $data .= View::render('manager/modules/inquiry/table_inquiry_detail',[
                     'number' => $k+1,
                     'created' => $v['dates'],
-                    'data_1' => isset($fields[0]['field']) ? $v[$fields[0]['field']] : '',
-                    'data_2' => isset($fields[1]['field']) ? $v[$fields[1]['field']] : '',
-                    'data_3' => isset($fields[2]['field']) ? $v[$fields[2]['field']] : '',
-                    'data_4' => isset($fields[3]['field']) ? $v[$fields[3]['field']] : '',
-                    'data_5' => isset($fields[4]['field']) ? $v[$fields[4]['field']] : '',
-                    'data_6' => isset($fields[5]['field']) ? $v[$fields[5]['field']] : '',
-                    'data_7' => isset($fields[6]['field']) ? $v[$fields[6]['field']] : '',
-                    'data_8' => isset($fields[7]['field']) ? $v[$fields[7]['field']] : '',
+                    'data_1' => isset($fields[0]['field']) ? (isset($v[$fields[0]['field']]) ?? '0') : '',
+                    'data_2' => isset($fields[1]['field']) ? (isset($v[$fields[1]['field']]) ?? '0') : '',
+                    'data_3' => isset($fields[2]['field']) ? (isset($v[$fields[2]['field']]) ?? '0') : '',
+                    'data_4' => isset($fields[3]['field']) ? (isset($v[$fields[3]['field']]) ?? '0') : '',
+                    'data_5' => isset($fields[4]['field']) ? (isset($v[$fields[4]['field']]) ?? '0') : '',
+                    'data_6' => isset($fields[5]['field']) ? (isset($v[$fields[5]['field']]) ?? '0') : '',
+                    'data_7' => isset($fields[6]['field']) ? (isset($v[$fields[6]['field']]) ?? '0') : '',
+                    'data_8' => isset($fields[7]['field']) ? (isset($v[$fields[7]['field']]) ?? '0') : '',
                 ]);
             }
         } else {
@@ -169,16 +182,29 @@ class Inquiry extends Page {
 
             foreach ($board_type_array as $k => $v) {
                 if ($v['display'] == 'Y') {
-                    $row = EntityRawData::DatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
-                    $kk = 0;
-                    while ($row_obj = $row->fetchObject(EntityRawData::class)) {
-                        $array[$kk]['dates'] = $row_obj->created;
-                        $array[$kk][$v['field']] = $row_obj->{$v['name']};
-                        $kk++;
-                    }
+                    if ($v['symbol'] != 'L') {
+                        $row = EntityRawData::DatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
+                        $kk = 0;
+                        while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                            $array[$kk]['dates'] = $row_obj->created;
+                            $array[$kk][$v['field']] = $row_obj->{$v['name']};
+                            $kk++;
+                        }
 
-                    $fields[$k]['field'] = $v['field'];
-                    $fields[$k]['name'] = $v['name'];
+                        $fields[$k]['field'] = $v['field'];
+                        $fields[$k]['name'] = $v['name'];
+                    } else {
+                        $row = EntityRawData::WaterDatesBetweenDatesMinute($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
+                        $kk = 0;
+                        while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                            $array[$kk]['dates'] = $row_obj->created;
+                            $array[$kk][$v['field']] = $row_obj->{$v['name']};
+                            $kk++;
+                        }
+
+                        $fields[$k]['field'] = $v['field'];
+                        $fields[$k]['name'] = $v['name'];
+                    }
                 }
             }
 
@@ -202,7 +228,11 @@ class Inquiry extends Page {
                 $spreadsheet->setActiveSheetIndex(0)->setCellValue("B" . $cellsRow, $v['dates']);
 
                 foreach ($fields as $kk => $vv) {
-                    $spreadsheet->setActiveSheetIndex(0)->setCellValue($cells[$kk] . $cellsRow, $v[$vv['field']]);
+                    if (isset($v[$vv['field']])) {
+                        $spreadsheet->setActiveSheetIndex(0)->setCellValue($cells[$kk] . $cellsRow, $v[$vv['field']]);
+                    } else {
+                        $spreadsheet->setActiveSheetIndex(0)->setCellValue($cells[$kk] . $cellsRow, '0');
+                    }
                 }
 
                 $cellsRow++;
@@ -224,7 +254,7 @@ class Inquiry extends Page {
 //        $postVars = $request->getPostVars();
 //
 //        $_user = Common::get_manager();
-//        $_userInfo = EntityMmeber::getMemberById($_user);
+//        $_userInfo = EntityMember::getMemberById($_user);
 //
 //        $array = array();
 //        $array[0]['info']['idx'] = "1";
@@ -407,7 +437,7 @@ class Inquiry extends Page {
 //        $postVars = $request->getQueryParams();
 //
 //        $_user = Common::get_manager();
-//        $_userInfo = EntityMmeber::getMemberById($_user);
+//        $_userInfo = EntityMember::getMemberById($_user);
 //
 //        $member_devices = Common::getMembersDevice($_userInfo->idx);
 //
