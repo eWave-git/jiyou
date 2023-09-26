@@ -56,54 +56,73 @@ class Inquiry extends Page {
     }
 
     public static function getTableSearch($request) {
+        $queryParams = $request->getQueryParams();
+
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
-        $queryParams = $request->getQueryParams();
-        $idx = $queryParams['device'] ?? '';
 
-        $widget_obj = EntityWidget::getWidgetByIdx($queryParams['device'])->fetchObject(EntityWidget::class);
-        $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
+        if (!isset($queryParams['device'])) {
+            $idx = $queryParams['device'] ?? '';
 
-        list ($start_date, $end_date)  = explode(" - ", $queryParams['sdateAtedate']);
+            $widget_obj = EntityWidget::getWidgetByIdx($queryParams['device'])->fetchObject(EntityWidget::class);
+            $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
 
-        $array = array();
-        $fields = array();
-        foreach ($board_type_array as $k => $v) {
-            if ($v['display'] == 'Y') {
-                $row = EntityRawData::DatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
-                $kk = 0;
-                while ($row_obj = $row->fetchObject(EntityRawData::class)) {
-                    $array[$kk]['dates'] = $row_obj->created;
-                    $array[$kk][$v['field']] = $row_obj->{$v['name']};
-                    $kk++;
+            list ($start_date, $end_date) = explode(" - ", $queryParams['sdateAtedate']);
+
+            $array = array();
+            $fields = array();
+            foreach ($board_type_array as $k => $v) {
+                if ($v['display'] == 'Y') {
+                    $row = EntityRawData::DatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
+                    $kk = 0;
+                    while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                        $array[$kk]['dates'] = $row_obj->created;
+                        $array[$kk][$v['field']] = $row_obj->{$v['name']};
+                        $kk++;
+                    }
+
+                    $fields[$k]['field'] = $v['field'];
+                    $fields[$k]['name'] = $v['name'];
                 }
-
-                $fields[$k]['field'] = $v['field'];
-                $fields[$k]['name'] = $v['name'];
             }
-        }
 
-        if (count($fields) < 9) {
-            for ($i = count($fields); $i < 9; $i++)  {
-                $fields[$i]['filed'] = 'data'.$i;
-                $fields[$i]['name'] = '';
+            if (count($fields) < 9) {
+                for ($i = count($fields); $i < 9; $i++) {
+                    $fields[$i]['filed'] = 'data' . $i;
+                    $fields[$i]['name'] = '';
+                }
             }
+
+            $content = View::render('manager/modules/inquiry/table_inquiry', [
+                'device_options' => self::getMemberDevice($_userInfo->idx, $idx),
+                'sdateAtedate' => $queryParams['sdateAtedate'],
+                'data_1' => $fields[0]['name'] ?? '',
+                'data_2' => $fields[1]['name'] ?? '',
+                'data_3' => $fields[2]['name'] ?? '',
+                'data_4' => $fields[3]['name'] ?? '',
+                'data_5' => $fields[4]['name'] ?? '',
+                'data_6' => $fields[5]['name'] ?? '',
+                'data_7' => $fields[6]['name'] ?? '',
+                'data_8' => $fields[7]['name'] ?? '',
+                'table_datas' => self::getTableSearchDetail($array, $fields),
+
+            ]);
+        } else {
+            $content = View::render('manager/modules/inquiry/table_inquiry', [
+                'device_options' => self::getMemberDevice($_userInfo->idx),
+                'sdateAtedate' => $queryParams['sdateAtedate'],
+                'data_1' => '',
+                'data_2' => '',
+                'data_3' => '',
+                'data_4' => '',
+                'data_5' => '',
+                'data_6' => '',
+                'data_7' => '',
+                'data_8' => '',
+                'table_datas' => self::getTableSearchDetail(array(), ''),
+
+            ]);
         }
-
-        $content = View::render('manager/modules/inquiry/table_inquiry', [
-            'device_options' => self::getMemberDevice($_userInfo->idx, $idx),
-            'sdateAtedate'=>$queryParams['sdateAtedate'],
-            'data_1' => $fields[0]['name'] ?? '',
-            'data_2' => $fields[1]['name'] ?? '',
-            'data_3' => $fields[2]['name'] ?? '',
-            'data_4' => $fields[3]['name'] ?? '',
-            'data_5' => $fields[4]['name'] ?? '',
-            'data_6' => $fields[5]['name'] ?? '',
-            'data_7' => $fields[6]['name'] ?? '',
-            'data_8' => $fields[7]['name'] ?? '',
-            'table_datas' => self::getTableSearchDetail($array, $fields),
-
-        ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'inquiry');
     }
@@ -138,62 +157,67 @@ class Inquiry extends Page {
     public static function getTableExcelDownload($request) {
         $queryParams = $request->getQueryParams();
 
-        $widget_obj = EntityWidget::getWidgetByIdx($queryParams['device'])->fetchObject(EntityWidget::class);
-        $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
+        if (!isset($queryParams['device'])) {
 
-        list ($start_date, $end_date)  = explode(" - ", $queryParams['sdateAtedate']);
+            $widget_obj = EntityWidget::getWidgetByIdx($queryParams['device'])->fetchObject(EntityWidget::class);
+            $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
 
-        $array = array();
-        $fields = array();
+            list ($start_date, $end_date) = explode(" - ", $queryParams['sdateAtedate']);
 
-        foreach ($board_type_array as $k => $v) {
-            if ($v['display'] == 'Y') {
-                $row = EntityRawData::DatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
-                $kk = 0;
-                while ($row_obj = $row->fetchObject(EntityRawData::class)) {
-                    $array[$kk]['dates'] = $row_obj->created;
-                    $array[$kk][$v['field']] = $row_obj->{$v['name']};
-                    $kk++;
+            $array = array();
+            $fields = array();
+
+            foreach ($board_type_array as $k => $v) {
+                if ($v['display'] == 'Y') {
+                    $row = EntityRawData::DatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], $start_date, $end_date);
+                    $kk = 0;
+                    while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                        $array[$kk]['dates'] = $row_obj->created;
+                        $array[$kk][$v['field']] = $row_obj->{$v['name']};
+                        $kk++;
+                    }
+
+                    $fields[$k]['field'] = $v['field'];
+                    $fields[$k]['name'] = $v['name'];
+                }
+            }
+
+            $cells = array('C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->setActiveSheetIndex(0);
+
+            $out_put_file_full_name = $widget_obj->widget_name;
+
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue("A1", "번호");
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue("B1", "날짜시간");
+
+            foreach ($fields as $k => $v) {
+                $spreadsheet->setActiveSheetIndex(0)->setCellValue($cells[$k] . "1", $v['name']);
+            }
+
+            $cellsRow = 2;
+            foreach ($array as $k => $v) {
+                $spreadsheet->setActiveSheetIndex(0)->setCellValue("A" . $cellsRow, $k + 1);
+                $spreadsheet->setActiveSheetIndex(0)->setCellValue("B" . $cellsRow, $v['dates']);
+
+                foreach ($fields as $kk => $vv) {
+                    $spreadsheet->setActiveSheetIndex(0)->setCellValue($cells[$kk] . $cellsRow, $v[$vv['field']]);
                 }
 
-                $fields[$k]['field'] = $v['field'];
-                $fields[$k]['name'] = $v['name'];
-            }
-        }
-
-        $cells = array('C','D','E','F','G','H','I','J');
-
-        $spreadsheet = new Spreadsheet();
-        $spreadsheet->setActiveSheetIndex(0);
-
-        $out_put_file_full_name = $widget_obj->widget_name;
-
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue("A1", "번호");
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue("B1", "날짜시간");
-
-        foreach ($fields as $k => $v) {
-            $spreadsheet->setActiveSheetIndex(0)->setCellValue($cells[$k]."1", $v['name']);
-        }
-
-        $cellsRow = 2;
-        foreach ($array as $k => $v) {
-            $spreadsheet->setActiveSheetIndex(0)->setCellValue("A".$cellsRow, $k+1);
-            $spreadsheet->setActiveSheetIndex(0)->setCellValue("B".$cellsRow, $v['dates']);
-
-            foreach ($fields as $kk => $vv) {
-                $spreadsheet->setActiveSheetIndex(0)->setCellValue($cells[$kk].$cellsRow, $v[$vv['field']]);
+                $cellsRow++;
             }
 
-            $cellsRow++;
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="' . $out_put_file_full_name . '.xlsx"');
+
+
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+            exit;
+        } else {
+            $request->getRouter()->redirect('/manager/table_inquiry');
         }
-
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="'.$out_put_file_full_name.'.xlsx"');
-
-
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('php://output');
-        exit;
     }
 
 //    public static function getMyChart($request) {
