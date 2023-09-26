@@ -315,16 +315,15 @@ class Dashboard extends Page {
         $rows = "";
 
         foreach ($array as $k => $v) {
-
             $rows .= View::render('manager/modules/dashboard/table_in_widget_water_rows', [
-                'row_1' => $v[0],
-                'row_2' => $v[1],
-                'row_3' => $v[2],
-                'row_4' => $v[3],
-                'row_5' => $v[4],
-                'row_6' => $v[5],
-                'row_7' => $v[6],
-                'row_8' => $v[7],
+                'row_1' => $v[0] ?? "",
+                'row_2' => $v[1] ?? "",
+                'row_3' => $v[2] ?? "",
+                'row_4' => $v[3] ?? "",
+                'row_5' => $v[4] ?? "",
+                'row_6' => $v[5] ?? "",
+                'row_7' => $v[6] ?? "",
+                'row_8' => $v[7] ?? "",
             ]);
         }
 
