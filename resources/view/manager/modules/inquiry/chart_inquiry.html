@@ -1,0 +1,114 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    조회
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+
+            <div class="col-12">
+                <form class="card" name="frm" method="get"  action="" >
+                    <div class="card-body">
+                        <div class="form-group row">
+
+                            <label class="col-sm-auto col-form-label">장치</label>
+                            <div class="col-3" >
+                                <select class="form-select" name="device" id="device">
+                                    <option value="">선택하세요.</option>
+                                    {{device_options}}
+                                </select>
+                            </div>
+
+                            <label class="col-sm-auto col-form-label">기간</label>
+                            <div class="col-4" >
+                                <div class="row">
+                                    <input type="text" class="form-control" id="sdateAtedate" name="sdateAtedate" value="{{sdateAtedate}}"  placeholder="" style="width: 210px;">
+                                </div>
+                            </div>
+
+                            <div class="col-2 text-lg-end" >
+                                <button type="button" name="search" class="btn btn-primary" >
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                        <path d="M21 21l-6 -6"></path>
+                                        <path d="M10 13l0 .01"></path>
+                                        <path d="M10 10a1.5 1.5 0 1 0 -1.14 -2.474"></path>
+                                    </svg>
+                                    조회
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="col-12">
+                <div class="card">
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.min.js" integrity="sha512-csUso5vWY3PpIJkxLWFbPI7KkjXFhKXpUaAUp1ZLyNhxVWdQacEPH9e7Iw6Rco4es1uQNnlxdCCFkSnJ/f1ZzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.umd.min.js" integrity="sha512-ziISJqd7FOx3QNvnXiFWAfgSKqte9jMjzhrCnc7Gxpxfxjb5FdrBFg673DloeFEH6VLmTeo86yu5y/xJm38cBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/helpers.min.js" integrity="sha512-JG3S/EICkp8Lx9YhtIpzAVJ55WGnxT3T6bfiXYbjPRUoN9yu+ZM+wVLDsI/L2BWRiKjw/67d+/APw/CDn+Lm0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script>
+    $(function () {
+        $('#sdateAtedate').daterangepicker({
+            locale: {
+                // "format": 'YYYY-MM-DD HH:mm:ss',     // 일시 노출 포맷
+                "format": 'YYYY-MM-DD',     // 일시 노출 포맷
+                "applyLabel": "확인",                    // 확인 버튼 텍스트
+                "cancelLabel": "취소",                   // 취소 버튼 텍스트
+                "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
+                "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+                "customRangeLabel": "날짜지정",
+            },
+            timePicker: false,                        // 시간 노출 여부
+            showDropdowns: true,                     // 년월 수동 설정 여부
+            autoApply: true,                         // 확인/취소 버튼 사용여부
+            timePicker24Hour: true,                  // 24시간 노출 여부(ex> true : 23:50, false : PM 11:50)
+            ranges: {
+                '오늘': [moment(), moment()],
+                '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                '최근 7 일전': [moment().subtract(6, 'days'), moment()],
+                // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                // 'This Month': [moment().startOf('month'), moment().endOf('month')],
+                // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        })
+
+        $("[name='search']").click(function () {
+            $("[name='frm']").attr("action", " /manager/table_search").submit();
+        })
+
+        $("[name='excel_download']").click(function () {
+            $("[name='frm']").attr("action", " /manager/table_excel_download").submit();
+        })
+
+    });
+</script>

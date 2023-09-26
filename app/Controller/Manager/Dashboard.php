@@ -304,13 +304,13 @@ class Dashboard extends Page {
             'fields_5' => $fields[5] ?? '',
             'fields_6' => $fields[6] ?? '',
             'fields_7' => $fields[7] ?? '',
-            'row_datas' => self::getTAbleInWidgetDataWaterRows($array),
+            'row_datas' => self::getTableInWidgetDataWaterRows($array),
         ]);
 
         return $data;
     }
 
-    public static function getTAbleInWidgetDataWaterRows($array) {
+    public static function getTableInWidgetDataWaterRows($array) {
 
         $rows = "";
 

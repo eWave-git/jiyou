@@ -31,6 +31,20 @@ class Inquiry extends Page {
         return $option;
     }
 
+    public static function getChartInquiry($request) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMember::getMemberById($_user);
+
+        $sdateAtedate = $postVars['sdateAtedate'] ?? date("Y-m-d")." - ".date("Y-m-d");
+
+        $content = View::render('manager/modules/inquiry/chart_inquiry', [
+            'device_options' => self::getMemberDevice($_userInfo->idx),
+            'sdateAtedate'=>$sdateAtedate,
+        ]);
+
+        return parent::getPanel('Home > DASHBOARD', $content, 'inquiry');
+    }
+
     public static function getTableInquiry($request) {
 
         $_user = Common::get_manager();
