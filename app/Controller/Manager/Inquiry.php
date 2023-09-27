@@ -162,14 +162,14 @@ class Inquiry extends Page {
                 $data .= View::render('manager/modules/inquiry/table_inquiry_detail',[
                     'number' => $k+1,
                     'created' => $v['dates'],
-                    'data_1' => isset($fields[0]['field']) ? (isset($v[$fields[0]['field']]) ?? '0') : '',
-                    'data_2' => isset($fields[1]['field']) ? (isset($v[$fields[1]['field']]) ?? '0') : '',
-                    'data_3' => isset($fields[2]['field']) ? (isset($v[$fields[2]['field']]) ?? '0') : '',
-                    'data_4' => isset($fields[3]['field']) ? (isset($v[$fields[3]['field']]) ?? '0') : '',
-                    'data_5' => isset($fields[4]['field']) ? (isset($v[$fields[4]['field']]) ?? '0') : '',
-                    'data_6' => isset($fields[5]['field']) ? (isset($v[$fields[5]['field']]) ?? '0') : '',
-                    'data_7' => isset($fields[6]['field']) ? (isset($v[$fields[6]['field']]) ?? '0') : '',
-                    'data_8' => isset($fields[7]['field']) ? (isset($v[$fields[7]['field']]) ?? '0') : '',
+                    'data_1' => isset($fields[0]['field']) ? (isset($v[$fields[0]['field']]) ? $v[$fields[0]['field']] : '0') : '',
+                    'data_2' => isset($fields[1]['field']) ? (isset($v[$fields[1]['field']]) ? $v[$fields[1]['field']] : '0') : '',
+                    'data_3' => isset($fields[2]['field']) ? (isset($v[$fields[2]['field']]) ? $v[$fields[2]['field']] : '0') : '',
+                    'data_4' => isset($fields[3]['field']) ? (isset($v[$fields[3]['field']]) ? $v[$fields[3]['field']] : '0') : '',
+                    'data_5' => isset($fields[4]['field']) ? (isset($v[$fields[4]['field']]) ? $v[$fields[4]['field']] : '0') : '',
+                    'data_6' => isset($fields[5]['field']) ? (isset($v[$fields[5]['field']]) ? $v[$fields[5]['field']] : '0') : '',
+                    'data_7' => isset($fields[6]['field']) ? (isset($v[$fields[6]['field']]) ? $v[$fields[6]['field']] : '0') : '',
+                    'data_8' => isset($fields[7]['field']) ? (isset($v[$fields[7]['field']]) ? $v[$fields[7]['field']] : '0') : '',
                 ]);
             }
         } else {
