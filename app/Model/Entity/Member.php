@@ -19,6 +19,11 @@ class Member {
 
     public $created_at;
 
+    public static function PasswordChange($member_id, $password) {
+        return (new Database('member'))->execute(
+            "update member set `member_password`= '".$password."' where `member_id` = '".$member_id."'"
+        );
+    }
 
     public static function UpdateSubscriptionId($member_id, $subscription_id) {
         return (new Database('member'))->execute(

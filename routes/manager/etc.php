@@ -38,3 +38,21 @@ $obRouter->get('/manager/etc/group/{idx}/delete',[
         return new Response(200, Manager\Group::Group_Delete($request, $idx));
     }
 ]);
+
+$obRouter->get('/manager/etc/info/passwordChange',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Etc::Password_Change($request));
+    }
+]);
+
+$obRouter->post('/manager/etc/info/passwordChange_post',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Etc::Password_Change_Post($request));
+    }
+]);
