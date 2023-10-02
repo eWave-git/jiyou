@@ -178,9 +178,16 @@ class Dashboard extends Page {
                         $v['symbol'] = "&nbsp;&nbsp;";
                     }
 
+                    if ($v['symbol'] == 'L') {
+                        $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $v['field'], $v['field'], 1)->fetchObject(EntityRawData::class);
+                        $value = ($water_row->{$v['field']}) . " " . $v['symbol'];
+                    } else {
+                        $value = round($rew_obj->{$v['field']},1) . " " . $v['symbol'];
+                    }
+
                     $item .= View::render('manager/modules/dashboard/widget_card_item', [
                         'name' => $v['name'],
-                        'value' => round($rew_obj->{$v['field']},1) . " " . $v['symbol'],
+                        'value' => $value,
                     ]);
 
                     $_cnt++;
