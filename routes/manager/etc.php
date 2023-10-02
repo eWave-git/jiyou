@@ -39,6 +39,24 @@ $obRouter->get('/manager/etc/group/{idx}/delete',[
     }
 ]);
 
+$obRouter->post('/manager/etc/report_form_create',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Report::Report_Create($request));
+    }
+]);
+
+$obRouter->get('/manager/etc/report_form',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Report::Report_Form($request));
+    }
+]);
+
 $obRouter->get('/manager/etc/info/passwordChange',[
     'middlewares' => [
         'required-manager-login'
