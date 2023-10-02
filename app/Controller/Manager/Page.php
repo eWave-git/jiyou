@@ -63,7 +63,7 @@ class Page {
             'submenu'=>[
                 ['label' => 'etc', 'title' => '알람 수신변경', 'link' => "javascript:alert('준비중')"],
                 ['label' => 'etc', 'title' => '그룹 관리', 'link' => URL.'/manager/etc/group'],
-                ['label' => 'etc', 'title' => '레포팅', 'link' => "javascript:alert('준비중')"],
+                ['label' => 'etc', 'title' => '레포팅', 'link' => "/manager/etc/report_form"],
                 ['label' => 'etc', 'title' => '데이터 분석', 'link' => "javascript:alert('준비중')"],
             ],
         ],
