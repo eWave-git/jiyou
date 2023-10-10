@@ -397,7 +397,7 @@ class Dashboard extends Page {
                 $kk = 0;
                 while ($row_obj = $row->fetchObject(EntityRawData::class)) {
                     $array[$kk]['dates'] = $row_obj->created;
-                    $array[$kk][$v['field']] = $row_obj->{$v['name']};
+                    $array[$kk][$v['field']] = (int) $row_obj->{$v['name']};
                     $kk++;
                 }
 
