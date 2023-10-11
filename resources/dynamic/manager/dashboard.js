@@ -181,13 +181,10 @@ $(function () {
 
                     var legend = chart.children.push(
                         am5.Legend.new(root, {
-
                             x: am5.p50,
                             centerX: 300,
                             centerY: am5.m50,
                             y: am5.percent(99),
-
-
                         })
                     );
 
@@ -261,16 +258,12 @@ $(function () {
 
 
                     $.each(field, function (key, value) {
-                        if (key == 0) {
+                        if (key % 2) {
                             createAxisAndSeries(value.fieldDate, value.fieldName, false);
                         } else {
                             createAxisAndSeries(value.fieldDate, value.fieldName, true);
                         }
-                        // createAxisAndSeries(value.fieldName, true);
                     })
-
-
-
 
                     // Make stuff animate on load
                     // https://www.amcharts.com/docs/v5/concepts/animations/

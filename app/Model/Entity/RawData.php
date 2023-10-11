@@ -140,6 +140,18 @@ class RawData {
         ");
     }
 
+    public static function WaterDates24HourAgo($address, $board_type, $board_number, $field, $name) {
+        return (new Database('raw_data'))->execute("
+             select
+                date_format(created_at, '%Y-%m-%d %H:%i:00') as created,
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
+            from raw_data
+            where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at > (now() - INTERVAL 24 HOUR ) and created_at < now()
+            group by DAY(created_at),FLOOR(HOUR(created_at)/1)*10
+            order BY idx asc
+        ");
+    }
+
     public static function AvgDatesBetweenDate($address, $board_type, $board_number, $field, $name, $start, $end, $interval) {
         return (new Database('raw_data'))->execute("
             select

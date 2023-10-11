@@ -393,18 +393,35 @@ class Dashboard extends Page {
         $fields = array();
         foreach($board_type_array as $k => $v) {
             if ($v['display'] == 'Y') {
-                $row = EntityRawData::AvgDatas($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], 24, 0);
-                $kk = 0;
-                while ($row_obj = $row->fetchObject(EntityRawData::class)) {
-                    $array[$kk]['dates'] = $row_obj->created;
-                    $array[$kk][$v['field']] = (int) $row_obj->{$v['name']};
-                    $kk++;
+
+                if ($v['symbol'] == 'L') {
+                    $row = EntityRawData::WaterDates24HourAgo($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name']);
+                    $kk = 0;
+                    while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                        $array[$kk]['dates'] = $row_obj->created;
+                        $array[$kk][$v['field']] = (int) $row_obj->{$v['name']};
+                        $kk++;
+                    }
+
+                    $fields[$k]['field'] = $v['field'];
+                    $fields[$k]['name'] = $v['name'];
+                    $fields[$k]['series'] = 'series'.$k;
+                    $fields[$k]['yAxis'] = 'yAxis'.$k;
+                } else {
+                    $row = EntityRawData::AvgDatas($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'], 24, 0);
+                    $kk = 0;
+                    while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                        $array[$kk]['dates'] = $row_obj->created;
+                        $array[$kk][$v['field']] = (int) $row_obj->{$v['name']};
+                        $kk++;
+                    }
+
+                    $fields[$k]['field'] = $v['field'];
+                    $fields[$k]['name'] = $v['name'];
+                    $fields[$k]['series'] = 'series'.$k;
+                    $fields[$k]['yAxis'] = 'yAxis'.$k;
                 }
 
-                $fields[$k]['field'] = $v['field'];
-                $fields[$k]['name'] = $v['name'];
-                $fields[$k]['series'] = 'series'.$k;
-                $fields[$k]['yAxis'] = 'yAxis'.$k;
             }
         }
 
