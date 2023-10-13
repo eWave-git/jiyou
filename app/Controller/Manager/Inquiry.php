@@ -264,6 +264,61 @@ class Inquiry extends Page {
         }
     }
 
+    public static function getChartSearch($request) {
+        $postVars = $request->getPostVars();
+
+        if (!empty($postVars['widget_idx'])) {
+            $widget_obj = EntityWidget::getWidgetByIdx($postVars['widget_idx'])->fetchObject(EntityWidget::class);
+            $board_type_array = Common::getbordTypeNameByWidgetNameArray($widget_obj->device_idx, $widget_obj->board_type);
+
+            list ($start_date, $end_date) = explode(" - ", $postVars['sdateAtedate']);
+
+            $array = array();
+            $fields = array();
+
+            foreach($board_type_array as $k => $v) {
+                if ($v['display'] == 'Y') {
+
+                    if ($v['symbol'] == 'L') {
+                        $row = EntityRawData::WaterDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'],  $start_date, $end_date);
+                        $kk = 0;
+                        while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                            $array[$kk]['dates'] = $row_obj->created;
+                            $array[$kk][$v['field']] = (int) $row_obj->{$v['name']};
+                            $kk++;
+                        }
+
+                        $fields[$k]['field'] = $v['field'];
+                        $fields[$k]['name'] = $v['name'];
+                        $fields[$k]['series'] = 'series'.$k;
+                        $fields[$k]['yAxis'] = 'yAxis'.$k;
+                    } else {
+                        $row = EntityRawData::AvgDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'],  $start_date, $end_date);
+                        $kk = 0;
+                        while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                            $array[$kk]['dates'] = $row_obj->created;
+                            $array[$kk][$v['field']] = (int) $row_obj->{$v['name']};
+                            $kk++;
+                        }
+
+                        $fields[$k]['field'] = $v['field'];
+                        $fields[$k]['name'] = $v['name'];
+                        $fields[$k]['series'] = 'series'.$k;
+                        $fields[$k]['yAxis'] = 'yAxis'.$k;
+                    }
+
+                }
+            }
+
+            return [
+                'success' => true,
+                'obj' => $array,
+                'fields' => $fields,
+            ];
+        }
+
+    }
+
 //    public static function getMyChart($request) {
 //        $postVars = $request->getPostVars();
 //

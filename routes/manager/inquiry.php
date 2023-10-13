@@ -66,3 +66,13 @@ $obRouter->get('/manager/table_excel_download',[
         return new Response(200, Manager\Inquiry::getTableExcelDownload($request));
     }
 ]);
+
+$obRouter->post('/manager/chart_search',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Inquiry::getChartSearch($request), 'application/json');
+    }
+]);

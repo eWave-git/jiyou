@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use app\Utils\Common;
 use http\Encoding\Stream\Inflate;
 use \WilliamCosta\DatabaseManager\Database;
 
@@ -33,12 +34,7 @@ class RawData {
                max({$field}) as max,
                avg({$field}) as avg
             from raw_data
-            where 
-                address={$address} 
-              and board_type={$board_type} 
-              and board_number={$board_number}
-              and created_at > (now() - INTERVAL {$ago} HOUR)
-              and created_at < now()
+            where address={$address} and board_type={$board_type} and board_number={$board_number} and created_at > (now() - INTERVAL {$ago} HOUR) and created_at < now()
             order by created_at desc
         ");
     }
@@ -93,18 +89,6 @@ class RawData {
         ");
     }
 
-
-    public static function AccumulateDatas($address, $board_type, $field, $name, $ago, $interval) {
-        return (new Database('raw_data'))->execute("
-            select
-                date_format(created_at, '%Y-%m-%d %H:%i:00') as created,
-                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
-            from raw_data
-            where address={$address} and board_type={$board_type} and  created_at <= (now() - INTERVAL {$ago} HOUR )
-            group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/{$interval})*10
-            order BY idx asc
-        ");
-    }
     public static function AvgDatas($address, $board_type, $board_number, $field, $name, $ago, $interval) {
         return (new Database('raw_data'))->execute("
             select
@@ -152,18 +136,55 @@ class RawData {
         ");
     }
 
-    public static function AvgDatesBetweenDate($address, $board_type, $board_number, $field, $name, $start, $end, $interval) {
+    public static function AvgDatesBetweenDate($address, $board_type, $board_number, $field, $name, $start, $end) {
+
+        if (Common::date_diff($start, $end) >= 1) {
+            $interval = 24;
+        } else {
+            $interval = 1;
+        }
+
         return (new Database('raw_data'))->execute("
             select
-                DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:00') as created,
+                DATE_FORMAT(created_at, '%Y-%m-%d %H:00:00') as created,
                 avg({$field}) as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and (created_at >= '{$start} 00:00:00' and created_at <= '{$end} 23:59:59')
-            group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/{$interval})*10
+            group by DAY(created_at),FLOOR(HOUR(created_at)/{$interval})*10
             order by created asc
         ");
     }
 
+    public static function WaterDatesBetweenDate($address, $board_type, $board_number, $field, $name, $start, $end) {
+        if (Common::date_diff($start, $end) >= 1) {
+            $interval = 24;
+        } else {
+            $interval = 1;
+        }
+
+        return (new Database('raw_data'))->execute("
+             select
+                DATE_FORMAT(created_at, '%Y-%m-%d %H:00:00') as created,
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
+            from raw_data
+            where address={$address} and board_type={$board_type} and board_number={$board_number} and (created_at >= '{$start} 00:00:00' and created_at <= '{$end} 23:59:59')
+            group by DAY(created_at),FLOOR(HOUR(created_at)/{$interval})*10
+            order BY idx asc
+        ");
+    }
+
+
+    public static function AccumulateDatas($address, $board_type, $field, $name, $ago, $interval) {
+        return (new Database('raw_data'))->execute("
+            select
+                date_format(created_at, '%Y-%m-%d %H:%i:00') as created,
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
+            from raw_data
+            where address={$address} and board_type={$board_type} and  created_at <= (now() - INTERVAL {$ago} HOUR )
+            group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/{$interval})*10
+            order BY idx asc
+        ");
+    }
     public static function TwoAvgData($data1, $data2, $interval, $minute_interval) {
         return (new Database('raw_data'))->execute("
             select
