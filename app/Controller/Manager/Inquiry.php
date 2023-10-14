@@ -280,7 +280,7 @@ class Inquiry extends Page {
                 if ($v['display'] == 'Y') {
 
                     if ($v['symbol'] == 'L') {
-                        $row = EntityRawData::WaterDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'],  $start_date, $end_date);
+                        $row = EntityRawData::WaterDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, 1, $v['field'], $v['name'],  $start_date, $end_date);
                         $kk = 0;
                         while ($row_obj = $row->fetchObject(EntityRawData::class)) {
                             $array[$kk]['dates'] = $row_obj->created;
@@ -293,7 +293,7 @@ class Inquiry extends Page {
                         $fields[$k]['series'] = 'series'.$k;
                         $fields[$k]['yAxis'] = 'yAxis'.$k;
                     } else {
-                        $row = EntityRawData::AvgDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], $v['name'],  $start_date, $end_date);
+                        $row = EntityRawData::AvgDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number,1, $v['field'], $v['name'],  $start_date, $end_date);
                         $kk = 0;
                         while ($row_obj = $row->fetchObject(EntityRawData::class)) {
                             $array[$kk]['dates'] = $row_obj->created;
