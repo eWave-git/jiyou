@@ -140,7 +140,7 @@ class RawData {
 
         return (new Database('raw_data'))->execute("
             select
-                DATE_FORMAT(created_at, '%Y-%m-%d %H:00:00') as created,
+                DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:00') as created,
                 avg({$field}) as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and (created_at >= '{$start} 00:00:00' and created_at <= '{$end} 23:59:59')
@@ -153,7 +153,7 @@ class RawData {
 
         return (new Database('raw_data'))->execute("
              select
-                DATE_FORMAT(created_at, '%Y-%m-%d %H:00:00') as created,
+                DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:00') as created,
                 (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and (created_at >= '{$start} 00:00:00' and created_at <= '{$end} 23:59:59')

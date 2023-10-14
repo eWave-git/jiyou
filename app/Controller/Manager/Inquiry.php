@@ -284,7 +284,7 @@ class Inquiry extends Page {
                         $kk = 0;
                         while ($row_obj = $row->fetchObject(EntityRawData::class)) {
                             $array[$kk]['dates'] = $row_obj->created;
-                            $array[$kk][$v['field']] = (int) $row_obj->{$v['name']};
+                            $array[$kk][$v['field']] = round($row_obj->{$v['name']},1);
                             $kk++;
                         }
 
@@ -297,7 +297,7 @@ class Inquiry extends Page {
                         $kk = 0;
                         while ($row_obj = $row->fetchObject(EntityRawData::class)) {
                             $array[$kk]['dates'] = $row_obj->created;
-                            $array[$kk][$v['field']] = (int) $row_obj->{$v['name']};
+                            $array[$kk][$v['field']] =  round($row_obj->{$v['name']}, 1);
                             $kk++;
                         }
 
