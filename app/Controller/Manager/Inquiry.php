@@ -273,40 +273,53 @@ class Inquiry extends Page {
 
             list ($start_date, $end_date) = explode(" - ", $postVars['sdateAtedate']);
 
+            $type = $postVars['type'];
+            $interval = $postVars['interval'];
+
             $array = array();
             $fields = array();
 
             foreach($board_type_array as $k => $v) {
                 if ($v['display'] == 'Y') {
 
-                    if ($v['symbol'] == 'L') {
-                        $row = EntityRawData::WaterDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, 1, $v['field'], $v['name'],  $start_date, $end_date);
-                        $kk = 0;
-                        while ($row_obj = $row->fetchObject(EntityRawData::class)) {
-                            $array[$kk]['dates'] = $row_obj->created;
-                            $array[$kk][$v['field']] = round($row_obj->{$v['name']},1);
-                            $kk++;
-                        }
+                    if ($type == "normal") {
+                        if ($v['symbol'] != 'L') {
+                            $row = EntityRawData::AvgDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number,1, $v['field'], $v['name'],  $start_date, $end_date);
+                            $kk = 0;
+                            while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                                $array[$kk]['dates'] = $row_obj->created;
+                                $array[$kk][$v['field']] =  round($row_obj->{$v['name']}, 1);
+                                $kk++;
+                            }
 
-                        $fields[$k]['field'] = $v['field'];
-                        $fields[$k]['name'] = $v['name'];
-                        $fields[$k]['series'] = 'series'.$k;
-                        $fields[$k]['yAxis'] = 'yAxis'.$k;
-                    } else {
-                        $row = EntityRawData::AvgDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number,1, $v['field'], $v['name'],  $start_date, $end_date);
-                        $kk = 0;
-                        while ($row_obj = $row->fetchObject(EntityRawData::class)) {
-                            $array[$kk]['dates'] = $row_obj->created;
-                            $array[$kk][$v['field']] =  round($row_obj->{$v['name']}, 1);
-                            $kk++;
+                            $fields[$k]['field'] = $v['field'];
+                            $fields[$k]['name'] = $v['name'];
+                            $fields[$k]['series'] = 'series'.$k;
+                            $fields[$k]['yAxis'] = 'yAxis'.$k;
                         }
+                    } else if ($type == "water") {
+                        if ($v['symbol'] == 'L') {
 
-                        $fields[$k]['field'] = $v['field'];
-                        $fields[$k]['name'] = $v['name'];
-                        $fields[$k]['series'] = 'series'.$k;
-                        $fields[$k]['yAxis'] = 'yAxis'.$k;
+                            if ($interval == 'H') {
+                                $intervals = 1;
+                            } else if ($interval == 'D') {
+                                $intervals = 24;
+                            }
+
+                            $row = EntityRawData::WaterDatesBetweenDate($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $intervals, $v['field'], $v['name'],  $start_date, $end_date);
+                            $kk = 0;
+                            while ($row_obj = $row->fetchObject(EntityRawData::class)) {
+                                $array[$kk]['dates'] = $row_obj->created;
+                                $array[$kk][$v['field']] = round($row_obj->{$v['name']},1);
+                                $kk++;
+                            }
+
+                            $fields[$k]['field'] = $v['field'];
+                            $fields[$k]['name'] = $v['name'];
+                            $fields[$k]['series'] = 'series'.$k;
+                            $fields[$k]['yAxis'] = 'yAxis'.$k;
+                        }
                     }
-
                 }
             }
 

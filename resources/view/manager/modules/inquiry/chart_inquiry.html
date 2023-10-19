@@ -21,7 +21,7 @@
                         <div class="form-group row">
 
                             <label class="col-sm-auto col-form-label">장치</label>
-                            <div class="col-3" >
+                            <div class="col-2" >
                                 <select class="form-select" name="device" id="device">
                                     <option value="">선택하세요.</option>
                                     {{device_options}}
@@ -29,13 +29,28 @@
                             </div>
 
                             <label class="col-sm-auto col-form-label">기간</label>
-                            <div class="col-4" >
+                            <div class="col-2" >
                                 <div class="row">
                                     <input type="text" class="form-control" id="sdateAtedate" name="sdateAtedate" value="{{sdateAtedate}}"  placeholder="" style="width: 210px;">
                                 </div>
                             </div>
 
-                            <div class="col-2 text-lg-end" >
+                            <label class="col-sm-auto col-form-label">데이터종류</label>
+                            <div class="col-2" >
+                                <select class="form-select" name="type" id="type">
+                                    <option value="normal">일반</option>
+                                    <option value="water">음수데이터</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-auto col-form-label">데이터간격</label>
+                            <div class="col-2" >
+                                <select class="form-select" name="interval" id="interval" disabled>
+                                    <option value="H">시간당 데이터</option>
+                                    <option value="D">일간 데이터</option>
+                                </select>
+                            </div>
+
+                            <div class="col-1 text-lg-end" >
                                 <button type="button" name="search" class="btn btn-primary" >
                                     <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -119,6 +134,15 @@
             }
         })
 
+        $('#type').change(function () {
+
+            if ($(this).val() == 'water') {
+                $('#interval').attr("disabled", false);
+            } else {
+                $('#interval').attr("disabled", true);
+            }
+        });
+
         $("[name='search']").click(function () {
             chartDisposeRoot();
             $.ajax({
@@ -127,6 +151,8 @@
                 data: {
                     widget_idx:$("[name='device']").val(),
                     sdateAtedate:$("[name='sdateAtedate']").val(),
+                    type:$("[name='type']").val(),
+                    interval:$("[name='interval']").val(),
                 },
                 dataType: "json",
                 success:function(obj){

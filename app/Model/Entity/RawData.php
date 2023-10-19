@@ -157,7 +157,7 @@ class RawData {
                 (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and (created_at >= '{$start} 00:00:00' and created_at <= '{$end} 23:59:59')
-            group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/{$interval})*10
+            group by DAY(created_at),FLOOR(HOUR(created_at)/{$interval})*10
             order BY idx asc
         ");
     }
