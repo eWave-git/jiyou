@@ -1,125 +1,73 @@
-<!-- Page header -->
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    조회
-                </h2>
-            </div>
-        </div>
+<div class="content">
+    <div class="tit_area">
+        <h2>표 조회</h2>
     </div>
-</div>
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-cards">
-
-            <div class="col-12">
-                <form class="card" name="frm" method="get"  action="" >
-                    <div class="card-body">
-                        <div class="form-group row">
-
-                                <label class="col-sm-auto col-form-label">장치</label>
-                                <div class="col-3" >
-                                    <select class="form-select" name="device" id="device">
-                                        <option value="">선택하세요.</option>
-                                        {{device_options}}
-                                    </select>
-                                </div>
-
-                                <label class="col-sm-auto col-form-label">기간</label>
-                                <div class="col-4" >
-                                    <div class="row">
-                                        <input type="text" class="form-control" id="sdateAtedate" name="sdateAtedate" value="{{sdateAtedate}}"  placeholder="" style="width: 210px;">
-                                    </div>
-                                </div>
-
-                            <div class="col-2 text-lg-end" >
-                                <button type="button" name="search" class="btn btn-primary" >
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                                        <path d="M21 21l-6 -6"></path>
-                                        <path d="M10 13l0 .01"></path>
-                                        <path d="M10 10a1.5 1.5 0 1 0 -1.14 -2.474"></path>
-                                    </svg>
-                                    조회
-                                </button>
-                            </div>
-                            <div class="col-2 text-lg-end" >
-                                <button type="button" name="excel_download" class="btn btn-primary" >
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-question" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                                        <path d="M21 21l-6 -6"></path>
-                                        <path d="M10 13l0 .01"></path>
-                                        <path d="M10 10a1.5 1.5 0 1 0 -1.14 -2.474"></path>
-                                    </svg>
-                                    엑셀 다운로드
-                                </button>
-                            </div>
+    <form class="card" name="frm" method="get"  action="" >
+        <div class="tb_search">
+            <div class="search_wrap">
+                <div class="form_conbox">
+                    <div class="item">
+                        <div class="form_tit">장치</div>
+                        <div class="form_select">
+                            <select name="device" id="device">
+                                <option value="">선택하세요.</option>
+                                {{device_options}}
+                            </select>
                         </div>
                     </div>
-
-                </form>
-            </div>
-
-            <div class="col-12">
-                <div class="card">
-                    <div class="table-responsive" >
-                        <table id="list" class="table table-vcenter card-table table-striped">
-                            <colgroup>
-                                <col width="5%">
-                                <col width="20%">
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="10%">
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <th>번호</th>
-                                <th>날짜 시간</th>
-                                <th>{{data_1}}</th>
-                                <th>{{data_2}}</th>
-                                <th>{{data_3}}</th>
-                                <th>{{data_4}}</th>
-                                <th>{{data_5}}</th>
-                                <th>{{data_6}}</th>
-                                <th>{{data_7}}</th>
-                                <th>{{data_8}}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                {{table_datas}}
-                            </tbody>
-                        </table>
+                    <div class="item">
+                        <div class="form_tit">기간</div>
+                        <div class="form_input">
+                            <input type="text" class="inpt_txt" id="sdateAtedate" name="sdateAtedate" value="{{sdateAtedate}}">
+                        </div>
                     </div>
                 </div>
             </div>
-
+            <div class="btn_wrap">
+                <button type="button" name="search" class="btn sub_btn btn_search"><span>조회</span></button>
+                <button type="button" name="excel_download" class="btn main_btn btn_down"><span>엑셀 다운로드</span></button>
+            </div>
         </div>
-
+    </form>
+    <div class="bd_wrap">
+        <div class="table_wrap of_x">
+            <table class="form_table tb_type2">
+                <caption class="blind">설정된 알람</caption>
+                <colgroup>
+                    <col style="width: 7%">
+                    <col style="width: 15%">
+                    <col style="width: 9%">
+                    <col style="width: 9%">
+                    <col style="width: 12%">
+                    <col style="width: 12%">
+                    <col style="width: 12%">
+                    <col style="width: 12%">
+                    <col style="width: 12%">
+                    <col style="width: 12%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">날짜 시간</th>
+                    <th scope="col">{{data_1}}</th>
+                    <th scope="col">{{data_2}}</th>
+                    <th scope="col">{{data_3}}</th>
+                    <th scope="col">{{data_4}}</th>
+                    <th scope="col">{{data_5}}</th>
+                    <th scope="col">{{data_6}}</th>
+                    <th scope="col">{{data_7}}</th>
+                    <th scope="col">{{data_8}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {{table_datas}}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<!-- chart.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.min.js" integrity="sha512-csUso5vWY3PpIJkxLWFbPI7KkjXFhKXpUaAUp1ZLyNhxVWdQacEPH9e7Iw6Rco4es1uQNnlxdCCFkSnJ/f1ZzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.umd.min.js" integrity="sha512-ziISJqd7FOx3QNvnXiFWAfgSKqte9jMjzhrCnc7Gxpxfxjb5FdrBFg673DloeFEH6VLmTeo86yu5y/xJm38cBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/helpers.min.js" integrity="sha512-JG3S/EICkp8Lx9YhtIpzAVJ55WGnxT3T6bfiXYbjPRUoN9yu+ZM+wVLDsI/L2BWRiKjw/67d+/APw/CDn+Lm0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>-->
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <script>
     $(function () {
         $('#sdateAtedate').daterangepicker({

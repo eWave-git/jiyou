@@ -1,93 +1,37 @@
-<!-- Page header -->
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    알람설정
-                </h2>
-            </div>
-
-
-            <!-- Page title actions -->
-
-            <div class="col-auto ms-auto d-print-none">
-                <a href="/manager/alarm_form">
-                    <button type="button" class="btn btn-primary">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
-
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        알람 추가
-                    </button>
-                </a>
-            </div>
-
-
+<div class="content">
+    <div class="tit_area">
+        <h2>설정된 알람</h2>
+        <div class="btn_wrap">
+            <a href="/manager/alarm_form" class="btn btn_add"><span>알람 추가</span></a>
+        </div>
+    </div>
+    <div class="bd_wrap">
+        <div class="table_wrap of_x">
+            <table class="form_table tb_type1">
+                <caption class="blind">설정된 알람</caption>
+                <colgroup>
+                    <col style="width: 7%">
+                    <col>
+                    <col style="width: 13%">
+                    <col style="width: 15%">
+                    <col style="width: 21%">
+                    <col style="width: 8%">
+                    <col style="width: 14%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">순서</th>
+                    <th scope="col">UPA 이름</th>
+                    <th scope="col">데이터 이름</th>
+                    <th scope="col">설정 범위</th>
+                    <th scope="col">등록 일시</th>
+                    <th scope="col" colspan="2">활성화</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{alarm_list_item}}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-cards">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">설정된 알람</h3>
-                    </div>
-                    <div class="table-responsive" >
-                        <table id="farm_list" class="table table-vcenter card-table">
-                            <colgroup>
-                                <col width="5%">
-                                <col width="">
-                                <col width="10%">
-                                <col width="12%">
-                                <col width="15%">
-                                <col width="5%">
-
-                                <col width="5%">
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <th>순서</th>
-                                <th>UPA 이름</th>
-                                <th>데이터 이름</th>
-                                <th>설정범위</th>
-                                <th>등록 일시</th>
-                                <th>활성화</th>
-
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                {{alarm_list_item}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    $(function () {
-        $("[name='activation']").change(function () {
-            $.ajax({
-                url:'/manager/alarm/setActiveChange',
-                type:'post',
-                data: {
-                    idx:$(this).data('idx'),
-                    active:$(this).is(':checked')
-                },
-                dataType: "json",
-                success:function(obj){
-                    if (obj.success) {
-
-                    }
-                }
-            })
-        });
-    });
-</script>
-

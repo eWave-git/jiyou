@@ -195,6 +195,7 @@ $(function () {
                         });
                         var yAxis = chart.yAxes.push(
                             am5xy.ValueAxis.new(root, {
+                                // visible: false,
                                 maxDeviation: 1,
                                 renderer: yRenderer
                             })

@@ -1,42 +1,34 @@
-<div class="page">
+<!-- #WRAP -->
+<div id="wrap">
+    <!-- #LNB -->
     {{menu}}
+    <!--// #LNB -->
 
-    <div class="page-wrapper">
-        {{content}}
-    </div>
-
-    <footer class="footer footer-transparent d-print-none">
-        <div class="container-xl">
-            <div class="row text-center align-items-center flex-row-reverse">
-                <div class="col-lg-auto ms-lg-auto">
-<!--                    <ul class="list-inline list-inline-dots mb-0">-->
-<!--                        <li class="list-inline-item"><a href="https://tabler.io/docs" target="_blank" class="link-secondary" rel="noopener">Documentation</a></li>-->
-<!--                        <li class="list-inline-item"><a href="./license.html" class="link-secondary">License</a></li>-->
-<!--                        <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>-->
-<!--                        <li class="list-inline-item">-->
-<!--                            <a href="https://github.com/sponsors/codecalm" target="_blank" class="link-secondary" rel="noopener">-->
-<!--                                &lt;!&ndash; Download SVG icon from http://tabler-icons.io/i/heart &ndash;&gt;-->
-<!--                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>-->
-<!--                                Sponsor-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
+    <!-- #CONTENTS -->
+    <div id="contents">
+        <!-- #header -->
+        <header id="header">
+            <div class="inner">
+                <div class="log_btn">
+                    <a href="{{URL}}/manager/etc/info/passwordChange" class="lock"><span class="blind">LOCK</span></a>
+                    <a href="{{URL}}/manager/logout" class="logout"><span>Logout</span></a>
                 </div>
-                <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                    <ul class="list-inline list-inline-dots mb-0">
-                        <li class="list-inline-item">
-                            Copyright &copy; 2023
-                            <a href="." class="link-secondary">ewave</a>.
-                            All rights reserved.
-                        </li>
-<!--                        <li class="list-inline-item">-->
-<!--                            <a href="./changelog.html" class="link-secondary" rel="noopener">-->
-<!--                                v1.0.0-beta19-->
-<!--                            </a>-->
-<!--                        </li>-->
-                    </ul>
+                <div class="mo_wrap">
+                    <h1>
+                        <a href="home.html"><span class="blind">ewave</span></a>
+                    </h1>
+                    <button class="site_btn"></button>
                 </div>
             </div>
-        </div>
-    </footer>
+        </header>
+        <!-- // #header -->
+
+        <!-- Content -->
+        {{content}}
+        <!--// Content -->
+    </div>
+    <!-- // #CONTENTS -->
+
+
 </div>
+<!-- // WRAP -->

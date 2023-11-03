@@ -1,112 +1,77 @@
-<!-- Page header -->
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    알람설정
-                </h2>
-            </div>
+<div class="content">
+    <div class="tit_area">
+        <h2>알람 설정</h2>
+    </div>
+    <div class="bd_wrap form_alarm_set">
+        <form class="card" method="post" action="{{action}}" >
+            <fieldset>
+                <legend>알람 설정</legend>
+                <strong class="form_caption">알람 등록</strong>
+                <div class="form_conbox">
+                    <div class="item">
+                        <div class="form_tit">장치<span class="required">*</span></div>
+                        <div class="form_select">
+                            <select name="device" id="device">
+                                <option value="">선택하세요.</option>
+                                {{device_options}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="form_tit">데이터<span class="required">*</span></div>
+                        <div class="form_select">
+                            <select name="board" id="board">
+                                <option value="">선택하세요.</option>
+                                {{board_options}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="form_tit">알림설정범위<span class="required">*</span></div>
+                        <div class="form_select">
+                            <select name="alarm_range" id="alarm_range">
+                                <option value="between">적정범위</option>
+                                <option value="up">이상</option>
+                                <option value="down">이하</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item" id="between_row">
+                        <div class="form_tit">정상범위<span class="required">*</span></div>
+                        <div class="form_set n2">
+                            <input type="text" class="inpt_txt" placeholder="0" id="between_min" name="between_min">
+                            <span class="bar">~</span>
+                            <input type="text" class="inpt_txt" placeholder="0" id="between_max" name="between_max">
+                        </div>
+                    </div>
 
-        </div>
+                    <div class="item" id="up_row" style="display: none;">
+                        <div class="form_tit">이상<span class="required">*</span></div>
+                        <div class="form_set n2">
+                            <input type="text" class="inpt_txt" placeholder="0"  id="up_max" name="up_max"><span class="bar">이상</span>
+                        </div>
+                    </div>
+
+                    <div class="item" id="down_row" style="display: none;">
+                        <div class="form_tit">이하<span class="required">*</span></div>
+                        <div class="form_set n2">
+                            <input type="text" class="inpt_txt" placeholder="0"  id="down_min" name="down_min"><span class="bar">이하</span>
+                        </div>
+                    </div>
+
+                </div>
+                <input type="hidden" name="target_user" value="{{target_user}}">
+                <input type="hidden" name="activation" value="Y">
+                <div class="btn_wrap form_btn_wrap">
+                    <!-- <button type="button" class="btn sub_btn">저장</button> --><!-- 활성화시 class="sub_btn" -->
+                    <button type="submit" class="btn disable">저장</button><!-- 비활성화시 class="disable" -->
+                    <a href="/manager/alarm_list" class="btn line_btn">목록</a>
+                </div>
+            </fieldset>
+        </form>
     </div>
 </div>
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-cards">
-            <div class="col-12">
-                <form class="card" method="post" action="{{action}}" >
-                    <div class="card-header">
-                        <h3 class="card-title">알람 등록</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">장치</label>
-                            <div class="col">
-                                <select class="form-select" name="device" id="device">
-                                    <option value="">선택하세요.</option>
-                                    {{device_options}}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">데이터</label>
-                            <div class="col">
-                                <select class="form-select" name="board" id="board">
-                                    <option value="">선택하세요.</option>
-                                    {{board_options}}
-                                </select>
-                            </div>
-                        </div>
 
-                        <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">알람설정범위</label>
-                            <div class="col">
-                                <select class="form-select" name="alarm_range" id="alarm_range">
-                                    <option value="between">적정범위</option>
-                                    <option value="up">이상</option>
-                                    <option value="down">이하</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3 row" id="between_row">
-                            <label class="col-2 col-form-label required">정상범위</label>
-                            <div class="col">
-                                <div class="row">
-                                    <input type="text" id="between_min" name="between_min" class="form-control" placeholder="" value="{{min}}" style="width: 150px;">&nbsp;~&nbsp;
-                                    <input type="text" id="between_max" name="between_max" class="form-control" placeholder="" value="{{max}}" style="width: 150px;">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row" id="up_row" style="display: none;">
-                            <label class="col-2 col-form-label required">이상</label>
-                            <div class="col">
-                                <div class="row">
-                                    <input type="text" id="up_max" name="up_max" class="form-control" placeholder="" value="{{max}}" style="width: 150px;"> <div class="col col-form-label"> 이상</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row" id="down_row" style="display: none;">
-                            <label class="col-2 col-form-label required">이하</label>
-                            <div class="col">
-                                <div class="row">
-                                    <input type="text" id="down_min" name="down_min" class="form-control" placeholder="" value="{{min}}" style="width: 150px;"> <div class="col col-form-label"> 이하</div>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="target_user" value="{{target_user}}">
-                        <input type="hidden" name="activation" value="Y">
-<!--                        <div class="mb-3 row">-->
-<!--                            <label class="col-2 col-form-label required">발송 대상</label>-->
-<!--                            <div class="col">-->
-<!--                                <div class="form-selectgroup form-selectgroup-pills">-->
-<!--                                    {{target_user}}-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="mb-3 row">-->
-<!--                            <label class="col-2 col-form-label required">활성화</label>-->
-<!--                            <div class="col">-->
-<!--                                <label class="form-check form-switch">-->
-<!--                                    <input class="form-check-input" type="checkbox" name="activation" value="Y" {{checked}}>-->
-<!--                                    <span class="form-check-label"></span>-->
-<!--                                </label>-->
-<!--                            </div>-->
-<!--                        </div>-->
-                    </div>
-                    <div class="card-footer text-center">
-                        <button type="submit" class="btn btn-primary">저장</button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/manager/alarm_list"><button type="button" class="btn btn-secondary">목록</button></a>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     $(function () {
         $("#alarm_range").change(function () {

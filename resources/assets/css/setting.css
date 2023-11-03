@@ -1,0 +1,155 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+/* ************************************************************************************************************************************************************
+						《 setting.css 》
+************************************************************************************************************************************************************ */
+
+/* ------------------------------ [ Font ] ------------------------------------------------------------------------------------------ */
+
+/* ------------------------------ [ Layout Reset ] ------------------------------------------------------------------------------------------ */
+/* Reset */
+html,body,div,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,
+abbr,address,big,cite,code,del,dfn,font,figure,figcaption,img,ins,q,s,samp,small,strike,sub,sup,tt,var,
+b,u,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td {
+	color:#000000;
+	margin:0;
+	padding:0;
+}
+button,input,textarea {
+	-webkit-text-size-adjust:none;
+	-webkit-appearance:none;
+	-webkit-border-radius:0;
+	border:none;
+	border-radius:0;
+	margin:0;
+	padding:0;
+}
+button {
+	background:none;
+	border:none;
+	color:inherit;
+	cursor:pointer;
+}
+button:disabled {
+	cursor:default;
+}
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+	table-layout:fixed;
+	width:100%;
+}
+select {
+	background-color:transparent;
+	border:none;
+	letter-spacing:inherit;
+	appearance:none;
+	-webkit-appearance:none;
+	-moz-appearance:none;
+	-webkit-font-smoothing:antialiased;
+	border:none;
+	border-radius:0;
+	margin:0;
+	padding:0;
+}
+select::-ms-expand {
+	display:none; /* 화살표 없애기 for IE10, 11 */
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+	font-style:normal;
+}
+ul,li,ol {
+	list-style-type:none;
+}
+hr {
+	display:none;
+}
+legend,caption {
+	overflow:hidden;
+	visibility:hidden;
+	position:absolute;
+	font-size:0;
+	line-height:0;
+	height:0;
+	z-index:-1;
+}
+a,a:active,input:active,button:active,select:active,label:active,
+a:focus,input:focus,button:focus,select:focus,label:focus {
+	text-decoration:none;
+	outline:none;
+}
+a,span,em,strong {
+	color:inherit;
+	font:inherit;
+	border:0;
+	margin:0;
+	padding:0;
+	-webkit-font-smoothing:antialiased;
+}
+a,input,button,select,label {
+	-webkit-tap-highlight-color:transparent;
+}
+::-webkit-input-placeholder {
+	color:#B1B1B1;
+	font:inherit;
+	line-height:inherit;
+}
+input:disabled::-webkit-input-placeholder {
+	color:#B1B1B1;
+}
+:-moz-placeholder {
+	color:#B1B1B1;
+	font:inherit;
+	line-height:inherit;
+}
+input:disabled:-moz-placeholder {
+	color:#B1B1B1;
+}
+::-moz-placeholder {
+	color:#B1B1B1;
+	font:inherit;
+	line-height:inherit;
+}
+input:disabled::-moz-placeholder {
+	color:#B1B1B1;
+}
+:-ms-input-placeholder {
+	color:#B1B1B1;
+	font:inherit;
+	line-height:inherit;
+}
+input:disabled:-ms-input-placeholder {
+	color:#B1B1B1;
+}
+textarea::placeholder {
+	color:#B1B1B1;
+}
+textarea::-webkit-placeholder {
+	color:#B1B1B1;
+}
+textarea::-moz-placeholder {
+	color:#B1B1B1;
+}
+textarea::-ms-placeholder {
+	color:#B1B1B1;
+}
+.blind {
+	overflow:hidden;
+	font-size:0;
+	line-height:0;
+	position:absolute;
+	height:0;
+	width:0;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	box-shadow:0 0 0px 1000px #fff inset;
+	transition:background-color 5000s ease-in-out 0s;
+}
+fieldset{border: 0;}
+::-webkit-scrollbar {width:6px; height: 6px;}
+::-webkit-scrollbar-thumb {background-color:#D9D9D9; border-radius: 8px;}
+::-webkit-scrollbar-track {background-color:transparent}

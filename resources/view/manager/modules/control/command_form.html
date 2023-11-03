@@ -1,58 +1,42 @@
-<!-- Page header -->
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    스위치 제어
-                </h2>
-            </div>
-
-        </div>
+<div class="content">
+    <div class="tit_area">
+        <h2>Command 제어</h2>
     </div>
-</div>
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-cards">
-            <div class="col-12">
-                <form class="card" method="post" action="{{action}}" >
-                    <div class="card-header">
-                        <h3 class="card-title">제어 등록</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">제어 이름</label>
-                            <div class="col">
-                                <input type="text" id="name" name="name" class="form-control" placeholder="" value="" >
-                            </div>
+    <div class="bd_wrap form_alarm_set">
+        <form class="card" method="post" action="{{action}}" >
+            <fieldset>
+                <legend>Command 제어</legend>
+                <strong class="form_caption"> 제어 등록</strong>
+                <div class="form_conbox">
+                    <div class="item">
+                        <div class="form_tit">제어 이름<span class="required">*</span></div>
+                        <div class="form_input">
+                            <input type="text" class="inpt_txt" placeholder="제어 이름을 입력하세요." id="name" name="name">
                         </div>
-                        <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">장치</label>
-                            <div class="col">
-                                <select class="form-select" name="device" id="control_device">
-                                    {{device_options}}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">제어타입</label>
-                            <div class="col">
-                                <select class="form-select" name="control_type">
-                                    <option value="command">커맨드 제어</option>
-                                </select>
-                            </div>
-                        </div>
-
                     </div>
-                    <div class="card-footer text-center">
-                        <button type="submit" class="btn btn-primary">저장</button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/manager/control/command"><button type="button" class="btn btn-secondary">목록</button></a>
+                    <div class="item">
+                        <div class="form_tit">장치<span class="required">*</span></div>
+                        <div class="form_select">
+                            <select name="device" id="control_device">
+                                {{device_options}}
+                            </select>
+                        </div>
                     </div>
-                </form>
-            </div>
-
-        </div>
+                    <div class="item">
+                        <div class="form_tit">제어타입<span class="required">*</span></div>
+                        <div class="form_select">
+                            <select name="control_type">
+                                <option value="command">커맨드 제어</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn_wrap form_btn_wrap">
+                    <!-- <button type="button" class="btn sub_btn">저장</button> --><!-- 활성화시 class="sub_btn" -->
+                    <button type="submit" class="btn disable">저장</button><!-- 비활성화시 class="disable" -->
+                    <a href="/manager/control/command" class="btn line_btn">목록</a>
+                </div>
+            </fieldset>
+        </form>
     </div>
 </div>

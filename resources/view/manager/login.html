@@ -1,51 +1,39 @@
-<div class="page page-center">
-    <div class="container container-tight py-4">
-        <div class="text-center mb-4">
-            <a href="." class="navbar-brand navbar-brand-autodark">
-<!--                <img src="{{URL}}/resources/static/logo.svg" height="36" alt="">-->
-                <img src="{{URL}}/resources/static/ewave_logo.png" height="66" alt="">
-            </a>
-        </div>
-        <div class="card card-md">
-            <div class="card-body">
-                <h2 class="h2 text-center mb-4">로그인</h2>
-                <form method="post" autocomplete="off" novalidate>
-                    <div class="mb-3">
-                        <label class="form-label">Member Id</label>
-                        <input type="text" class="form-control" placeholder="Member Id" autocomplete="off"  value="" name="member_id">
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">
-                            Password
-                            <span class="form-label-description">
-<!--                    <a href="./forgot-password.html">I forgot password</a>-->
-                            </span>
-                        </label>
-                        <div class="input-group input-group-flat">
-                            <input type="password" class="form-control"  placeholder="Your password"  autocomplete="off" value="" name="member_password" >
-                            <span class="input-group-text">
-                    <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
-                    </a>
-                  </span>
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-check">
-                            <input type="checkbox" name="auto_login" class="form-check-input"/>
-                            <span class="form-check-label">자동 로그인</span>
-                        </label>
-                    </div>
-                    {{status}}
-                    <div class="form-footer">
-                        <button type="submit" class="btn btn-primary w-100">로그인</button>
-                    </div>
-                </form>
+<!-- #WRAP -->
+<div id="wrap" class="login_wrap">
+    <div class="login_box">
+        <form method="post">
+            <div class="logo"><img src="{{URL}}/resources//assets/images/logo.png" alt="ewave"></div>
+            <div class="inpt_wrap">
+                <p class="tit">Member ID</p>
+                <input type="text" class="inpt_txt" placeholder="ID"  value="" name="member_id">
             </div>
+            <div class="inpt_wrap">
+                <p class="tit">Password</p>
+                <div class="pwd_wrap">
+                    <input type="password" class="inpt_txt inpt_pwd" placeholder="Password" autoComplete="off" value="" name="member_password" >
+                    <button class="ico_hidden"></button>
+                </div>
+            </div>
+            <div class="option">
+                <div class="chk_wrap">
+                    <label for="login_chk">
+                        <input type="checkbox" id="login_chk"  name="auto_login" >
+                        <span>자동 로그인</span>
+                    </label>
 
-        </div>
-<!--        <div class="text-center text-muted mt-3">-->
-<!--            <a href="/manager/member_join" tabindex="-1">회원 가입</a>-->
-<!--        </div>-->
+                    <div class="btn_wrap">
+                        <button type="submit" class="btn main_btn">로그인</button>
+                    </div>
+                </div>
+            </div>
+            <div class="login_util">
+                <ul>
+                    <li><a href="#">아이디 찾기</a></li>
+                    <li><a href="#">비밀번호 찾기</a></li>
+                    <li><a href="#">회원가입</a></li>
+                </ul>
+            </div>
+        </form>
     </div>
 </div>
+<!-- // WRAP -->

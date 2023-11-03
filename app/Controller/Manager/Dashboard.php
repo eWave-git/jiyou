@@ -180,26 +180,29 @@ class Dashboard extends Page {
 
                     if ($v['symbol'] == 'L') {
                         $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $v['field'], $v['field'], 1)->fetchObject(EntityRawData::class);
-                        $value = ($water_row->{$v['field']}) . " " . $v['symbol'];
+                        $value = ($water_row->{$v['field']});
                     } else {
-                        $value = round($rew_obj->{$v['field']},1) . " " . $v['symbol'];
+                        $value = round($rew_obj->{$v['field']},1);
                     }
+
+                    $symbol = $v['symbol'];
 
                     $item .= View::render('manager/modules/dashboard/widget_card_item', [
                         'name' => $v['name'],
                         'value' => $value,
+                        'symbol' => $symbol,
                     ]);
 
                     $_cnt++;
                 }
             }
 
-            for ($i = $_cnt; $i < 8; $i++) {
-                $item .= View::render('manager/modules/dashboard/widget_card_item', [
-                    'name' => '&nbsp;',
-                    'value' => '&nbsp',
-                ]);
-            }
+//            for ($i = $_cnt; $i < 8; $i++) {
+//                $item .= View::render('manager/modules/dashboard/widget_card_item', [
+//                    'name' => '&nbsp;',
+//                    'value' => '&nbsp',
+//                ]);
+//            }
         }
         return $item;
     }
@@ -375,8 +378,10 @@ class Dashboard extends Page {
 
         $_farm_Info = EntityMmeber::getMembersFarm($_userInfo->idx)->fetchObject(EntityMmeber::class);
 
+        $widget_obj = EntityWidget::getWidgetByIdx($idx)->fetchObject(EntityWidget::class);
         $content = View::render('manager/modules/dashboard/chart_in_widget', [
             'farm_name' => $_farm_Info->farm_name,
+            'widget_name' => $widget_obj->widget_name,
             'idx' => $idx,
         ]);
 

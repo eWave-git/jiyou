@@ -1,114 +1,137 @@
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    {{farm_name}}
-                </h2>
-            </div>
+<div class="content">
+    <!-- 장치 목록 -->
+    <div class="dvc_wrap">
+        {{widget_card}}
+    </div>
+    <!--// 장치 목록 -->
+</div>
 
-            <!-- Page title actions -->
-            <div class="col-auto ms-auto d-print-none">
-                <div class="btn-list">
-
-<!--                    <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">-->
-<!--                        &lt;!&ndash; Download SVG icon from http://tabler-icons.io/i/plus &ndash;&gt;-->
-<!--                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>-->
-<!--                        위젯 추가-->
-<!--                    </a>-->
-
+<!-- 장치세팅팝업 -->
+<section class="popup dev_pop">
+    <form name="frm">
+        <input type="hidden" name="idx" value="">
+        <div class="inner">
+            <div class="pop_wrap">
+                <button class="btn_close"><span class="blind">닫기</span></button>
+                <div class="cont">
+                    <h3 class="pop_tit">장치 이름</h3>
+                    <input type="text" class="inpt_txt" name="widget_name" value="">
                 </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-cards">
-            {{widget_card}}
-        </div>
-    </div>
-</div>
-
-
-<div class="modal modal-blur fade" id="modal-widget" tabindex="-1" style="display: none;" aria-hidden="true" >
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">장치 이름 변경</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form name="frm">
-                    <input type="hidden" name="idx" value="">
-                    <div class="mb-3">
-                        <label class="form-label">장치 이름</label>
-                        <input type="text" class="form-control" name="widget_name" placeholder="장치 이름">
-                    </div>
-
-                    <div class="row">
-                        <table class="table table-vcenter card-table">
+                <div class="cont">
+                    <h3 class="pop_tit">Data</h3>
+                    <div class="data_list">
+                        <table>
                             <colgroup>
-                                <col width="15%">
-                                <col width="">
                                 <col width="20%">
+                                <col width="50%">
                             </colgroup>
                             <thead>
                             <tr>
                                 <th>사용유무</th>
-                                <th>이름</th>
-                                <th>단위</th>
+                                <th class="tl">이름</th>
+                                <th class="tl">단위</th>
                             </tr>
                             </thead>
                             <tbody id="dynamicTbody">
-
+<!--                            <tr>-->
+<!--                                <td>-->
+<!--                                    <input type="checkbox" name="data" checked>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <input type="text" class="inpt_txt" value="온도">-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <select>-->
+<!--                                        <option>°C</option>-->
+<!--                                        <option>%</option>-->
+<!--                                        <option>%</option>-->
+<!--                                    </select>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td>-->
+<!--                                    <input type="checkbox" name="data" checked>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <input type="text" class="inpt_txt" value="습도">-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <select>-->
+<!--                                        <option>%</option>-->
+<!--                                        <option>°C</option>-->
+<!--                                        <option>%</option>-->
+<!--                                    </select>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td>-->
+<!--                                    <input type="checkbox" name="data" checked>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <input type="text" class="inpt_txt" value="이산화탄소">-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <select>-->
+<!--                                        <option>°C</option>-->
+<!--                                        <option>%</option>-->
+<!--                                        <option>%</option>-->
+<!--                                    </select>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td>-->
+<!--                                    <input type="checkbox" name="data">-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <input type="text" class="inpt_txt" value="미세먼지 0.1">-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <select>-->
+<!--                                        <option>°C</option>-->
+<!--                                        <option>%</option>-->
+<!--                                        <option>%</option>-->
+<!--                                    </select>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td>-->
+<!--                                    <input type="checkbox" name="data">-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <input type="text" class="inpt_txt" value="미세먼지 10">-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <select>-->
+<!--                                        <option>°C</option>-->
+<!--                                        <option>%</option>-->
+<!--                                        <option>%</option>-->
+<!--                                    </select>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td>-->
+<!--                                    <input type="checkbox" name="data">-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <input type="text" class="inpt_txt" value="미세먼지 2.5">-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <select>-->
+<!--                                        <option>°C</option>-->
+<!--                                        <option>%</option>-->
+<!--                                        <option>%</option>-->
+<!--                                    </select>-->
+<!--                                </td>-->
+<!--                            </tr>-->
                             </tbody>
                         </table>
                     </div>
-                </form>
-
-                <div class="modal-footer">
-                    <button href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                        Cancel
-                    </button>
-                    <button name="modal_submit" class="btn btn-primary ms-auto" >
-                        수정
-                    </button>
+                    <div class="btn_wrap">
+                        <button type="button" name="modal_submit" class="btn main_btn">수정</button>
+                    </div>
                 </div>
-
+            </div>
         </div>
-    </div>
-</div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-
-
-<script>
-    $(function () {
-
-        // $.ajax({
-        //     url:'{{URL}}/manager/dashboard/getMyChart',
-        //     type:'post',
-        //     data: {
-        //
-        //     },
-        //     dataType: 'json',
-        //     success:function(obj) {
-        //
-        //         $.each(obj.obj, function (key, value) {
-        //             // console.log(obj.obj[key]['tag_name'])
-        //             // console.log(obj.obj[key]['config'])
-        //             var myChart = new Chart(document.getElementById(obj.obj[key]['tag_name']), obj.obj[key]['config']);
-        //         })
-        //     }
-        // });
-
-
-    });
-
-</script>
+    </form>
+</section>
+<!--// 장치세팅팝업 -->

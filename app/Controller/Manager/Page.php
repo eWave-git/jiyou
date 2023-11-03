@@ -30,30 +30,32 @@ class Page {
         [
             'label' => 'dashboard',
             'title' => '홈',
-            'link'  => URL."/manager/dashboard",
+            'submenu'=>[
+                ['label' => 'dashboard', 'title' => '홈 설정', 'link' => URL.'/'],
+            ],
         ],
         [
             'label' => 'inquiry',
             'title' => '조회',
             'submenu'=>[
-                ['label' => 'inquiry', 'title' => '그래프 조회', 'link' => URL.'/manager/chart_inquiry'],
-                ['label' => 'inquiry', 'title' => '표 조회', 'link' => URL.'/manager/table_inquiry'],
+                ['label' => 'table_inquiry', 'title' => '표 조회', 'link' => URL.'/manager/table_inquiry'],
+                ['label' => 'chart_inquiry', 'title' => '그래프 조회', 'link' => URL.'/manager/chart_inquiry'],
             ],
         ],
         [
             'label' => 'alarm',
             'title' => '알람',
             'submenu'=>[
-                ['label' => 'alarm', 'title' => '설정된 알람', 'link' => URL.'/manager/alarm_list'],
-                ['label' => 'alarm_log', 'title' => '발생한 알람', 'link' => URL.'/manager/alarm_log_list'],
+                ['label' => 'alarm_list', 'title' => '설정된 알람', 'link' => URL.'/manager/alarm_list'],
+                ['label' => 'alarm_log_list', 'title' => '발생한 알람', 'link' => URL.'/manager/alarm_log_list'],
             ],
         ],
         [
             'label' => 'control',
             'title' => '제어',
             'submenu'=>[
-                ['label' => 'control', 'title' => 'Switch 제어', 'link' => URL.'/manager/control/switch'],
-                ['label' => 'control', 'title' => 'Command 제어', 'link' => URL.'/manager/control/command'],
+                ['label' => 'switch', 'title' => 'Switch 제어', 'link' => URL.'/manager/control/switch'],
+                ['label' => 'command', 'title' => 'Command 제어', 'link' => URL.'/manager/control/command'],
                 ['label' => 'control', 'title' => 'Inverter 제어', 'link' =>"javascript:alert('준비중')"],
             ],
         ],
@@ -62,8 +64,8 @@ class Page {
             'title' => '기타',
             'submenu'=>[
                 ['label' => 'etc', 'title' => '알람 수신변경', 'link' => "javascript:alert('준비중')"],
-                ['label' => 'etc', 'title' => '그룹 관리', 'link' => URL.'/manager/etc/group'],
-                ['label' => 'etc', 'title' => '레포팅', 'link' => "/manager/etc/report_form"],
+                ['label' => 'group', 'title' => '그룹 관리', 'link' => '/manager/etc/group'],
+//                ['label' => 'report_form', 'title' => '레포팅', 'link' => "/manager/etc/report_form"],
                 ['label' => 'etc', 'title' => '데이터 분석', 'link' => "javascript:alert('준비중')"],
             ],
         ],
@@ -78,13 +80,13 @@ class Page {
             if (!array_key_exists('submenu', $v)) {
                 $menus .= View::render('manager/menu/li', [
                     'depth_1' => $v['title'],
-                    'active' => $v['label'] == $currentModule ? 'active' : '',
+                    'active' => $v['label'] == $currentModule ? 'on' : '',
                     'link'    => $v['link'],
                 ]);
             } else {
                 $menus .= View::render('manager/menu/li_dropdown', [
                     'depth_1' => $v['title'],
-                    'active' => $v['label'] == $currentModule ? 'active' : '',
+                    'active' => $v['label'] == $currentModule ? 'on' : '',
                     'dropdown' => self::getDepth_2($v),
                 ]);
             }
@@ -98,13 +100,25 @@ class Page {
 
     public static function getDepth_2($sub_menu) {
         $dropdown = '';
-
+        $_temp =explode('/',$_SERVER['REQUEST_URI']);
+        $FILE_NAME = end ($_temp);
 
         foreach ($sub_menu['submenu'] as $k => $v) {
-            $dropdown .= View::render('manager/menu/dropdown', [
-                'depth_2' => $v['title'],
-                'link'    => $v['link'],
-            ]);
+
+            if ($v['label'] == $FILE_NAME) {
+                $dropdown .= View::render('manager/menu/dropdown', [
+                    'depth_2' => $v['title'],
+                    'link'    => $v['link'],
+                    'active' => 'on',
+                ]);
+            } else {
+                $dropdown .= View::render('manager/menu/dropdown', [
+                    'depth_2' => $v['title'],
+                    'link'    => $v['link'],
+                    'active' => '',
+                ]);
+            }
+
         }
 
         return $dropdown;

@@ -4,14 +4,17 @@
     <td>{{device_name}}</td>
     <td>{{text}}</td>
     <td>
-        <label class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" name="relay"  {{checked}} data-field="{{field}}" data-idx={{idx}}>
-            <span class="form-check-label"></span>
-        </label>
+        <div class="btn_switch">
+            <label for="">
+                <input type="checkbox"  name="relay"  {{checked}} data-field="{{field}}" data-idx={{idx}}>
+            </label>
+        </div>
     </td>
     <td>{{create_at}}</td>
     <td>{{update_at}}</td>
     <td>
-        <a href="/manager/control/{{idx}}/delete/switch">삭제</a>
+        <div class="btn_wrap">
+            <a href="/manager/control/{{idx}}/delete/switch" class="btn btn_del">삭제</a>
+        </div>
     </td>
 </tr>

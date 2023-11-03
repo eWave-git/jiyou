@@ -1,36 +1,16 @@
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    {{farm_name}}
-                </h2>
-            </div>
-
-            <!-- Page title actions -->
-            <div class="col-auto ms-auto d-print-none">
-                <div class="btn-list">
-
-
-                </div>
-            </div>
-
-        </div>
+<div class="content">
+    <div class="tit_area">
+        <h2>그래프 보기</h2>
     </div>
-</div>
 
-<style>
-    #chartdiv {
-        width: 100%;
-        height: 800px;
-        max-width:100%
-    }
-</style>
-<!-- Page body -->
-<div class="page-body">
-    <div class="container-xl">
-        <div class="card">
-            <div id="chartdiv" data-idx="{{idx}}"></div>
+    <div class="view_wrap">
+        <div class="tit_area">
+            <p><span>{{widget_name}}</span> 의 최근 24시간 데이터</p>
+        </div>
+        <div class="cont_area">
+            <div class="graph_wrap">
+                <div class="graph_area" id="chartdiv" data-idx="{{idx}}"></div>
+            </div>
         </div>
     </div>
 </div>

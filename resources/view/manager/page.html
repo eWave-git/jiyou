@@ -1,141 +1,31 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-
-    <!-- 캐시를 바로 만료시킴. -->
-    <meta http-equiv="Expires" content="-1" />
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
-    <meta http-equiv="Pragma" content="no-cache" />
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
-    <meta http-equiv="Cache-Control" content="no-cache" />
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, viewport-fit=cover, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" href="{{URL}}/resources/assets/css/style.css">
+    <script type="text/javascript" src="{{URL}}/resources/assets/js/lib/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="{{URL}}/resources/assets/js/common.js"></script>
     <title>{{title}}</title>
-    <!-- CSS files -->
-    <link href="{{URL}}/resources/dist/css/tabler.min.css?1684106062" rel="stylesheet"/>
-    <link href="{{URL}}/resources/dist/css/tabler-flags.min.css?1684106062" rel="stylesheet"/>
-    <link href="{{URL}}/resources/dist/css/tabler-payments.min.css?1684106062" rel="stylesheet"/>
-    <link href="{{URL}}/resources/dist/css/tabler-vendors.min.css?1684106062" rel="stylesheet"/>
-    <link href="{{URL}}/resources/dist/css/demo.min.css?1684106062" rel="stylesheet"/>
+
+    <!-- amcharts.js -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-    <style>
-        @import url('https://rsms.me/inter/inter.css?1684106062');
-        :root {
-            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-        }
-        body {
-            font-feature-alarms: "cv03", "cv04", "cv11";
-        }
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-        .dashboard_chart {
-            height:100px;
-        }
-        
-        @media only screen and (max-width: 700px) {
-            .dashboard_chart {
-                height:600px;
-            }
-        }
-        
-    </style>
 </head>
-<body  class=" d-flex flex-column">
-<script src="{{URL}}/resources/dist/js/demo-theme.min.js"></script>
-
+<body>
 {{content}}
 
-
-<!-- Libs JS -->
-<!-- Tabler Core -->
-<script src="{{URL}}/resources/dist/js/tabler.min.js" defer></script>
-<script src="{{URL}}/resources/dist/js/demo.min.js" defer></script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.0/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css" rel="stylesheet"/>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.5/af-2.6.0/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.0/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
-
-<!-- chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.min.js" integrity="sha512-csUso5vWY3PpIJkxLWFbPI7KkjXFhKXpUaAUp1ZLyNhxVWdQacEPH9e7Iw6Rco4es1uQNnlxdCCFkSnJ/f1ZzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.umd.min.js" integrity="sha512-ziISJqd7FOx3QNvnXiFWAfgSKqte9jMjzhrCnc7Gxpxfxjb5FdrBFg673DloeFEH6VLmTeo86yu5y/xJm38cBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/helpers.min.js" integrity="sha512-JG3S/EICkp8Lx9YhtIpzAVJ55WGnxT3T6bfiXYbjPRUoN9yu+ZM+wVLDsI/L2BWRiKjw/67d+/APw/CDn+Lm0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
-
-<!-- amcharts.js -->
-<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-
-
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
-<script>
-    $(function () {
-
-        // $("#widget_device").change(function () {
-        //     $("#widget_board").empty()
-        //     $.ajax({
-        //         url:'{{URL}}/manager/dashboard/get_widget_board',
-        //         type:'post',
-        //         data: {
-        //             device_idx:$(this).val()
-        //         },
-        //         dataType: "json",
-        //         success:function(obj){
-        //             if (obj.success) {
-        //                 $.each(obj.text, function (key, value) {
-        //                     // console.log(obj.idx[key])
-        //                     $("#widget_board").append(
-        //                         $("<option></option>").attr("value",obj.idx[key]).text(value)
-        //                     )
-        //                 })
-        //
-        //             }
-        //         }
-        //     })
-        // });
-        //
-        // $("#device").change(function () {
-        //     $("#board").empty()
-        //     $.ajax({
-        //         url:'{{URL}}/manager/dashboard/get_widget_board',
-        //         type:'post',
-        //         data: {
-        //             device_idx:$(this).val()
-        //         },
-        //         dataType: "json",
-        //         success:function(obj){
-        //             if (obj.success) {
-        //                 $.each(obj.text, function (key, value) {
-        //                     // console.log(obj.idx[key])
-        //                     $("#board").append(
-        //                         $("<option></option>").attr("value",obj.idx[key]).text(value)
-        //                     )
-        //                 })
-        //
-        //             }
-        //         }
-        //     })
-        // });
-        //
-        // $("[name='widget_type']").click(function () {
-        //     if ($(this).val() == "graph") {
-        //         $("#row_interval").show();
-        //     } else if ($(this).val() == "text") {
-        //         $("#row_interval").hide();
-        //     }
-        // });
-
-    });
-
-</script>
+<!--javascript -->
 {{javascript}}
 </body>
 </html>
