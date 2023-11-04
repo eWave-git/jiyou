@@ -110,7 +110,7 @@ foreach ($array as $k => $v) {
         // "있다면";
 
         $diff = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'h');
-        if ($diff >= 3) {
+        if ($diff >= 1) {
            alarmHistoryInsert($v);
            Common::sendPush($v['board_type_name']." 경보발생", $v['alarm_contents'],$v['push_subscription_id'],"");
         }
