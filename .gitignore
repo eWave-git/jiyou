@@ -1,0 +1,10 @@
+/composer.phar
+/vendor
+
+.vagrant
+Vagrantfile
+.idea
+.vscode
+.DS_Store
+
+.env
