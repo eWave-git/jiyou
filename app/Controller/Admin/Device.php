@@ -178,11 +178,13 @@ class Device extends Page {
     }
 
     public static function Device_Delete($request, $idx) {
+
         $obj = EntityDevice::getDevicesByIdx($idx);
         $obj->deleted();
 
         $widget_obj = EntityWidget::getWidgetByDeviceIdx($idx)->fetchObject(EntityWidget::class);
         $widget_obj->deleted();
+
 
         $request->getRouter()->redirect('/admin/device_list');
     }

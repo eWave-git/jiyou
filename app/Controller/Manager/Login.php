@@ -11,7 +11,7 @@ class Login extends Page {
     public static function getLogin($request, $errorMessage = null) {
 
         $content = View::render('manager/login',[
-            'status' => !is_null($errorMessage) ? Alert::getError($errorMessage) : ''
+            'status' => !is_null($errorMessage) ? Alert::getLoginError($errorMessage) : ''
         ]);
 
         return parent::getPage('ewave > Login', $content);
@@ -27,11 +27,11 @@ class Login extends Page {
         $obUser = Member::getManagerMemberById($member_id);
 
         if (!$obUser instanceof Member) {
-            return self::getLogin($request, 'id Error');
+            return self::getLogin($request, '아이디 또는 비밀번호를 잘못 입력했습니다.<br> 입력하신 내용을 다시 확인 확인해주세요.');
         }
 
         if (!password_verify($member_password, $obUser->member_password)) {
-            return  self::getLogin($request, 'password Error');
+            return  self::getLogin($request, '아이디 또는 비밀번호를 잘못 입력했습니다.<br> 입력하신 내용을 다시 확인 확인해주세요.');
         }
 
         if ($auto_login == "Y") {

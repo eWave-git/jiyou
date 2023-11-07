@@ -131,7 +131,7 @@ input[type="password"]::-ms-clear {display:none;}
 /* ============================== [ 로그인 ] ========================================================================================== */
 .login_wrap {background-color:#F8F8F9;}
 .login_box {background-color:#fff; position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); box-shadow:3px 3px 20px 10px rgba(0, 0, 0, .04); border-radius:20px; box-sizing:border-box; padding:40px; width:calc(100% - 72px); max-width:657px;}
-.login_box .logo {width:168px; height:83px; margin:0 auto;}
+.login_box .logo {width:168px; height:auto; margin:0 auto;}
 .login_box .logo img {display:block; width:100%; height:auto;}
 .login_box .inpt_wrap {margin-top:40px;}
 .login_box .tit {line-height:1.389em; color:#434343; margin-bottom:8px;}
