@@ -172,17 +172,32 @@ class Dashboard extends Page {
 
         if (is_array((array)$rew_obj)) {
             $_cnt = 0;
+
+//            Common::print_r2($board_type);
             foreach ($board_name as $k => $v) {
+
                 if ($v['display'] == 'Y') {
+
                     if (!$v['symbol']) {
                         $v['symbol'] = "&nbsp;&nbsp;";
                     }
 
                     if ($v['symbol'] == 'L') {
-                        $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $v['field'], $v['field'], 1)->fetchObject(EntityRawData::class);
-                        $value = ($water_row->{$v['field']});
+                        if ($rew_obj->board_type == 3) {
+                            $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $v['field'], $v['field'], 1)->fetchObject(EntityRawData::class);
+                            $value = ($water_row->{$v['field']});
+                        } else if ($rew_obj->board_type == 6 || $rew_obj->board_type == 25) {
+                            $water_row = EntityRawData::LastLimitWaterDataSumExcept_1($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $v['field'], $v['field'], 1)->fetchObject(EntityRawData::class);
+                            $value = ($water_row->{$v['field']});
+                        } else if ($rew_obj->board_type == 4) {
+                            $water_row = EntityRawData::LastLimitWaterDataSumExcept_2($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $v['field'], $v['field'], 1)->fetchObject(EntityRawData::class);
+                            $value = ($water_row->{$v['field']});
+                        } else {
+                            $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $v['field'], $v['field'], 1)->fetchObject(EntityRawData::class);
+                            $value = ($water_row->{$v['field']});
+                        }
                     } else {
-                        $value = round($rew_obj->{$v['field']},1);
+                        $value = round($rew_obj->{$v['field']}, 1);
                     }
 
                     $symbol = $v['symbol'];
@@ -194,6 +209,7 @@ class Dashboard extends Page {
                     ]);
 
                     $_cnt++;
+
                 }
             }
 

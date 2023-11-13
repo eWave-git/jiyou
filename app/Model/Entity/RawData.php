@@ -68,6 +68,28 @@ class RawData {
         ");
     }
 
+    public static function LastLimitWaterDataSumExcept_1($address, $board_type, $board_number, $field, $name, $interval) {
+        return (new Database('raw_data'))->execute("
+            select sum({$name}) as {$name} from (select
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field})) as '{$name}'
+            from raw_data
+            where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at >= (now() - INTERVAL {$interval} DAY) and created_at <= now()
+            group by FLOOR(DAY(created_at)/1)*10
+            order BY idx asc) as temp        
+        ");
+    }
+
+    public static function LastLimitWaterDataSumExcept_2($address, $board_type, $board_number, $field, $name, $interval) {
+        return (new Database('raw_data'))->execute("
+            select sum({$name}) as {$name} from (select
+                sum({$field}) as '{$name}'
+            from raw_data
+            where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at >= (now() - INTERVAL {$interval} DAY) and created_at <= now()
+            group by FLOOR(DAY(created_at)/1)*10
+            order BY idx asc) as temp        
+        ");
+    }
+
     public static function NowLastLimitDataOne($address, $board_type, $board_number, $field, $name) {
         return (new Database('raw_data'))->execute("
             select {$field} as '{$name}'
