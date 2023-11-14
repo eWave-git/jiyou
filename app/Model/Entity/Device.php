@@ -25,7 +25,7 @@ class Device {
     }
 
     public static function getDevicesByIdx($idx) {
-        return (new Database('device'))->execute("select d.*, w.widget_name as device_name from device as d left join widget as w on d.idx = w.device_idx where d.idx =".$idx."")->fetchObject(self::class);
+        return (new Database('device'))->execute("select d.*,d.idx as device_idx, w.widget_name as device_name from device as d left join widget as w on d.idx = w.device_idx where d.idx =".$idx."")->fetchObject(self::class);
     }
 
     public static function getDevicesJoinWidget() {
