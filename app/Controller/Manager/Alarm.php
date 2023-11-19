@@ -262,13 +262,16 @@ class Alarm extends Page {
 
             $device_obj = EntityDevice::getDevicesByIdx($obj->device_idx);
 
-            $item .= View::render('manager/modules/alarm/alarm_log_list_item', [
-                'number' => $k+1,
-                'device_name' => $device_obj->device_name,
-                'board_type_name' => $obj->board_type_name,
-                'alarm_contents' => $obj->alarm_contents,
-                'created_at' => $obj->created_at,
-            ]);
+            if ($device_obj) {
+                $item .= View::render('manager/modules/alarm/alarm_log_list_item', [
+                    'number' => $k+1,
+                    'device_name' => $device_obj->device_name,
+                    'board_type_name' => $obj->board_type_name,
+                    'alarm_contents' => $obj->alarm_contents,
+                    'created_at' => $obj->created_at,
+                ]);
+            }
+
 
         }
         return $item;
