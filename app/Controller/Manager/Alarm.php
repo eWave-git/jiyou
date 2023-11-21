@@ -257,23 +257,34 @@ class Alarm extends Page {
         $alarm_log = EntityAlarmHistory::getAlarmHistoryByMemberIdx($user_idx);
 
         $item = "";
-        $k = 0;
+        $array = array();
+        $_i = 0;
         while ($obj = $alarm_log->fetchObject(EntityAlarmHistory::class)) {
-
             $device_obj = EntityDevice::getDevicesByIdx($obj->device_idx);
 
             if ($device_obj) {
-                $item .= View::render('manager/modules/alarm/alarm_log_list_item', [
-                    'number' => $k+1,
-                    'device_name' => $device_obj->device_name,
-                    'board_type_name' => $obj->board_type_name,
-                    'alarm_contents' => $obj->alarm_contents,
-                    'created_at' => $obj->created_at,
-                ]);
+                $array[$_i]['device_obj'] = $device_obj;
+                $array[$_i]['board_type_name'] = $obj->board_type_name;
+                $array[$_i]['alarm_contents'] = $obj->alarm_contents;
+                $array[$_i]['created_at'] = $obj->created_at;
             }
-
-
+            $_i++;
         }
+
+        $total = count($array);
+
+        foreach ($array as $k => $v) {
+            $item .= View::render('manager/modules/alarm/alarm_log_list_item', [
+                'number' => $total,
+                'device_name' => $v['device_name'],
+                'board_type_name' => $v['board_type_name'],
+                'alarm_contents' => $v['alarm_contents'],
+                'created_at' => $v['created_at'],
+            ]);
+
+            $total--;
+        }
+
         return $item;
     }
 
