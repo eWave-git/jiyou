@@ -260,10 +260,11 @@ class Alarm extends Page {
         $array = array();
         $_i = 0;
         while ($obj = $alarm_log->fetchObject(EntityAlarmHistory::class)) {
+
             $device_obj = EntityDevice::getDevicesByIdx($obj->device_idx);
 
             if ($device_obj) {
-                $array[$_i]['device_obj'] = $device_obj;
+                $array[$_i]['device_name'] = $device_obj->device_name;
                 $array[$_i]['board_type_name'] = $obj->board_type_name;
                 $array[$_i]['alarm_contents'] = $obj->alarm_contents;
                 $array[$_i]['created_at'] = $obj->created_at;
