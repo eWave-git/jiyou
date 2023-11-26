@@ -83,6 +83,14 @@
             showDropdowns: true,                     // 년월 수동 설정 여부
             autoApply: true,                         // 확인/취소 버튼 사용여부
             timePicker24Hour: true,                  // 24시간 노출 여부(ex> true : 23:50, false : PM 11:50)
+            ranges: {
+                '오늘': [moment(), moment()],
+                '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                '최근 7 일전': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
+                // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                // 'This Month': [moment().startOf('month'), moment().endOf('month')],
+                // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
         })
 
         $("[name='search']").click(function () {
