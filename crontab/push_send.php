@@ -14,7 +14,9 @@ $activation =  (new Database('alarm'))->execute(
             where a.idx in (select max(idx)
                             from alarm
                             where activation = 'Y'
-                            group by device_idx, board_type_field)");
+                            group by device_idx, board_type_field)
+            and m.push_subscription_id is not null
+            ");
 
 $array = array();
 $key = 0;
