@@ -14,7 +14,7 @@ class Alarm extends Page {
 
     public static function setActiveChange($request) {
         $postVars = $request->getPostVars();
-        $active = $postVars['active'] == 'true' ? 'Y' : 'N';
+        $active = $postVars['active'];
 
         EntityAlarm::UpdateActiveValue($postVars['idx'], $active);
 

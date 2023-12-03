@@ -1,5 +1,28 @@
 <?php
 
+
+$obRouter->get('/admin',[
+    'middlewares' => [
+        'required-admin-login'
+    ],
+    function($request) {
+        $request->getRouter()->redirect('/admin/member_list');
+
+        exit;
+    }
+]);
+
+$obRouter->get('/admin/',[
+    'middlewares' => [
+        'required-admin-login'
+    ],
+    function($request) {
+        $request->getRouter()->redirect('/admin/member_list');
+
+        exit;
+    }
+]);
+
 include __DIR__.'/admin/login.php';
 
 include __DIR__.'/admin/farm.php';

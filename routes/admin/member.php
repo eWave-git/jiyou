@@ -56,3 +56,13 @@ $obRouter->get('/admin/member_form/{idx}/delete',[
         return new Response(200, Admin\Member::Member_Delete($request, $idx));
     }
 ]);
+
+$obRouter->post('/admin/member/idCheck',[
+    'middlewares' => [
+        'api',
+        'required-admin-login'
+    ],
+    function($request) {
+        return new Response(200, Admin\Member::id_Check($request), 'application/json');
+    }
+]);

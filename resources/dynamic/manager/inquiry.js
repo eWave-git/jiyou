@@ -43,29 +43,5 @@ $(function () {
         });
 
 
-        $("#list").DataTable({
-            "paging": false,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-            "dom": 'Bfrtip',
-            "buttons": ["copy", "csv", "excel", "pdf", "print"],
-            "rowReorder": true,
-            "columnDefs": [
-                { orderable: true, className: 'reorder', targets: 0 },
-                { orderable: true, className: 'reorder', targets: 1 },
-                { orderable: true, className: 'reorder', targets: 2 },
-                { orderable: false, targets: '_all' }
-            ],
-            "language" : {
-
-                "infoEmpty": "",
-                "emptyTable": "",
-
-            }
-        });
     }
 });

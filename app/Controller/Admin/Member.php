@@ -140,4 +140,19 @@ class Member extends Page {
 
         $request->getRouter()->redirect('/admin/member_list');
     }
+
+    public static function id_Check($request) {
+        $postVars = $request->getPostVars();
+        $obj = EntityMmeber::getMemberById($postVars['id']);
+
+        if ($obj) {
+            return [
+                'success' => true,
+            ];
+        } else {
+            return [
+                'success' => false,
+            ];
+        }
+    }
 }

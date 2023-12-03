@@ -40,24 +40,7 @@
 
 <script>
     $(function () {
-        $("#farm_list").DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-            "dom": 'Bfrtip',
-            "buttons": ["copy", "csv", "excel", "pdf", "print"],
-            "rowReorder": true,
-            "columnDefs": [
-                { orderable: true, className: 'reorder', targets: 0 },
-                { orderable: true, className: 'reorder', targets: 1 },
-                { orderable: true, className: 'reorder', targets: 2 },
-                { orderable: false, targets: '_all' }
-            ]
-        });
+
 
         $("#add_address").click(function(){
             $("[name='farm_idx']").val($(this).data('idx'));

@@ -59,3 +59,17 @@
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $(function () {
+
+        $('.btn_del').click(function () {
+            if(confirm("삭제 하시겠습니까?")){
+                location.href = "/admin/board_type_ref_form/"+$(this).data('idx')+"/delete";
+            }
+        });
+
+    });
+</script>
