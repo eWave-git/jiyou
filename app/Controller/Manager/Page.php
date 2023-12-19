@@ -31,23 +31,23 @@ class Page {
             'label' => 'dashboard',
             'title' => '홈',
             'submenu'=>[
-                ['label' => 'dashboard', 'title' => '홈 설정', 'link' => URL.'/'],
+                ['label' => 'dashboard', 'title' => '홈', 'link' => URL.'/'],
             ],
         ],
         [
             'label' => 'inquiry',
             'title' => '조회',
             'submenu'=>[
-                ['label' => 'table_inquiry', 'title' => '표 조회', 'link' => URL.'/manager/table_inquiry'],
-                ['label' => 'chart_inquiry', 'title' => '그래프 조회', 'link' => URL.'/manager/chart_inquiry'],
+                ['label' => 'table_inquiry', 'title' => '조회 - 데이터', 'link' => URL.'/manager/table_inquiry'],
+                ['label' => 'chart_inquiry', 'title' => '조회 - 그래프', 'link' => URL.'/manager/chart_inquiry'],
             ],
         ],
         [
             'label' => 'alarm',
             'title' => '알람',
             'submenu'=>[
-                ['label' => 'alarm_list', 'title' => '설정된 알람', 'link' => URL.'/manager/alarm_list'],
-                ['label' => 'alarm_log_list', 'title' => '발생한 알람', 'link' => URL.'/manager/alarm_log_list'],
+                ['label' => 'alarm_list', 'title' => '알람 - 설정', 'link' => URL.'/manager/alarm_list'],
+                ['label' => 'alarm_log_list', 'title' => '알람 - 발생기록', 'link' => URL.'/manager/alarm_log_list'],
             ],
         ],
         [
