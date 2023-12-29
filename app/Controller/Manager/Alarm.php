@@ -272,18 +272,18 @@ class Alarm extends Page {
             $_i++;
         }
 
-        $total = count($array);
+        $_i = 1;
 
         foreach ($array as $k => $v) {
             $item .= View::render('manager/modules/alarm/alarm_log_list_item', [
-                'number' => $total,
+                'number' => $_i,
                 'device_name' => $v['device_name'],
                 'board_type_name' => $v['board_type_name'],
                 'alarm_contents' => $v['alarm_contents'],
                 'created_at' => $v['created_at'],
             ]);
 
-            $total--;
+            $_i++;
         }
 
         return $item;

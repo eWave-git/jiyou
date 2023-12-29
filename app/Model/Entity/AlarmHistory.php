@@ -22,7 +22,7 @@ class AlarmHistory {
     public $created_at;
 
     public static function getAlarmHistoryByMemberIdx($idx) {
-        return self::getAlarmHistory('member_idx ='.$idx);
+        return self::getAlarmHistory('member_idx ='.$idx, 'raw_data_created_at desc');
     }
 
     public function created() {
