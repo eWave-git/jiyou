@@ -57,7 +57,7 @@ class RawData {
         ");
     }
 
-    public static function LastLimitWaterDataSum($address, $board_type, $board_number, $field, $name, $interval) {
+    public static function LastLimitWaterDataSum($address, $board_type, $board_number, $field, $name, $interval) {              // 대쉬보드 --> 메인카드에 음수양 표현 board_type = 3인 경우          public static function getCardItem($rew_obj, $board_name) {
         return (new Database('raw_data'))->execute("
             select sum({$name}) as {$name} from (select
                 (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
@@ -68,7 +68,7 @@ class RawData {
         ");
     }
 
-    public static function LastLimitWaterDataSumExcept_1($address, $board_type, $board_number, $field, $name, $interval) {
+    public static function LastLimitWaterDataSumExcept_1($address, $board_type, $board_number, $field, $name, $interval) {      // 대쉬보드 --> 메인카드에 음수양 표현 board_type = 6 또는 35인 경우
         return (new Database('raw_data'))->execute("
             select sum({$name}) as {$name} from (select
                 (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field})) as '{$name}'
@@ -79,7 +79,7 @@ class RawData {
         ");
     }
 
-    public static function LastLimitWaterDataSumExcept_2($address, $board_type, $board_number, $field, $name, $interval) {
+    public static function LastLimitWaterDataSumExcept_2($address, $board_type, $board_number, $field, $name, $interval) {      // 대쉬보드 --> 메인카드에 음수양 표현 board_type = 4인 경우
         return (new Database('raw_data'))->execute("
             select sum({$name}) as {$name} from (select
                 sum({$field}) as '{$name}'
@@ -99,11 +99,11 @@ class RawData {
         ");
     }
 
-    public static function WaterDatesDay($address, $board_type, $board_number, $field, $name, $ago, $interval) {
+    public static function WaterDatesDay($address, $board_type, $board_number, $field, $name, $ago, $interval) {            //대쉬보드 --> 표보기 에서 최근 24시간 물 사용 테이블 불러오는 쿼리  //dashboard.php의 public static function getTableInWidgetDataWater($widget_obj, $board_type_array) {
         return (new Database('raw_data'))->execute("
             select
                 date_format(created_at, '%Y-%m-%d') as created,
-                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*1 as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and created_at >= (now() - INTERVAL {$ago} day )
             group by FLOOR(DAY(created_at)/{$interval})*10
@@ -134,11 +134,11 @@ class RawData {
         ");
     }
 
-    public static function WaterDatesBetweenDatesMinute($address, $board_type, $board_number, $field, $name, $start, $end) {
+    public static function WaterDatesBetweenDatesMinute($address, $board_type, $board_number, $field, $name, $start, $end) {            //조회-데이터에서 물 사용량 조회  inquiry.php public static function getTableSearch($request) {
         return (new Database('raw_data'))->execute("
              select
                 date_format(created_at, '%Y-%m-%d %H:%i:00') as created,
-                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*1 as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and (created_at >= '{$start} 00:00:00' and created_at <= '{$end} 23:59:59')
             group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/1)*10
@@ -146,11 +146,11 @@ class RawData {
         ");
     }
 
-    public static function WaterDates24HourAgo($address, $board_type, $board_number, $field, $name) {
+    public static function WaterDates24HourAgo($address, $board_type, $board_number, $field, $name) {                // 대쉬보드 --> 그래프 보기에서 최근 24시간 물 그래프 불러오는 쿼리  //dashboard.php의 public static function getChart($request) {
         return (new Database('raw_data'))->execute("
              select
                 date_format(created_at, '%Y-%m-%d %H:%i:00') as created,
-                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*1 as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at > (now() - INTERVAL 24 HOUR ) and created_at < now()
             group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/1)*10
@@ -171,12 +171,12 @@ class RawData {
         ");
     }
 
-    public static function WaterDatesBetweenDate($address, $board_type, $board_number, $interval, $field, $name, $start, $end) {
+    public static function WaterDatesBetweenDate($address, $board_type, $board_number, $interval, $field, $name, $start, $end) {        //조회-그래프에서 물 사용량 조회  inquiry.php public static function getTableSearch($request) {
 
         return (new Database('raw_data'))->execute("
              select
                 DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:00') as created,
-                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*10 as '{$name}'
+                (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*1 as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and (created_at >= '{$start} 00:00:00' and created_at <= '{$end} 23:59:59')
             group by DAY(created_at),FLOOR(HOUR(created_at)/{$interval})*10
