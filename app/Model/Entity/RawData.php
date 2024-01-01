@@ -146,14 +146,14 @@ class RawData {
         ");
     }
 
-    public static function WaterDates24HourAgo($address, $board_type, $board_number, $field, $name) {                // 대쉬보드 --> 그래프 보기에서 최근 24시간 물 그래프 불러오는 쿼리  //dashboard.php의 public static function getChart($request) {
+    public static function WaterDates24HourAgo($address, $board_type, $board_number, $field, $name) {                // 대쉬보드 --> 그래프 보기에서 최근 24시간 물 그래프 불러오는 쿼리  //dashboard.php의 public static function getChart($request) {                 //  group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/1)*10
         return (new Database('raw_data'))->execute("
              select
                 date_format(created_at, '%Y-%m-%d %H:%i:00') as created,
                 (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*1 as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at > (now() - INTERVAL 24 HOUR ) and created_at < now()
-            group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/1)*10
+            group by DAY(created_at),FLOOR(HOUR(created_at)/1)*10
             order BY idx asc
         ");
     }
