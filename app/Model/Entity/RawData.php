@@ -27,7 +27,7 @@ class RawData {
     public $created_at;
 
 
-    public static function LastTotal($address, $board_type, $board_number, $field, $ago) {
+    public static function LastTotal($address, $board_type, $board_number, $field, $ago) {                                      // 대쉬보드 --> 표보기 최소, 최대, 평균값
         return (new Database('raw_data'))->execute("
             select
                min({$field}) as min,
@@ -39,7 +39,7 @@ class RawData {
         ");
     }
 
-    public static function LastLimitOne($address, $board_type, $board_number) {
+    public static function LastLimitOne($address, $board_type, $board_number) {                                                 // 대쉬보드 --> 페이지에 마지막 데이터 보여주기
         return (new Database('raw_data'))->execute("
             select *
             from raw_data
@@ -90,7 +90,7 @@ class RawData {
         ");
     }
 
-    public static function NowLastLimitDataOne($address, $board_type, $board_number, $field, $name) {
+    public static function NowLastLimitDataOne($address, $board_type, $board_number, $field, $name) {                           // 대쉬보드 --> 표보기 에서 최근값 "1분전 최근값 나타내기"
         return (new Database('raw_data'))->execute("
             select {$field} as '{$name}'
             from raw_data
@@ -134,14 +134,14 @@ class RawData {
         ");
     }
 
-    public static function WaterDatesBetweenDatesMinute($address, $board_type, $board_number, $field, $name, $start, $end) {            //조회-데이터에서 물 사용량 조회  inquiry.php public static function getTableSearch($request) {
+    public static function WaterDatesBetweenDatesMinute($address, $board_type, $board_number, $field, $name, $start, $end) {            //조회-데이터에서 물 사용량 조회  inquiry.php public static function getTableSearch($request) {                 //group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/1)*10     1분단위 조회 코드         //group by DAY(created_at),FLOOR(HOUR(created_at)/1)*10   1시간 단위 코드
         return (new Database('raw_data'))->execute("
-             select
+            select
                 date_format(created_at, '%Y-%m-%d %H:%i:00') as created,
                 (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*1 as '{$name}'
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and (created_at >= '{$start} 00:00:00' and created_at <= '{$end} 23:59:59')
-            group by DAY(created_at),HOUR(created_at),FLOOR(MINUTE(created_at)/1)*10
+            group by DAY(created_at),FLOOR(HOUR(created_at)/1)*10
             order BY idx asc
         ");
     }
@@ -174,7 +174,7 @@ class RawData {
     public static function WaterDatesBetweenDate($address, $board_type, $board_number, $interval, $field, $name, $start, $end) {        //조회-그래프에서 물 사용량 조회  inquiry.php public static function getTableSearch($request) {
 
         return (new Database('raw_data'))->execute("
-             select
+            select
                 DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:00') as created,
                 (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*1 as '{$name}'
             from raw_data
