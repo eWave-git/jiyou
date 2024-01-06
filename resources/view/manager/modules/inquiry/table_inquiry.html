@@ -1,6 +1,6 @@
 <div class="content">
     <div class="tit_area">
-        <h2>표 조회</h2>
+        <h2>데이터 조회</h2>
     </div>
     <form class="card" name="frm" method="get"  action="" >
         <div class="tb_search">
@@ -47,7 +47,7 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th scope="col">번호</th>
+                    <th scope="col">No.</th>
                     <th scope="col">날짜 시간</th>
                     <th scope="col">{{data_1}}</th>
                     <th scope="col">{{data_2}}</th>
@@ -73,6 +73,7 @@
         $('#sdateAtedate').daterangepicker({
             locale: {
                 // "format": 'YYYY-MM-DD HH:mm:ss',     // 일시 노출 포맷
+                "customRangeLabel": "기간 설정",
                 "format": 'YYYY-MM-DD',     // 일시 노출 포맷
                 "applyLabel": "확인",                    // 확인 버튼 텍스트
                 "cancelLabel": "취소",                   // 취소 버튼 텍스트
@@ -85,8 +86,8 @@
             timePicker24Hour: true,                  // 24시간 노출 여부(ex> true : 23:50, false : PM 11:50)
             ranges: {
                 '오늘': [moment(), moment()],
-                '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                '최근 7 일전': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
+                '전일': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                '최근 일주일': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
                 // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 // 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]

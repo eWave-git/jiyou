@@ -23,11 +23,11 @@
                 </div>
 
                 <div class="item">
-                    <div class="form_tit">종류 </div>
+                    <div class="form_tit">타입 </div>
                     <div class="form_select">
                         <select name="type" id="type">
-                            <option value="normal">일반</option>
-                            <option value="water">음수</option>
+                            <option value="normal">환경데이터</option>
+                            <option value="water">음수데이터</option>
                         </select>
                     </div>
                 </div>
@@ -36,8 +36,8 @@
                     <div class="form_tit">간격</div>
                     <div class="form_select">
                         <select name="interval" id="interval" disabled>
-                            <option value="H">1시간</option>
-                            <option value="D">1일</option>
+                            <option value="H">시간음수량</option>
+                            <option value="D">하루음수량</option>
                         </select>
                     </div>
                 </div>
@@ -90,6 +90,7 @@
                 // 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
+            
         })
 
         $('#type').change(function () {
@@ -291,5 +292,6 @@
         })
     });
 
+    
 
 </script>

@@ -31,42 +31,43 @@ class Page {
             'label' => 'dashboard',
             'title' => '홈',
             'submenu'=>[
-                ['label' => 'dashboard', 'title' => '홈', 'link' => URL.'/'],
+                ['label' => 'dashboard', 'title' => '처음으로', 'link' => URL.'/'],
             ],
         ],
         [
             'label' => 'inquiry',
             'title' => '조회',
             'submenu'=>[
-                ['label' => 'table_inquiry', 'title' => '조회 - 데이터', 'link' => URL.'/manager/table_inquiry'],
-                ['label' => 'chart_inquiry', 'title' => '조회 - 그래프', 'link' => URL.'/manager/chart_inquiry'],
+                ['label' => 'table_inquiry', 'title' => '데이터 조회', 'link' => URL.'/manager/table_inquiry'],
+                ['label' => 'chart_inquiry', 'title' => '그래프 조회', 'link' => URL.'/manager/chart_inquiry'],
             ],
         ],
         [
             'label' => 'alarm',
             'title' => '알람',
             'submenu'=>[
-                ['label' => 'alarm_list', 'title' => '알람 - 설정', 'link' => URL.'/manager/alarm_list'],
-                ['label' => 'alarm_log_list', 'title' => '알람 - 발생기록', 'link' => URL.'/manager/alarm_log_list'],
+                ['label' => 'alarm_list', 'title' => '알람 설정', 'link' => URL.'/manager/alarm_list'],
+                ['label' => 'alarm_log_list', 'title' => '알람 기록', 'link' => URL.'/manager/alarm_log_list'],
             ],
         ],
         [
             'label' => 'control',
             'title' => '제어',
             'submenu'=>[
-                ['label' => 'switch', 'title' => 'Switch 제어', 'link' => URL.'/manager/control/switch'],
-                ['label' => 'command', 'title' => 'Command 제어', 'link' => URL.'/manager/control/command'],
-                ['label' => 'control', 'title' => 'Inverter 제어', 'link' =>"javascript:alert('준비중')"],
+                ['label' => 'switch', 'title' => '스위치 제어', 'link' => URL.'/manager/control/switch'],
+                ['label' => 'command', 'title' => '명령어 제어', 'link' => URL.'/manager/control/command'],
+                ['label' => 'control', 'title' => '인버터 제어(예정)', 'link' =>"javascript:alert('준비중')"],
             ],
         ],
         [
             'label' => 'etc',
             'title' => '기타',
             'submenu'=>[
-                ['label' => 'etc', 'title' => '알람 수신변경', 'link' => "javascript:alert('준비중')"],
+                
                 ['label' => 'group', 'title' => '그룹 관리', 'link' => '/manager/etc/group'],
+                ['label' => 'etc', 'title' => '알람 수신변경(예정)', 'link' => "javascript:alert('준비중')"],
 //                ['label' => 'report_form', 'title' => '레포팅', 'link' => "/manager/etc/report_form"],
-                ['label' => 'etc', 'title' => '데이터 분석', 'link' => "javascript:alert('준비중')"],
+                ['label' => 'etc', 'title' => '데이터 분석(예정)', 'link' => "javascript:alert('준비중')"],
             ],
         ],
     ];

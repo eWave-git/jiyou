@@ -1,24 +1,24 @@
 <div class="content">
     <div class="tit_area">
-        <h2>알람 설정</h2>
+        <h2>알람 추가</h2>
     </div>
     <div class="bd_wrap form_alarm_set">
         <form class="card" method="post" action="{{action}}" >
             <fieldset>
-                <legend>알람 설정</legend>
+                <legend>알람 추가</legend>
                 <strong class="form_caption">알람 등록</strong>
                 <div class="form_conbox">
                     <div class="item">
-                        <div class="form_tit">장치<span class="required">*</span></div>
+                        <div class="form_tit">장치 선택<span class="required"></span></div>
                         <div class="form_select">
                             <select name="device" id="device">
-                                <option value="">선택하세요.</option>
+                                <option value="">-</option>
                                 {{device_options}}
                             </select>
                         </div>
                     </div>
                     <div class="item">
-                        <div class="form_tit">데이터<span class="required">*</span></div>
+                        <div class="form_tit">알람 데이터<span class="required"></span></div>
                         <div class="form_select">
                             <select name="board" id="board">
                                 <option value="">선택하세요.</option>
@@ -27,17 +27,17 @@
                         </div>
                     </div>
                     <div class="item">
-                        <div class="form_tit">알림설정범위<span class="required">*</span></div>
+                        <div class="form_tit">알람범위<span class="required"></span></div>
                         <div class="form_select">
                             <select name="alarm_range" id="alarm_range">
-                                <option value="between">적정범위</option>
-                                <option value="up">이상</option>
-                                <option value="down">이하</option>
+                                <option value="between">범위 초과시 알람</option>
+                                <option value="up">이상시 알람</option>
+                                <option value="down">이하시 알람</option>
                             </select>
                         </div>
                     </div>
                     <div class="item" id="between_row">
-                        <div class="form_tit">정상범위<span class="required">*</span></div>
+                        <div class="form_tit">정상 범위<span class="required">*</span></div>
                         <div class="form_set n2">
                             <input type="number" class="inpt_txt" placeholder="0" id="between_min" name="between_min">
                             <span class="bar">~</span>

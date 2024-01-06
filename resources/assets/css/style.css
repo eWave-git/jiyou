@@ -476,9 +476,9 @@ input[type="password"]::-ms-clear {display:none;}
 .view_wrap .tit_area p span {font-weight:700;}
 .view_wrap .cont_area {padding:32px 60px 44px;}
 .view_wrap .cont_area .graph_wrap {padding:0;}
-.view_wrap table th {padding:0 20px; border-left:1px solid #b1b1b1; box-sizing:border-box; height:80px; font-size:24px; font-weight:700; text-align:right; background-color:#F8F8F9;}
+.view_wrap table th {padding:0 20px; border-left:1px solid #b1b1b1; box-sizing:border-box; height:80px; font-size:24px; font-weight:700; text-align:center; background-color:#F8F8F9;}
 .view_wrap table th:nth-child(1) {text-align:center; border:none;}
-.view_wrap table td {padding:0 20px; font-size:24px; border-left:1px solid #b1b1b1; box-sizing:border-box; height:80px; text-align:right; background-color:#fff;}
+.view_wrap table td {padding:0 20px; font-size:24px; border-left:1px solid #b1b1b1; box-sizing:border-box; height:80px; text-align:center; background-color:#fff;}
 .view_wrap table td:nth-child(1) {text-align:center; border:none; color:#0071B7; font-weight:600;}
 .view_wrap table tr:nth-child(2n) td {background-color:rgba(33, 142, 206, .08);}
 
