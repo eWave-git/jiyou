@@ -107,7 +107,7 @@ class RawData {
             from raw_data
             where address={$address} and board_type={$board_type} and board_number={$board_number} and created_at >= (now() - INTERVAL {$ago} day )
             group by FLOOR(DAY(created_at)/{$interval})*10
-            order BY idx asc  limit  1, {$ago};        
+            order BY idx asc  limit  0, {$ago};        
         ");
     }
 
@@ -155,6 +155,7 @@ class RawData {
             where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at > (now() - INTERVAL 24 HOUR ) and created_at < now()
             group by DAY(created_at),FLOOR(HOUR(created_at)/1)*10
             order BY idx asc
+            Limit 1, 36
         ");
     }
 
