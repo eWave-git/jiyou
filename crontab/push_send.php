@@ -102,7 +102,7 @@ while ($activation_obj = $activation->fetchObject()) {
     $key++;
 }
 
-$alarmHistoryDatabases = new Database('alarm_history');
+$alarmHistoryDatabases = new Database('alarm_history');                                                             //알람 히스토리에서 검색을 해서 최근 알람 보낸 간격이 'h' 기준으로 1시간 이상일때만 알람을 보낸다.
 
 foreach ($array as $k => $v) {
 
@@ -111,7 +111,7 @@ foreach ($array as $k => $v) {
     if (isset($results->alarm_idx)) {
         // "있다면";
 
-        $diff = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'h');
+        $diff = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'd');
         if ($diff >= 1) {
            alarmHistoryInsert($v);
            Common::sendPush($v['board_type_name']." 경보발생", $v['alarm_contents'],$v['push_subscription_id'],"");
