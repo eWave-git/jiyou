@@ -111,7 +111,7 @@ foreach ($array as $k => $v) {
     if (isset($results->alarm_idx)) {
         // "있다면";
 
-        $diff = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'd');
+        $diff = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');
         if ($diff >= 1) {
            alarmHistoryInsert($v);
            Common::sendPush($v['board_type_name']." 경보발생", $v['alarm_contents'],$v['push_subscription_id'],"");
