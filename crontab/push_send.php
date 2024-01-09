@@ -97,8 +97,6 @@ while ($activation_obj = $activation->fetchObject()) {
         }
     }
 
-
-
     $key++;
 }
 
