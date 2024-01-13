@@ -171,7 +171,7 @@ $(function () {
                                 timeUnit: "minute",
                                 count: 1
                             },
-                            tooltipDateFormat: "yyyy-MM-dd hh:mm",
+                            tooltipDateFormat: "MM-dd HH:mm",
                             renderer: am5xy.AxisRendererX.new(root, {
                                 minGridDistance: 100, pan:"zoom"
                             }),
@@ -182,9 +182,9 @@ $(function () {
                     var legend = chart.children.push(
                         am5.Legend.new(root, {
                             x: am5.p50,
-                            centerX: 300,
+                            centerX: 0,
                             centerY: am5.m50,
-                            y: am5.percent(99),
+                            y: am5.percent(98),
                         })
                     );
 
@@ -197,6 +197,7 @@ $(function () {
                             am5xy.ValueAxis.new(root, {
                                 // visible: false,
                                 maxDeviation: 1,
+                                maxPrecision: 0,
                                 renderer: yRenderer
                             })
                         );
@@ -262,13 +263,13 @@ $(function () {
                         if (key % 2) {
                             createAxisAndSeries(value.fieldDate, value.fieldName, false);
                         } else {
-                            createAxisAndSeries(value.fieldDate, value.fieldName, true);
+                            createAxisAndSeries(value.fieldDate, value.fieldName, false);
                         }
                     })
 
                     // Make stuff animate on load
                     // https://www.amcharts.com/docs/v5/concepts/animations/
-                    chart.appear(1000, 100);
+                    chart.appear(1000, 10);
 
 
                 }); // end am5.ready()
