@@ -142,7 +142,7 @@
                         });
                     })
 
-
+                    //amchart 만들기 부분
                     am5.ready(function() {
 
                         // Create root element
@@ -152,7 +152,8 @@
                         // Set themes
                         // https://www.amcharts.com/docs/v5/concepts/themes/
                         root.setThemes([
-                            am5themes_Animated.new(root)
+                            //부드러운 에니메이션 기능 켜고 끄기
+                            //am5themes_Animated.new(root)
                         ]);
 
                         // Create chart
@@ -171,6 +172,7 @@
                         var easing = am5.ease.linear;
                         chart.get("colors").set("step", 3);
 
+                        //timeUnit 변경, tooltip 변경
                         // Create axes
                         // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
                         var xAxis = chart.xAxes.push(
@@ -180,10 +182,12 @@
                                 baseInterval: {
                                     maxDeviation: 0.1,
                                     groupData: false,
-                                    timeUnit: "millisecond",
+                                    timeUnit: "minute",
+                                    //timeUnit: "millisecond",
                                     count: 1
                                 },
-                                tooltipDateFormat: "yyyy-MM-dd HH:mm",
+                                tooltipDateFormat: "MM-dd HH:mm",
+                                //tooltipDateFormat: "yyyy-MM-dd HH:mm",
                                 renderer: am5xy.AxisRendererX.new(root, {
                                     minGridDistance: 100, pan:"zoom"
                                 }),
@@ -191,12 +195,16 @@
                             })
                         );
 
+                        // 그래프 범례 조정 장치
+                        // centerX 300-> 0 / 
+                        
                         var legend = chart.children.push(
                             am5.Legend.new(root, {
                                 x: am5.p50,
-                                centerX: 300,
+                                y: am5.percent(98),
+                                //centerX: 300,
+                                centerX : 0,
                                 centerY: am5.m50,
-                                y: am5.percent(99),
                             })
                         );
 
@@ -205,9 +213,12 @@
                             var yRenderer = am5xy.AxisRendererY.new(root, {
                                 opposite: opposite
                             });
+                            // maxPrecision: 0, 추가 이를 통해 숫자 정밀도 강화
+                            //https://www.amcharts.com/docs/v5/charts/xy-chart/axes/value-axis/
                             var yAxis = chart.yAxes.push(
                                 am5xy.ValueAxis.new(root, {
                                     maxDeviation: 1,
+                                    //maxPrecision: 0,
                                     renderer: yRenderer
                                 })
                             );
@@ -254,26 +265,26 @@
                             legend.data.setAll(chart.series.values);
 
                         }
-
                         // Add cursor
                         // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
                         var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
                             xAxis: xAxis,
                             behavior: "none"
                         }));
-                        cursor.lineY.set("visible", false);
+                        cursor.lineY.set("visible", true);
 
                         // add scrollbar
                         chart.set("scrollbarX", am5.Scrollbar.new(root, {
                             orientation: "horizontal"
                         }));
 
-
+                        // y축 값 을 보여주는 숫자
                         $.each(field, function (key, value) {
                             if (key % 2) {
+                                //createAxisAndSeries(value.fieldDate, value.fieldName, false);
                                 createAxisAndSeries(value.fieldDate, value.fieldName, false);
                             } else {
-                                createAxisAndSeries(value.fieldDate, value.fieldName, true);
+                                createAxisAndSeries(value.fieldDate, value.fieldName, false);
                             }
                         })
 
