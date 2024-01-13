@@ -223,7 +223,7 @@ $(function () {
                         );
 
                         //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });
-                        series.strokes.template.setAll({ strokeWidth: 1 });
+                        series.strokes.template.setAll({ strokeWidth: 3 });
 
                         yRenderer.grid.template.set("strokeOpacity", 0.05);
                         yRenderer.labels.template.set("fill", series.get("fill"));
