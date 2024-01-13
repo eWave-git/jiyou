@@ -183,6 +183,7 @@
                                     maxDeviation: 0.1,
                                     groupData: false,
                                     timeUnit: "minute",
+                                    //timeUnit: "day",
                                     //timeUnit: "millisecond",
                                     count: 1
                                 },
@@ -202,7 +203,7 @@
                             am5.Legend.new(root, {
                                 x: am5.p50,
                                 y: am5.percent(98),
-                                //centerX: 300,
+                                //centerX: 300,https://chat.openai.com/chat
                                 centerX : 0,
                                 centerY: am5.m50,
                             })
@@ -226,7 +227,8 @@
                             if (chart.yAxes.indexOf(yAxis) > 0) {
                                 yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
                             }
-
+                            
+                            // 선에 대한 설정을 만듭니다.
                             // Add series
                             // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
                             var series = chart.series.push(
@@ -236,6 +238,8 @@
                                     yAxis: yAxis,
                                     valueYField: fieldDate,
                                     valueXField: "date",
+                                    
+                                    //minDistance: 20,
                                     tooltip: am5.Tooltip.new(root, {
                                         pointerOrientation: "horizontal",
                                         labelText: "[bold]{name}[/] : {valueY}"
@@ -244,8 +248,10 @@
                             );
 
                             //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });
-                            series.strokes.template.setAll({ strokeWidth: 1 });
+                            series.strokes.template.setAll({ strokeWidth: 3 });
+                            //series.strokes.template.setAll({ strokeWidth: 1 });
 
+                            //yRenderer.grid.template.set("strokeOpacity", 0.5);
                             yRenderer.grid.template.set("strokeOpacity", 0.05);
                             yRenderer.labels.template.set("fill", series.get("fill"));
                             yRenderer.setAll({
