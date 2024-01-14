@@ -170,7 +170,7 @@
                         );
 
                         var easing = am5.ease.linear;
-                        chart.get("colors").set("step", 3);
+                        chart.get("colors").set("step", 8);                                 // 전체 테마 색상 변경 부분
 
                         //timeUnit 변경, tooltip 변경
                         // Create axes
@@ -247,13 +247,13 @@
                                 })
                             );
 
-                            //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });
+                            //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });         // 그래프를 면적으로 표현
                             series.strokes.template.setAll({ strokeWidth: 3 });
                             //series.strokes.template.setAll({ strokeWidth: 1 });
 
                             //yRenderer.grid.template.set("strokeOpacity", 0.5);
                             yRenderer.grid.template.set("strokeOpacity", 0.05);
-                            yRenderer.labels.template.set("fill", series.get("fill"));
+                            yRenderer.labels.template.set("fill", series.get("fill"));              // y축 값 범위색깔 표현
                             yRenderer.setAll({
                                 stroke: series.get("fill"),
                                 strokeOpacity: 1,

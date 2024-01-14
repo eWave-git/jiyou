@@ -110,7 +110,7 @@ foreach ($array as $k => $v) {
         // "있다면";
 
         $diff = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');                                          // 밑 뒤에 파라미터 값이 i이면 분, h이면 시간 d이면 날짜 마다 보냄
-        if ($diff >= 30) {
+        if ($diff >= 60) {
            alarmHistoryInsert($v);
            Common::sendPush($v['board_type_name']." 경보발생", $v['alarm_contents'],$v['push_subscription_id'],"");
         }
