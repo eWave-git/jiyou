@@ -173,7 +173,6 @@ class Dashboard extends Page {
         if (is_array((array)$rew_obj)) {
             $_cnt = 0;
 
-//            Common::print_r2($board_type);
             foreach ($board_name as $k => $v) {
 
                 if ($v['display'] == 'Y') {
@@ -197,7 +196,11 @@ class Dashboard extends Page {
                             $value = ($water_row->{$v['field']});
                         }
                     } else {
-                        $value = round($rew_obj->{$v['field']}, 1);
+                        if (isset($rew_obj->{$v['field']})) {
+                            $value = round($rew_obj->{$v['field']}, 1);
+                        } else {
+                            $value = 0;
+                        }
                     }
 
                     $symbol = $v['symbol'];
@@ -231,6 +234,7 @@ class Dashboard extends Page {
 
         if (is_array((array)$obj)) {
             foreach ($obj as $k => $v) {
+
                 $device_obj = EntityDevice::getDevicesByIdx($v['device_idx']);
                 $result = EntityRawData::LastLimitOne($device_obj->address, $device_obj->board_type, $device_obj->board_number);
                 $rew_obj = $result->fetchObject(EntityRawData::class);
@@ -239,8 +243,9 @@ class Dashboard extends Page {
                     'subject' => $obj[$k]['widget_name'],
                     'idx' => $obj[$k]['idx'],
                     'item' => self::getCardItem($rew_obj, $v['board_name']),
-                    'update_at' => substr($rew_obj->created_at,5,11),
+                    'update_at' => isset($rew_obj->created_at) ? substr($rew_obj->created_at, 5, 11) : "00-00 00:00" ,
                 ]);
+
             }
         }
 

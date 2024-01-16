@@ -56,6 +56,7 @@ class Page {
             'submenu'=>[
                 ['label' => 'switch', 'title' => '스위치 제어', 'link' => URL.'/manager/control/switch'],
                 ['label' => 'command', 'title' => '명령어 제어', 'link' => URL.'/manager/control/command'],
+                ['label' => 'command_4ch', 'title' => '명령어2 제어', 'link' => URL.'/manager/control/command_4ch'],
                 ['label' => 'control', 'title' => '인버터 제어(예정)', 'link' =>"javascript:alert('준비중')"],
             ],
         ],

@@ -1,0 +1,47 @@
+<tr>
+    <td>{{number}}</td>
+    <td>{{name}}</td>
+    <td>{{topic}}</td>
+
+    <td>
+        <div class="btn_switch">
+            <label for="">
+                <input type="checkbox"  name="{{idx}}_ch1"  {{ch1_checked}}  data-idx={{idx}}>
+            </label>
+        </div>
+    </td>
+    <td>
+        <div class="btn_switch">
+            <label for="">
+                <input type="checkbox"  name="{{idx}}_ch2"  {{ch2_checked}}  data-idx={{idx}}>
+            </label>
+        </div>
+    </td>
+    <td>
+        <div class="btn_switch">
+            <label for="">
+                <input type="checkbox"  name="{{idx}}_ch3"  {{ch3_checked}}  data-idx={{idx}}>
+            </label>
+        </div>
+    </td>
+    <td>
+        <div class="btn_switch">
+            <label for="">
+                <input type="checkbox"  name="{{idx}}_ch4"  {{ch4_checked}}  data-idx={{idx}}>
+            </label>
+        </div>
+    </td>
+
+    <td>
+        <div class="btn_wrap command_wrap">
+            <button type="button" class="btn btn_command" name="ch" data-idx={{idx}}>저장</button>
+        </div>
+    </td>
+    <td>{{create_at}}</td>
+    <td>{{update_at}}</td>
+    <td>
+        <div class="btn_wrap">
+            <a href="/manager/control/{{idx}}/delete/command_4ch" class="btn btn_del">삭제</a>
+        </div>
+    </td>
+</tr>

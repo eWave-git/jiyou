@@ -189,6 +189,15 @@ class Common{
         exec($commend, $output, $retval);
     }
 
+    public static function ch4_commend($address, $board_type, $board_number, $ch1, $ch2, $ch3, $ch4) {
+        $commend = 'mosquitto_pub -h 13.209.31.152 -p 1883 -t "EWAVE/CONTROL/'.$address.'" -u "ewave" -P "andante" -m "{\"address\":'.$address.',\"board_type\":'.$board_type.',\"board_number\":'.$board_number.',\"OUT_CH1\":'.$ch1.',\"OUT_CH2\":'.$ch2.',\"OUT_CH3\":'.$ch3.',\"OUT_CH4\":'.$ch4.'}"';
+
+        $output=null;
+        $retval=null;
+
+        exec($commend, $output, $retval);
+    }
+
     public static function getMembersDevice($member_idx) {
         $arr  = array();
 
