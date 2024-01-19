@@ -125,7 +125,6 @@ class Common{
     }
 
     public static function date_diff($startDate, $lastDate, $format='days') {
-        $startDate = new DateTime($startDate);
         $lastDate = new DateTime($lastDate);
 
         $date_diff = date_diff($startDate, $lastDate);
