@@ -1,0 +1,80 @@
+<div class="content">
+    <div class="tit_area">
+        <h2>Command2 제어</h2>
+    </div>
+    <div class="bd_wrap form_alarm_set">
+        <form class="card" method="post" action="{{action}}" >
+            <input type="hidden" name="control_type" value="4ch">
+            <fieldset>
+                <legend>Command2 제어</legend>
+                <strong class="form_caption">Command2 등록</strong>
+                <div class="form_conbox">
+                    <div class="item">
+                        <div class="form_tit">제어 이름<span class="required">*</span></div>
+                        <div class="form_input">
+                            <input type="text" class="inpt_txt" placeholder="제어 이름을 입력하세요." id="name" name="name">
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="form_tit">장치<span class="required">*</span></div>
+                        <div class="form_select">
+                            <select name="device" id="control_device">
+                                {{device_options}}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="form_tit">제어장치 CH1<span class="required">*</span></div>
+                        <div class="form_select">
+                            <div class="btn_switch">
+                                <label for="">
+                                    <input type="checkbox"  name="ch1" value="1" >
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="form_tit">제어장치 CH2<span class="required">*</span></div>
+                        <div class="form_select">
+                            <div class="btn_switch">
+                                <label for="">
+                                    <input type="checkbox"  name="ch2" value="1" >
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="form_tit">제어장치 CH3<span class="required">*</span></div>
+                        <div class="form_select">
+                            <div class="btn_switch">
+                                <label for="">
+                                    <input type="checkbox"  name="ch3" value="1">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="form_tit">제어장치 CH4<span class="required">*</span></div>
+                        <div class="form_select">
+                            <div class="btn_switch">
+                                <label for="">
+                                    <input type="checkbox"  name="ch4" value="1">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="btn_wrap form_btn_wrap">
+                    <!-- <button type="button" class="btn sub_btn">저장</button> --><!-- 활성화시 class="sub_btn" -->
+                    <button type="submit" class="btn disable">저장</button><!-- 비활성화시 class="disable" -->
+                    <a href="/manager/control/command_4ch" class="btn line_btn">목록</a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

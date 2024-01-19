@@ -27,6 +27,14 @@ class ControlData {
 
     public $relay2;
 
+    public $ch1;
+
+    public $ch2;
+
+    public $ch3;
+
+    public $ch4;
+
     public $temperature;
 
     public $update_at;
@@ -46,6 +54,10 @@ class ControlData {
             'type' => $this->type,
             'relay1' => $this->relay1,
             'relay2' => $this->relay2,
+            'ch1' => $this->ch1,
+            'ch2' => $this->ch2,
+            'ch3' => $this->ch3,
+            'ch4' => $this->ch4,
             'temperature' => $this->temperature,
             'create_at' => $this->create_at,
         ]);
@@ -66,6 +78,10 @@ class ControlData {
             'type' => $this->type,
             'relay1' => $this->relay1,
             'relay2' => $this->relay2,
+            'ch1' => $this->ch1,
+            'ch2' => $this->ch2,
+            'ch3' => $this->ch3,
+            'ch4' => $this->ch4,
             'temperature' => $this->temperature,
         ]);
     }
@@ -79,6 +95,12 @@ class ControlData {
     public static function temperatureUpdate($idx, $val) {
         return (new Database('control_data'))->execute(
             "update control_data set temperature = ".$val.", update_at=now() where idx = ".$idx
+        );
+    }
+
+    public static function ch4Update($idx, $ch1, $ch2, $ch3, $ch4) {
+        return (new Database('control_data'))->execute(
+            "update control_data set ch1 = ".$ch1.", ch2 = ".$ch2.", ch3 = ".$ch3.", ch4 = ".$ch4.", update_at=now() where idx = ".$idx
         );
     }
 

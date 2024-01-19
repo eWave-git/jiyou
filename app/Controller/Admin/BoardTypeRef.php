@@ -27,7 +27,7 @@ class BoardTypeRef extends Page {
 
     public static function getControlType($control_type = '') {
         $options = '';
-        $_array = array('R', 'T');
+        $_array = array('R', 'T', '4CH');
 
         foreach ($_array as $k => $v) {
             $options .= View::render('admin/modules/device/board_type_ref_options', [
