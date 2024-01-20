@@ -55,7 +55,8 @@ input[type="password"]::-ms-clear {display:none;}
 .lnb {width:250px; height:100vh; background-color:#434343; box-sizing:border-box; z-index:10;}
 .lnb h1 a {display:block; margin:53px auto; width:124px; height:auto;}
 .lnb h1 a img {width:100%; height:auto;}
-.lnb .log_btn {display:none;}
+/*.lnb .log_btn {display:none;}*/
+.lnb .log_btn {padding-top: 100px; display: flex; justify-content: center;}
 
 /* depth_01 */
 .depth_01 > li > a {display:block; width:100%; padding:19px 25px 19px 23px; box-sizing:border-box; color:#fff; text-align:right; background-position:left 23px center; background-repeat:no-repeat; background-size:32px; transition:.3s;}
@@ -86,6 +87,7 @@ input[type="password"]::-ms-clear {display:none;}
 #contents {flex:1; height:100%; width:calc(100% - 250px);}
 
 /* header */
+#header { display: none}
 #header {background-color:#fff; position:fixed; right:0; top:0; width:calc(100% - 250px); height:80px; box-sizing:border-box;}
 #header .inner {padding:20px 40px 19px; display:flex; align-items:center; box-sizing:border-box; width:100%;}
 .log_btn {display:flex; align-items:center; margin-left:auto;}
@@ -102,11 +104,12 @@ input[type="password"]::-ms-clear {display:none;}
 
 
 /* content */
-.content {background-color:#F8F8F9; height:calc(100% - 80px); margin-top:80px; overflow-y:auto; overflow-x:hidden; padding:40px; box-sizing:border-box;}
+/*.content {background-color:#F8F8F9; height:calc(100% - 80px); margin-top:80px; overflow-y:auto; overflow-x:hidden; padding:40px; box-sizing:border-box;}*/
+.content {background-color:#F8F8F9; height:100%; overflow-y:auto; overflow-x:hidden; padding:40px; box-sizing:border-box;}
 
 @media only screen and (max-width:1500px) {
 	/* content */
-	.content {padding:30px;}
+	.content {padding:30px}
 }
 @media only screen and (max-width:768px) {
 	/* lnb */
@@ -119,10 +122,11 @@ input[type="password"]::-ms-clear {display:none;}
 	.lnb .log_btn .logout {background-color:#f8f8f9; padding:4px 18px;}
 
 	/* content */
+	.content {background-color:#F8F8F9; height:calc(100% - 80px); margin-top:80px; overflow-y:auto; overflow-x:hidden; padding:40px; box-sizing:border-box;}
 	.content {padding:20px;}
 
 	/* header */
-	#header {background-color:#434343; width:100%;}
+	#header { display: block; background-color:#434343; width:100%;}
 	#header .inner {padding:0 10px 0 20px; height:100%;}
 	#header .log_btn {display:none;}
 	#header .mo_wrap {display:flex;}
