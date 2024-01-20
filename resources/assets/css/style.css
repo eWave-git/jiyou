@@ -102,10 +102,10 @@ input[type="password"]::-ms-clear {display:none;}
 #header .mo_wrap .site_btn {width:40px; height:40px; background:url(../images/btn_site.svg) no-repeat center; background-size:100% auto; transition:.2s;}
 #header .mo_wrap .site_btn.on {background-image:url(../images/btn_site_close.svg);}
 
-
+/* 20240120 수정 박선혁 전체 padding:40px->20px 변경*/
 /* content */
 /*.content {background-color:#F8F8F9; height:calc(100% - 80px); margin-top:80px; overflow-y:auto; overflow-x:hidden; padding:40px; box-sizing:border-box;}*/
-.content {background-color:#F8F8F9; height:100%; overflow-y:auto; overflow-x:hidden; padding:40px; box-sizing:border-box;}
+.content {background-color:#F8F8F9; height:100%; overflow-y:auto; overflow-x:hidden; padding:20px; box-sizing:border-box;}
 
 @media only screen and (max-width:1500px) {
 	/* content */
@@ -426,10 +426,11 @@ input[type="password"]::-ms-clear {display:none;}
 
 
 /* 20240113 수정 박선혁 대쉬보드 -> 그래프에서 height 800px -> 530px 로 수정*/
+/* 20240120 수정 박선혁 대쉬보드 -> 그래프에서 height 530px -> 650px 로 수정 , 버튼여백 줄이면서 그래프 늘리기*/
 .graph_wrap {padding:20px;}
 /*.graph_area {overflow-y:auto;}*/
 /*.graph_area {overflow-y:auto; width: 100%; height: 800px; max-width:100%; }*/
-.graph_area {overflow-y:auto; width: 100%; height: 530px; max-width:100%; }
+.graph_area {overflow-y:auto; width: 100%; height: 650px; max-width:100%; }
 .graph_area img {width:1112px; height:auto; margin:10px auto; display:block;}
 
 @media only screen and (max-width:1880px) {

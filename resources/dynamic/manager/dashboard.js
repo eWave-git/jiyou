@@ -261,9 +261,9 @@ $(function () {
 
                     $.each(field, function (key, value) {
                         if (key % 2) {
-                            createAxisAndSeries(value.fieldDate, value.fieldName, false);
+                            createAxisAndSeries(value.fieldDate, value.fieldName, true);
                         } else {
-                            createAxisAndSeries(value.fieldDate, value.fieldName, false);
+                            createAxisAndSeries(value.fieldDate, value.fieldName, true);
                         }
                     })
 
