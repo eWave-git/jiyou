@@ -58,6 +58,7 @@ class Control extends Page {
                     $array[$k]['device_name'] = $device_obj->device_name;
                     $array[$k]['text'] = $obj->{$obj->type} == 1 ? "ON" : "OFF";
                     $array[$k]['checked'] = $obj->{$obj->type} == 1 ? "checked" : "";
+                    $array[$k]['field'] = $obj->type;
 
                     $array[$k]['update_at'] = $obj->update_at;
                     $array[$k]['create_at'] = $obj->create_at;
