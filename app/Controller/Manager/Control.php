@@ -56,7 +56,7 @@ class Control extends Page {
 
                     $array[$k]['name'] = $obj->name;
                     $array[$k]['device_name'] = $device_obj->device_name;
-                    $array[$k]['text'] = $obj->{$obj->type} == 1 ? "ON" : "OFF";
+                    $array[$k]['text'] = $obj->{$obj->type} == 1 ? "닫힘" : "열림";
                     $array[$k]['checked'] = $obj->{$obj->type} == 1 ? "checked" : "";
                     $array[$k]['field'] = $obj->type;
 

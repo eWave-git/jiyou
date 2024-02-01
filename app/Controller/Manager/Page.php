@@ -54,9 +54,9 @@ class Page {
             'label' => 'control',
             'title' => '제어',
             'submenu'=>[
-                ['label' => 'switch', 'title' => '스위치 제어', 'link' => URL.'/manager/control/switch'],
-                ['label' => 'command', 'title' => '명령어 제어', 'link' => URL.'/manager/control/command'],
-                ['label' => 'command_4ch', 'title' => '명령어2 제어', 'link' => URL.'/manager/control/command_4ch'],
+                ['label' => 'switch', 'title' => '밸브 제어', 'link' => URL.'/manager/control/switch'],
+                ['label' => 'command_4ch', 'title' => '스위치 제어', 'link' => URL.'/manager/control/command_4ch'],
+                ['label' => 'command', 'title' => '온도 제어', 'link' => URL.'/manager/control/command'],
                 ['label' => 'control', 'title' => '인버터 제어(예정)', 'link' =>"javascript:alert('준비중')"],
             ],
         ],

@@ -1,22 +1,22 @@
 <div class="content">
     <div class="tit_area">
-        <h2>Command2 제어</h2>
+        <h2>스위치 제어</h2>
     </div>
     <div class="bd_wrap form_alarm_set">
         <form class="card" method="post" action="{{action}}" >
             <input type="hidden" name="control_type" value="4ch">
             <fieldset>
-                <legend>Command2 제어</legend>
-                <strong class="form_caption">Command2 등록</strong>
+                <legend>스위치 제어</legend>
+                <strong class="form_caption">스위치 등록</strong>
                 <div class="form_conbox">
                     <div class="item">
-                        <div class="form_tit">제어 이름<span class="required">*</span></div>
+                        <div class="form_tit">제어 이름<span class="required"></span></div>
                         <div class="form_input">
                             <input type="text" class="inpt_txt" placeholder="제어 이름을 입력하세요." id="name" name="name">
                         </div>
                     </div>
                     <div class="item">
-                        <div class="form_tit">장치<span class="required">*</span></div>
+                        <div class="form_tit">장치<span class="required"></span></div>
                         <div class="form_select">
                             <select name="device" id="control_device">
                                 {{device_options}}
@@ -25,7 +25,7 @@
                     </div>
 
                     <div class="item">
-                        <div class="form_tit">제어장치 CH1<span class="required">*</span></div>
+                        <div class="form_tit">채널 1<span class="required"></span></div>
                         <div class="form_select">
                             <div class="btn_switch">
                                 <label for="">
@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="item">
-                        <div class="form_tit">제어장치 CH2<span class="required">*</span></div>
+                        <div class="form_tit">채널 2<span class="required"></span></div>
                         <div class="form_select">
                             <div class="btn_switch">
                                 <label for="">
@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="item">
-                        <div class="form_tit">제어장치 CH3<span class="required">*</span></div>
+                        <div class="form_tit">채널 3<span class="required"></span></div>
                         <div class="form_select">
                             <div class="btn_switch">
                                 <label for="">
@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="item">
-                        <div class="form_tit">제어장치 CH4<span class="required">*</span></div>
+                        <div class="form_tit">채널 4<span class="required"></span></div>
                         <div class="form_select">
                             <div class="btn_switch">
                                 <label for="">

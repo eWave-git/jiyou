@@ -1,21 +1,21 @@
 <div class="content">
     <div class="tit_area">
-        <h2>Switch 제어</h2>
+        <h2>밸브 제어</h2>
     </div>
     <div class="bd_wrap form_alarm_set">
         <form class="card" method="post" action="{{action}}" >
             <fieldset>
-                <legend>Switch 제어</legend>
-                <strong class="form_caption">제어 등록</strong>
+                <legend>밸브 제어</legend>
+                <strong class="form_caption">밸브 등록</strong>
                 <div class="form_conbox">
                     <div class="item">
-                        <div class="form_tit">제어 이름<span class="required">*</span></div>
+                        <div class="form_tit">밸브 이름 설정<span class="required">*</span></div>
                         <div class="form_input">
                             <input type="text" class="inpt_txt" placeholder="제어 이름을 입력하세요." id="name" name="name">
                         </div>
                     </div>
                     <div class="item">
-                        <div class="form_tit">장치<span class="required">*</span></div>
+                        <div class="form_tit">제어 장치 이름<span class="required">*</span></div>
                         <div class="form_select">
                             <select name="device" id="control_device">
                                 {{device_options}}
@@ -23,19 +23,19 @@
                         </div>
                     </div>
                     <div class="item">
-                        <div class="form_tit">제어타입<span class="required">*</span></div>
+                        <div class="form_tit">제어 타입 선택<span class="required">*</span></div>
                         <div class="form_select">
                             <select name="control_type">
-                                <option value="switch">스위치 제어</option>
+                                <option value="switch">열림/닫힘 제어</option>
                             </select>
                         </div>
                     </div>
                     <div class="item">
-                        <div class="form_tit">제어장치<span class="required">*</span></div>
+                        <div class="form_tit">제어 장치 포트 선택<span class="required">*</span></div>
                         <div class="form_select">
                             <select name="relay" id="relay">
-                                <option value="relay1">relay1</option>
-                                <option value="relay2">relay2</option>
+                                <option value="relay1">1번 포트</option>
+                                <option value="relay2">2번 포트</option>
                             </select>
                         </div>
                     </div>
