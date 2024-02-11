@@ -108,10 +108,13 @@ class ControlData {
         return self::getControlData('device_idx ='.$idx);
     }
 
-    public static function getControlDataByMemberIdx($idx) {
+    /*public static function getControlDataByMemberIdx($idx) {
         return self::getControlData('member_idx ='.$idx, 'create_at desc');
-    }
+    }*/
 
+    public static function getControlDataByMemberIdx($idx) {
+        return self::getControlData('member_idx ='.$idx, 'create_at asc');
+    }
 
     public static function getControlDataByIdx($idx) {
         return self::getControlData('idx ='.$idx)->fetchObject(self::class);

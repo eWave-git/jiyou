@@ -69,11 +69,13 @@ class Control extends Page {
         }
 
         $item = '';
-        $total = count($array);
+        //$total = count($array);
+        $_i = 1;
         foreach ($array as $k => $v) {
                 $item .= View::render('manager/modules/control/switch_list_item', [
                     'idx' => $v['idx'],
-                    'number' => $total,
+                    //'number' => $total,
+                    'number' => $_i,
                     'name' => $v['name'],
                     'device_name' => $v['device_name'],
                     'text'  => $v['text'],
@@ -82,7 +84,8 @@ class Control extends Page {
                     'update_at' => $v['update_at'],
                     'create_at' => $v['create_at'],
                 ]);
-                $total--;
+                //$total--;
+                $_i++;
         }
 
 
@@ -204,12 +207,14 @@ class Control extends Page {
         }
         $item = '';
 
-        $total = count($array);
+        //$total = count($array);
+        $_i = 1;
 
         foreach ($array as $k => $v) {
             $item .= View::render('manager/modules/control/command_list_item', [
                 'idx' => $v['idx'],
-                'number' => $total,
+                //'number' => $total,
+                'number' => $_i,
                 'name' => $v['name'],
                 'topic' => $v['topic'],
                 'data1'  => $v['data1'],
@@ -218,7 +223,8 @@ class Control extends Page {
                 'update_at' => $v['update_at'],
                 'create_at' => $v['create_at'],
             ]);
-            $total--;
+            //$total--;
+            $_i++;
         }
 
         return $item;
@@ -352,12 +358,13 @@ class Control extends Page {
         }
         $item = '';
 
-        $total = count($array);
-
+        //$total = count($array);
+        $_i = 1;
         foreach ($array as $k => $v) {
             $item .= View::render('manager/modules/control/command_4ch_list_item', [
                 'idx' => $v['idx'],
-                'number' => $total,
+                //'number' => $total,
+                'number' => $_i,
                 'name' => $v['name'],
                 'topic' => $v['topic'],
                 'ch1_checked' => $v['ch1_checked'],
@@ -368,7 +375,8 @@ class Control extends Page {
                 'update_at' => $v['update_at'],
                 'create_at' => $v['create_at'],
             ]);
-            $total--;
+            //$total--;
+            $_i++;
         }
 
         return $item;
