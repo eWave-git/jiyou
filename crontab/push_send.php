@@ -43,7 +43,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
-            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생!!!";
+            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생!";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -65,7 +65,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
-            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!!!";
+            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -86,7 +86,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
-            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 알람 발생!!!";
+            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 알람 발생!";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -117,18 +117,18 @@ foreach ($array as $k => $v) {
         }
         */
 
-        $diff1 = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 's');                                          // 밑 뒤에 파라미터 값이 i이면 분, h이면 시간 d이면 날짜 마다 보냄
-        $diff2 = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');                                          // 밑 뒤에 파라미터 값이 i이면 분, h이면 시간 d이면 날짜 마다 보냄
-        if ($diff1 >= 50 || $diff2 >= 0) {
+        $diff_sec = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 's');                                          // 시간 설정 변경
+        $diff_min = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');                                          
+        if ($diff_sec >= 59 || $diff_min >= 0) {
            alarmHistoryInsert($v);
-           Common::sendPush($v['board_type_name']." 경보발생", $v['alarm_contents'],$v['push_subscription_id'],"");
+           Common::sendPush($v['board_type_name']." 경보", $v['alarm_contents'],$v['push_subscription_id'],"");
         }
 
     } else {
         // "없다면";
 
         alarmHistoryInsert($v);
-        Common::sendPush($v['board_type_name']." 경보발생", $v['alarm_contents'],$v['push_subscription_id'],"");
+        Common::sendPush($v['board_type_name']." 경보", $v['alarm_contents'],$v['push_subscription_id'],"");
     }
 }
 
