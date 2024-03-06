@@ -22,7 +22,7 @@ class AlarmHistory {
     public $created_at;
 
     public static function getAlarmHistoryByMemberIdx($idx) {
-        return self::getAlarmHistory('member_idx ='.$idx, 'raw_data_created_at desc limit 20');     // 240108 /manager/alarm_log_list 알람 발생기록 페이지에서 알람 발생한 내역의 전체 표현 갯수 나타내는 숫자 제한 
+        return self::getAlarmHistory('member_idx ='.$idx, 'raw_data_created_at desc limit 100');     // 240108 /manager/alarm_log_list 알람 발생기록 페이지에서 알람 발생한 내역의 전체 표현 갯수 나타내는 숫자 제한 
     }
 
     public function created() {
