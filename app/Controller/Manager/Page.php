@@ -47,6 +47,7 @@ class Page {
             'title' => '알람',
             'submenu'=>[
                 ['label' => 'alarm_list', 'title' => '알람 설정', 'link' => URL.'/manager/alarm_list'],
+                ['label' => 'water_alarm_list', 'title' => '물알람 설정', 'link' => URL.'/manager/water_alarm_list'],
                 ['label' => 'alarm_log_list', 'title' => '알람 기록', 'link' => URL.'/manager/alarm_log_list'],
             ],
         ],

@@ -85,3 +85,59 @@ $obRouter->get('/manager/alarm/{idx}/delete',[
         return new Response(200, Manager\Alarm::AlarmDelete($request, $idx));
     }
 ]);
+
+$obRouter->get('/manager/water_alarm_list',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::getWaterAlarm($request));
+    }
+]);
+
+$obRouter->get('/manager/water_alarm_form',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::Water_Alarm_Form($request));
+    }
+]);
+
+$obRouter->post('/manager/water_alarm_form_create',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::Water_Alarm_Create($request));
+    }
+]);
+
+$obRouter->post('/manager/alarm/setWaterActiveChange',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::setWaterActiveChange($request), 'application/json');
+    }
+]);
+
+$obRouter->get('/manager/alarm/{idx}/water_delete',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Alarm::WaterAlarmDelete($request, $idx));
+    }
+]);
+
+$obRouter->post('/manager/alarm_form/getWaterBoardType',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::getWaterBoardType($request), 'application/json');
+    }
+]);

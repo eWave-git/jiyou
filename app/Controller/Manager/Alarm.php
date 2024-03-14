@@ -6,7 +6,9 @@ use \App\Model\Entity\Device as EntityDevice;
 use \App\Model\Entity\Member as EntityMmeber;
 use \App\Model\Entity\Alarm as EntityAlarm;
 use \App\Model\Entity\AlarmMember as EntityAlarmMember;
+use \App\Model\Entity\WaterAlarmMember as EntityWaterAlarmMember;
 use \App\Model\Entity\AlarmHistory as EntityAlarmHistory;
+use \App\Model\Entity\WaterAlarm as EntityWaterAlarm;
 use \app\Utils\Common;
 use \App\Utils\View;
 
@@ -34,8 +36,10 @@ class Alarm extends Page {
             $success = true;
             foreach ($board_array as $k => $v) {
                 if ($v['display'] == 'Y') {
-                    $arr['field'][] = $v['field'];
-                    $arr['name'][] = $v['name'];
+                    if ($v['symbol'] != 'L') {
+                        $arr['field'][] = $v['field'];
+                        $arr['name'][] = $v['name'];
+                    }
                 }
             }
         } else {
@@ -47,7 +51,6 @@ class Alarm extends Page {
             'value'=>$arr['field'],
             'text' => $arr['name'],
         ];
-
     }
 
     public static function getAlarmList($user_idx) {
@@ -305,5 +308,186 @@ class Alarm extends Page {
         $obj = EntityAlarm::getAlarmByIdx($idx);
         $obj->deleted();
         $request->getRouter()->redirect('/manager/alarm_list');
+    }
+
+
+    public static function getWaterAlarmList($user_idx) {
+
+        $result = EntityWaterAlarm::getWaterAlarmByMemberIdx($user_idx);
+        $array = array();
+        $_i = 0;
+        while ($obj = $result->fetchObject(EntityWaterAlarm::class)) {
+            $device_obj = EntityDevice::getDevicesByIdx($obj->device_idx);
+            $array[$_i]['idx'] = $obj->idx;
+            $array[$_i]['device_name'] = $device_obj->device_name ?? '';
+            $array[$_i]['board_type_name'] = $obj->board_type_name;
+            $array[$_i]['alarm_range'] = $obj->alarm_range;
+
+            $array[$_i]['min'] = $obj->min;
+            $array[$_i]['max'] = $obj->max;
+            $array[$_i]['activation'] = $obj->activation;
+            $array[$_i]['create'] = $obj->created_at;
+
+            $result_2 = EntityWaterAlarmMember::getWaterAlarmMemberByIdx($obj->idx);
+            $_temp = "";
+            while ($obj_2 = $result_2->fetchObject(EntityWaterAlarmMember::class)) {
+                $member = Common::get_member_info($obj_2->member_idx);
+                $_temp .= $member['member_name'] . " ";
+            }
+
+            $array[$_i]['member'] = $_temp;
+
+            $_i++;
+        }
+
+        $item = "";
+
+        $total = count($array);
+        foreach ($array as $k => $v) {
+
+            if ($v['alarm_range'] == "between") {
+                $MinAtMax = $v['min']." 이상 ~ ".$v['max']." 이하";
+            } else if ($v['alarm_range'] == "up") {
+                $MinAtMax = $v['max']." 이상";
+            } else if ($v['alarm_range'] == "down") {
+                $MinAtMax = $v['min']." 이하";
+            }
+
+            $item .= View::render('manager/modules/alarm/water_alarm_list_item', [
+                'idx'   => $v['idx'],
+                'number' => $total,
+                'device_name' => $v['device_name'],
+                'field' => $v['board_type_name'],
+                'MinAtMax' => $MinAtMax,
+                'member' => $v['member'],
+                'activation' => $v['activation'],
+                'checked'       => $v['activation'] == 'Y'? 'checked' : '' ,
+                'created_at' => $v['create'],
+            ]);
+            $total--;
+        }
+
+        return $item;
+    }
+
+
+    public static function getWaterAlarm($request) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $content = View::render('manager/modules/alarm/water_alarm_list', [
+            'water_alarm_list_item' => self::getWaterAlarmList($_userInfo->idx),
+        ]);
+
+        return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
+    }
+
+    public static function Water_Alarm_Form($request, $idx = null) {
+        $objAlarm = is_null($idx) ? '': EntityWaterAlarm::getWaterAlarmByIdx($idx) ;
+
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+
+        $content = View::render('manager/modules/alarm/water_alarm_form', [
+            'device_options' => self::getMemberDevice($_userInfo->idx),
+            'board_options' => '',
+            'min'           => '',
+            'max'           => '',
+            'target_user'   => $_userInfo->idx,
+            'checked'       => 'Y',
+            'action'        => '/manager/water_alarm_form_create',
+        ]);
+
+        return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
+    }
+
+    public static function Water_Alarm_Create($request) {
+        $postVars = $request->getPostVars();
+
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
+
+        if ($postVars['alarm_range'] == "between") {
+            $min = $postVars['between_min'];
+            $max = $postVars['between_max'];
+        } else if ($postVars['alarm_range'] == "up") {
+            $min = 0;
+            $max = $postVars['up_max'];
+        } else if ($postVars['alarm_range'] == "down") {
+            $min = $postVars['down_min'];
+            $max = 0;
+        }
+
+        $obj_1 = new EntityWaterAlarm;
+        $obj_1->member_idx = $_userInfo->idx;
+        $obj_1->device_idx = $device_info->device_idx;
+        $board_type = Common::getBoardTypeNameSelect($device_info->device_idx, $device_info->board_type, $postVars['board']);
+
+        $obj_1->board_type_field = $board_type['field'];
+        $obj_1->board_type_name = $board_type['name'];
+
+        $obj_1->alarm_range = $postVars['alarm_range'];
+        $obj_1->min = $min;
+        $obj_1->max = $max;
+        $obj_1->activation = empty($postVars['activation']) ? 'N' : $postVars['activation'];
+        $obj_1->created();
+
+        if ($postVars['target_user']) {
+            $obj_2 = new EntityWaterAlarmMember;
+            $obj_2->water_alarm_idx = $obj_1->idx;
+            $obj_2->member_idx = $postVars['target_user'];
+            $obj_2->created();
+        }
+
+        $request->getRouter()->redirect('/manager/water_alarm_list');
+    }
+
+    public static function setWaterActiveChange($request) {
+        $postVars = $request->getPostVars();
+        $active = $postVars['active'];
+
+        EntityWaterAlarm::UpdateActiveValue($postVars['idx'], $active);
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public static function WaterAlarmDelete($request, $idx) {
+        EntityWaterAlarmMember::deleted($idx);
+        $obj = EntityWaterAlarm::getWaterAlarmByIdx($idx);
+        $obj->deleted();
+        $request->getRouter()->redirect('/manager/water_alarm_list');
+    }
+
+    public static function getWaterBoardType($request) {
+        $postVars = $request->getPostVars();
+
+        $device_obj = EntityDevice::getDevicesByIdx($postVars['device_idx']);
+        $board_array = Common::getbordTypeNameByWidgetNameArray($device_obj->device_idx, $device_obj->board_type);
+
+        $arr = array();
+        if ($board_array) {
+            $success = true;
+            foreach ($board_array as $k => $v) {
+                if ($v['display'] == 'Y') {
+                    if ($v['symbol'] == 'L') {
+                        $arr['field'][] = $v['field'];
+                        $arr['name'][] = $v['name'];
+                    }
+                }
+            }
+        } else {
+            $success = false;
+        }
+
+        return [
+            'success' => $success,
+            'value'=>$arr['field'],
+            'text' => $arr['name'],
+        ];
     }
 }
