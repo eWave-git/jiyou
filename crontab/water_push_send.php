@@ -4,6 +4,7 @@ include_once __DIR__."/crontab_init.php";
 use \WilliamCosta\DatabaseManager\Database;
 use \App\Utils\Common;
 use \App\Model\Entity\Device as EntityDevice;
+use \App\Model\Entity\Widget as EntityWidget;
 
 $activation =  (new Database('water_alarm'))->execute(
     "select * ,a.idx as alarm_idx
@@ -23,6 +24,9 @@ $key = 0;
 while ($activation_obj = $activation->fetchObject()) {
 
     $device_info = EntityDevice::getDevicesByIdx($activation_obj->device_idx);
+    $widget_info = EntityWidget::getWidgetByDeviceIdx($device_info->idx)->fetchObject(EntityWidget::class);
+    $widget_name = $widget_info->widget_name;
+
     $raw_data_info = (new Database('raw_data'))->execute(
         "select sum(L) as 'water' from (
                     select
@@ -48,7 +52,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생!";
+            $_txt = "'".$widget_name ."' ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생!";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -70,7 +74,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
+            $_txt = "'".$widget_name ."' ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -91,7 +95,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 알람 발생!";
+            $_txt = "'".$widget_name ."' ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 알람 발생!";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
