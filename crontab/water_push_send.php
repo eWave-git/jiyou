@@ -52,8 +52,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-//            $_txt = "'".$widget_name ."' ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생!";
-            $_txt = "'".$raw_data_info ."' ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생!";
+            $_txt = "'".$widget_name ."' ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생!";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -75,7 +74,8 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "'".$widget_name ."' ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
+//            $_txt = "'".$widget_name ."' ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
+            $_txt = "'". $raw_data_info ."' ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";    
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
