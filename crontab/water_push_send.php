@@ -75,7 +75,7 @@ while ($activation_obj = $activation->fetchObject()) {
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
             //$_txt = "'".$widget_name ."' ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
-            $_txt = "장치이름 '".$widget_name ."' 데이터값 '".$raw_data_info ."' 알람설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
+            $_txt = "'".$widget_name ."' '".$raw_data_info ."' ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
