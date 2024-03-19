@@ -30,13 +30,14 @@
                         <div class="form_tit">알람범위<span class="required"></span></div>
                         <div class="form_select">
                             <select name="alarm_range" id="alarm_range">
-                                <option value="between">범위 초과시 알람</option>
-                                <option value="up">이상시 알람</option>
-                                <option value="down">이하시 알람</option>
+                                <!-- <option value="between">범위 초과시 알람</option> -->
+                                <!-- <option value="up">이상시 알람</option> -->
+                                <option value="up">사용량 초과시 알람</option>
+                                <!-- <option value="down">이하시 알람</option> -->
                             </select>
                         </div>
                     </div>
-                    <div class="item" id="between_row">
+                    <div class="item" id="between_row" style="display: none;">
                         <div class="form_tit">정상 범위<span class="required">*</span></div>
                         <div class="form_set n2">
                             <input type="number" class="inpt_txt" placeholder="0" id="between_min" name="between_min">
@@ -45,7 +46,7 @@
                         </div>
                     </div>
 
-                    <div class="item" id="up_row" style="display: none;">
+                    <div class="item" id="up_row" >
                         <div class="form_tit">이상<span class="required">*</span></div>
                         <div class="form_set n2">
                             <input type="number" class="inpt_txt" placeholder="0"  id="up_max" name="up_max"><span class="bar">이상</span>
@@ -72,6 +73,51 @@
     </div>
 </div>
 
+<script>
+    $(function () {
+        $("#alarm_range").change(function () {
+            
+            if ($(this).val() =="up") {
+                $("#between_row").hide()
+                $("#up_row").show()
+                $("#down_row").hide()
+            } else if ($(this).val() =="between") {
+                $("#between_row").show()
+                $("#up_row").hide()
+                $("#down_row").hide()
+            } else if ($(this).val() =="down") {
+                $("#between_row").hide()
+                $("#up_row").hide()
+                $("#down_row").show()
+            }
+
+        });
+
+        $("#device").change(function () {
+            $("#board").empty()
+            $.ajax({
+                url:'/manager/alarm_form/getWaterBoardType',
+                type:'post',
+                data: {
+                    device_idx:$(this).val()
+                },
+                dataType: "json",
+                success:function(obj){
+                    if (obj.success) {
+                        $.each(obj.value, function (key, value) {
+                            // console.log(obj.idx[key])
+                            $("#board").append(
+                                $("<option></option>").attr("value",value).text(obj.text[key])
+                            )
+                        })
+
+                    }
+                }
+            })
+        });
+    });
+</script>
+<!-- 
 <script>
     $(function () {
         $("#alarm_range").change(function () {
@@ -115,4 +161,4 @@
             })
         });
     });
-</script>
+</script> -->
