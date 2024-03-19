@@ -58,7 +58,7 @@ class Page {
                 ['label' => 'switch', 'title' => '밸브 제어', 'link' => URL.'/manager/control/switch'],
                 ['label' => 'command_4ch', 'title' => '스위치 제어', 'link' => URL.'/manager/control/command_4ch'],
                 ['label' => 'command', 'title' => '온도 제어', 'link' => URL.'/manager/control/command'],
-                ['label' => 'control', 'title' => '인버터 제어(예정)', 'link' =>"javascript:alert('준비중')"],
+                // ['label' => 'control', 'title' => '인버터 제어(예정)', 'link' =>"javascript:alert('준비중')"],
             ],
         ],
         [
@@ -67,10 +67,10 @@ class Page {
             'submenu'=>[
                 
                 ['label' => 'group', 'title' => '그룹 관리', 'link' => '/manager/etc/group'],
-                ['label' => 'autovalve', 'title' => '자동밸브제어', 'link' => '/manager/etc/autovalve'],
-                ['label' => 'etc', 'title' => '알람 수신변경(예정)', 'link' => "javascript:alert('준비중')"],
-//                ['label' => 'report_form', 'title' => '레포팅', 'link' => "/manager/etc/report_form"],
-                ['label' => 'etc', 'title' => '데이터 분석(예정)', 'link' => "javascript:alert('준비중')"],
+                // ['label' => 'autovalve', 'title' => '자동밸브제어', 'link' => '/manager/etc/autovalve'],
+                // ['label' => 'etc', 'title' => '알람 수신변경(예정)', 'link' => "javascript:alert('준비중')"],
+                // ['label' => 'report_form', 'title' => '레포팅', 'link' => "/manager/etc/report_form"],
+                // ['label' => 'etc', 'title' => '데이터 분석(예정)', 'link' => "javascript:alert('준비중')"],
             ],
         ],
     ];
