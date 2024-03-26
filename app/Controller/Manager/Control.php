@@ -348,6 +348,12 @@ class Control extends Page {
                     $array[$k]['ch3_checked'] = $obj->ch3 == 1 ? "checked" : "";
                     $array[$k]['ch4_checked'] = $obj->ch4 == 1 ? "checked" : "";
 
+                    $raw_data = EntityRawData::getRawData("address=".$obj->address." and board_type=".$obj->board_type." and board_number=".$obj->board_number, "idx desc","0, 1")->fetchObject(EntityRawData::class);
+                    $array[$k]['data5'] = $raw_data->data5 == 1 ? "ON" : "OFF";
+                    $array[$k]['data6'] = $raw_data->data6 == 1 ? "ON" : "OFF";
+                    $array[$k]['data7'] = $raw_data->data7 == 1 ? "ON" : "OFF";
+                    $array[$k]['data8'] = $raw_data->data8 == 1 ? "ON" : "OFF";
+
 
                     $array[$k]['update_at'] = $obj->update_at;
                     $array[$k]['create_at'] = $obj->create_at;
@@ -371,6 +377,11 @@ class Control extends Page {
                 'ch2_checked' => $v['ch2_checked'],
                 'ch3_checked' => $v['ch3_checked'],
                 'ch4_checked' => $v['ch4_checked'],
+
+                'data5' => $v['data5'],
+                'data6' => $v['data6'],
+                'data7' => $v['data7'],
+                'data8' => $v['data8'],
 
                 'update_at' => $v['update_at'],
                 'create_at' => $v['create_at'],
