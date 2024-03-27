@@ -142,8 +142,8 @@
                         });
                     })
 
-                    
-                    am5.ready(function() {                                                      //amchart 만들기 부분
+                    //amchart 만들기 부분
+                    am5.ready(function() {
 
                         // Create root element
                         // https://www.amcharts.com/docs/v5/getting-started/#Root_element
@@ -170,7 +170,9 @@
                         );
 
                         var easing = am5.ease.linear;
-                        chart.get("colors").set("step", 8);                                 // 전체 테마 색상 변경 부분
+
+                        // 전체 테마 색상 변경 부분
+                        chart.get("colors").set("step", 8);
 
                         //timeUnit 변경, tooltip 변경
                         // Create axes
@@ -182,9 +184,7 @@
                                 baseInterval: {
                                     maxDeviation: 0.1,
                                     groupData: false,
-                                    timeUnit: "minute",
-                                    //timeUnit: "day",
-                                    //timeUnit: "millisecond",
+                                    timeUnit: "minute",     // "day" | "millisecond"
                                     count: 1
                                 },
                                 tooltipDateFormat: "MM-dd HH:mm",
@@ -200,12 +200,10 @@
                             am5.Legend.new(root, {
                                 x: am5.p50,
                                 y: am5.percent(98),
-                                
                                 centerX : 0,
                                 centerY: am5.m50,
                             })
                         );
-
 
                         function createAxisAndSeries(fieldDate, fieldNamw, opposite) {
                             var yRenderer = am5xy.AxisRendererY.new(root, {
@@ -216,7 +214,7 @@
                             var yAxis = chart.yAxes.push(
                                 am5xy.ValueAxis.new(root, {
                                     maxDeviation: 1,
-                                    maxPrecision: 0,                                    // 숫자 정밀도 강화
+                                    maxPrecision: 0,     // 숫자 정밀도 강화
                                     renderer: yRenderer
                                 })
                             );
@@ -235,8 +233,6 @@
                                     yAxis: yAxis,
                                     valueYField: fieldDate,
                                     valueXField: "date",
-                                    
-                                    //minDistance: 20,
                                     tooltip: am5.Tooltip.new(root, {
                                         pointerOrientation: "horizontal",
                                         labelText: "[bold]{name}[/] : {valueY}"
@@ -265,6 +261,7 @@
                             legend.data.setAll(chart.series.values);
 
                         }
+
                         // Add cursor
                         // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
                         var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
@@ -290,7 +287,6 @@
                         // Make stuff animate on load
                         // https://www.amcharts.com/docs/v5/concepts/animations/
                         chart.appear(1000, 100);
-
 
                     }); // end am5.ready()
                 }
