@@ -36,6 +36,25 @@ $obRouter->get('/manager/',[
     }
 ]);
 
+// test를 위한 페이지
+$obRouter->get('/manager/test',[
+    'middlewares' => [
+    ],
+    function($request) {
+        return new Response(200, Manager\Test::index($request));
+    }
+]);
+
+$obRouter->post('/manager/test_back',[
+    'middlewares' => [
+        'api',
+    ],
+    function($request) {
+        return new Response(200, Manager\Test::index_back($request), 'application/json');
+    }
+]);
+
+
 include __DIR__.'/manager/dashboard.php';
 
 include __DIR__.'/manager/inquiry.php';
