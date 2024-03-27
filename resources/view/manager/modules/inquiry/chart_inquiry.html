@@ -71,7 +71,7 @@
         $('#sdateAtedate').daterangepicker({
             locale: {
                 // "format": 'YYYY-MM-DD HH:mm:ss',     // 일시 노출 포맷
-                "format": 'YYYY-MM-DD',     // 일시 노출 포맷
+                "format": 'YYYY-MM-DD',                 // 일시 노출 포맷
                 "applyLabel": "확인",                    // 확인 버튼 텍스트
                 "cancelLabel": "취소",                   // 취소 버튼 텍스트
                 "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
@@ -142,8 +142,8 @@
                         });
                     })
 
-                    //amchart 만들기 부분
-                    am5.ready(function() {
+                    
+                    am5.ready(function() {                                                      //amchart 만들기 부분
 
                         // Create root element
                         // https://www.amcharts.com/docs/v5/getting-started/#Root_element
@@ -153,7 +153,7 @@
                         // https://www.amcharts.com/docs/v5/concepts/themes/
                         root.setThemes([
                             //부드러운 에니메이션 기능 켜고 끄기
-                            //am5themes_Animated.new(root)
+                            am5themes_Animated.new(root)
                         ]);
 
                         // Create chart
@@ -188,7 +188,6 @@
                                     count: 1
                                 },
                                 tooltipDateFormat: "MM-dd HH:mm",
-                                //tooltipDateFormat: "yyyy-MM-dd HH:mm",
                                 renderer: am5xy.AxisRendererX.new(root, {
                                     minGridDistance: 100, pan:"zoom"
                                 }),
@@ -197,13 +196,11 @@
                         );
 
                         // 그래프 범례 조정 장치
-                        // centerX 300-> 0 / 
-                        
                         var legend = chart.children.push(
                             am5.Legend.new(root, {
                                 x: am5.p50,
                                 y: am5.percent(98),
-                                //centerX: 300,https://chat.openai.com/chat
+                                
                                 centerX : 0,
                                 centerY: am5.m50,
                             })
@@ -214,12 +211,12 @@
                             var yRenderer = am5xy.AxisRendererY.new(root, {
                                 opposite: opposite
                             });
-                            // maxPrecision: 0, 추가 이를 통해 숫자 정밀도 강화
+                           
                             //https://www.amcharts.com/docs/v5/charts/xy-chart/axes/value-axis/
                             var yAxis = chart.yAxes.push(
                                 am5xy.ValueAxis.new(root, {
                                     maxDeviation: 1,
-                                    maxPrecision: 0,
+                                    maxPrecision: 0,                                    // 숫자 정밀도 강화
                                     renderer: yRenderer
                                 })
                             );
@@ -247,12 +244,9 @@
                                 })
                             );
 
-                            //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });         // 그래프를 면적으로 표현
                             series.strokes.template.setAll({ strokeWidth: 3 });
-                            //series.strokes.template.setAll({ strokeWidth: 1 });
 
-                            //yRenderer.grid.template.set("strokeOpacity", 0.5);
-                            yRenderer.grid.template.set("strokeOpacity", 0.05);
+                            yRenderer.grid.template.set("strokeOpacity", 0.05);                     // 가이드 라인 폭 결정
                             yRenderer.labels.template.set("fill", series.get("fill"));              // y축 값 범위색깔 표현
                             yRenderer.setAll({
                                 stroke: series.get("fill"),
@@ -284,13 +278,12 @@
                             orientation: "horizontal"
                         }));
 
-                        // y축 값 을 보여주는 숫자
-                        $.each(field, function (key, value) {
+                        
+                        $.each(field, function (key, value) {                                       // y축 좌우 배치 설정
                             if (key % 2) {
-                                //createAxisAndSeries(value.fieldDate, value.fieldName, false);
                                 createAxisAndSeries(value.fieldDate, value.fieldName, false);
                             } else {
-                                createAxisAndSeries(value.fieldDate, value.fieldName, false);
+                                createAxisAndSeries(value.fieldDate, value.fieldName, true);
                             }
                         })
 
@@ -300,15 +293,9 @@
 
 
                     }); // end am5.ready()
-
-
                 }
             })
-
-
         })
     });
-
-    
 
 </script>
