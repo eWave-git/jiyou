@@ -116,7 +116,6 @@ $(function () {
                     });
 
                     $.each(obj.fields, function (key1, value1) {
-                        // console.log(kk+'||'+obj.obj[key][kk])
                         data[key][value1.field] = obj.obj[key][value1.field];
                     })
 
@@ -130,34 +129,43 @@ $(function () {
                     });
                 })
 
-
                 am5.ready(function() {
 
                     // Create root element
                     // https://www.amcharts.com/docs/v5/getting-started/#Root_element
                     var root = am5.Root.new("chartdiv");
 
+                    const myTheme = am5.Theme.new(root);
+
+                    myTheme.rule("AxisLabel", ["minor"]).setAll({
+                        dy:1
+                    });
+
+                    myTheme.rule("Grid", ["x"]).setAll({
+                        strokeOpacity: 0.05
+                    });
+
+                    myTheme.rule("Grid", ["x", "minor"]).setAll({
+                        strokeOpacity: 0.05
+                    });
+
                     // Set themes
                     // https://www.amcharts.com/docs/v5/concepts/themes/
                     root.setThemes([
-                        am5themes_Animated.new(root)
+                        am5themes_Animated.new(root),
+                        myTheme
                     ]);
 
                     // Create chart
                     // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                    var chart = root.container.children.push(
-                        am5xy.XYChart.new(root, {
-                            focusable: true,
-                            panX: true,
-                            panY: true,
-                            wheelX: "panX",
-                            wheelY: "zoomX",
-                            pinchZoomX:true
-                        })
-                    );
-
-                    var easing = am5.ease.linear;
-                    chart.get("colors").set("step", 3);
+                    var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                        panX: true,
+                        panY: true,
+                        wheelX: "panX",
+                        wheelY: "zoomX",
+                        maxTooltipDistance: 0,
+                        pinchZoomX:true
+                    }));
 
                     // Create axes
                     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
@@ -168,7 +176,7 @@ $(function () {
                             baseInterval: {
                                 maxDeviation: 0.1,
                                 groupData: false,
-                                timeUnit: "minute",
+                                timeUnit: "minute",     // "day" | "millisecond"
                                 count: 1
                             },
                             tooltipDateFormat: "MM-dd HH:mm",
@@ -179,102 +187,107 @@ $(function () {
                         })
                     );
 
-                    var legend = chart.children.push(
-                        am5.Legend.new(root, {
-                            x: am5.p50,
-                            centerX: 0,
-                            centerY: am5.m50,
-                            y: am5.percent(98),
+                    var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                        renderer: am5xy.AxisRendererY.new(root, {})
+                    }));
+
+                    $.each(obj.fields, function (key1, value1) {
+                        var _data = []
+                        $.each(data, function (key, value) {
+                            _data.push({date:data[key]['date'], value:data[key][value1.field]})
                         })
-                    );
 
-
-                    function createAxisAndSeries(fieldDate, fieldNamw, opposite) {
-                        var yRenderer = am5xy.AxisRendererY.new(root, {
-                            opposite: opposite
-                        });
-                        var yAxis = chart.yAxes.push(
-                            am5xy.ValueAxis.new(root, {
-                                // visible: false,
-                                maxDeviation: 1,
-                                maxPrecision: 0,
-                                renderer: yRenderer
+                        var series = chart.series.push(am5xy.LineSeries.new(root, {
+                            name: value1.name,
+                            xAxis: xAxis,
+                            yAxis: yAxis,
+                            valueYField: "value",
+                            valueXField: "date",
+                            legendValueText: "{valueY}",
+                            tooltip: am5.Tooltip.new(root, {
+                                pointerOrientation: "horizontal",
+                                labelText: "[bold]{name}[/] : {valueY}"
                             })
-                        );
+                        }));
 
-                        if (chart.yAxes.indexOf(yAxis) > 0) {
-                            yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
-                        }
+                        series.data.setAll(_data);
 
-                        // Add series
-                        // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                        var series = chart.series.push(
-                            am5xy.LineSeries.new(root, {
-                                name: fieldNamw,
-                                xAxis: xAxis,
-                                yAxis: yAxis,
-                                valueYField: fieldDate,
-                                valueXField: "date",
-                                tooltip: am5.Tooltip.new(root, {
-                                    pointerOrientation: "horizontal",
-                                    labelText: "[bold]{name}[/] : {valueY}"
-                                })
-                            })
-                        );
+                        // Make stuff animate on load
+                        // https://www.amcharts.com/docs/v5/concepts/animations/
+                        series.appear();
 
-                        //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });
-                        series.strokes.template.setAll({ strokeWidth: 3 });
-
-                        yRenderer.grid.template.set("strokeOpacity", 0.05);
-                        yRenderer.labels.template.set("fill", series.get("fill"));
-                        yRenderer.setAll({
-                            stroke: series.get("fill"),
-                            strokeOpacity: 1,
-                            opacity: 1
-                        });
-
-                        // Set up data processor to parse string dates
-                        // https://www.amcharts.com/docs/v5/concepts/data/#Pre_processing_data
-                        series.data.processor = am5.DataProcessor.new(root, {
-                            dateFormat: "yyyy-MM-dd",
-                            dateFields: ["date"]
-                        });
-
-                        series.data.setAll(data);
-                        legend.data.setAll(chart.series.values);
-
-                    }
+                    })
 
                     // Add cursor
                     // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
                     var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-                        xAxis: xAxis,
                         behavior: "none"
                     }));
                     cursor.lineY.set("visible", false);
 
-                    // add scrollbar
+
+                    // Add scrollbar
+                    // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
                     chart.set("scrollbarX", am5.Scrollbar.new(root, {
                         orientation: "horizontal"
                     }));
 
+                    // Add legend
+                    // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+                    var legend = chart.rightAxesContainer.children.push(am5.Legend.new(root, {
+                        width: 200,
+                        paddingLeft: 15,
+                        height: am5.percent(100)
+                    }));
 
-                    $.each(field, function (key, value) {
-                        if (key % 2) {
-                            createAxisAndSeries(value.fieldDate, value.fieldName, true);
-                        } else {
-                            createAxisAndSeries(value.fieldDate, value.fieldName, true);
-                        }
+                    // When legend item container is hovered, dim all the series except the hovered one
+                    legend.itemContainers.template.events.on("pointerover", function(e) {
+                        var itemContainer = e.target;
+
+                        // As series list is data of a legend, dataContext is series
+                        var series = itemContainer.dataItem.dataContext;
+
+                        chart.series.each(function(chartSeries) {
+                            if (chartSeries != series) {
+                                chartSeries.strokes.template.setAll({
+                                    strokeOpacity: 0.15,
+                                    stroke: am5.color(0x000000)
+                                });
+                            } else {
+                                chartSeries.strokes.template.setAll({
+                                    strokeWidth: 3
+                                });
+                            }
+                        })
                     })
+
+                    // When legend item container is unhovered, make all series as they are
+                    legend.itemContainers.template.events.on("pointerout", function(e) {
+                        var itemContainer = e.target;
+                        var series = itemContainer.dataItem.dataContext;
+
+                        chart.series.each(function(chartSeries) {
+                            chartSeries.strokes.template.setAll({
+                                strokeOpacity: 1,
+                                strokeWidth: 1,
+                                stroke: chartSeries.get("fill")
+                            });
+                        });
+                    })
+
+                    legend.itemContainers.template.set("width", am5.p100);
+                    legend.valueLabels.template.setAll({
+                        width: am5.p100,
+                        textAlign: "right"
+                    });
+
+                    // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+                    legend.data.setAll(chart.series.values);
 
                     // Make stuff animate on load
                     // https://www.amcharts.com/docs/v5/concepts/animations/
-                    chart.appear(1000, 10);
-
-
-                }); // end am5.ready()
-
-
+                    chart.appear(1000, 100);
+                });
             }
         })
     }
