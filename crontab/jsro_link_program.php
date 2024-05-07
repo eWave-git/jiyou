@@ -10,7 +10,7 @@ $address = 4002;
 $board_type = 4;
 $board_number = ['3'];
 
-$fp = fopen("./log/".$file_name.".log", 'a');
+$fp = fopen("../log/".$file_name.".log", 'a');
 
 foreach ($board_number as $k => $v) {
     $raw_data_info = (new Database('raw_data'))->execute(
