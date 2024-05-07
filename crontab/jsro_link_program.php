@@ -63,6 +63,7 @@ foreach ($board_number as $k => $v) {
         $_temp['mesureVal13'] = "";
         $_temp['mesureVal14'] = "";
         $_temp['mesureVal15'] = "";
+
         
 
         $_json = json_encode($_temp);
