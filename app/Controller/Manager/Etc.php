@@ -93,6 +93,7 @@ class Etc extends Page {
             'v6' => $_val[5] == 0 ? '꺼짐' : '켜짐' ,
             'v7' => $_val[6] == 0 ? '꺼짐' : '켜짐' ,
             'v8' => $_val[7] == 0 ? '꺼짐' : '켜짐' ,
+            'update_at' => date("Y-m-d H:i:s"),
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'etc');
@@ -146,6 +147,7 @@ class Etc extends Page {
         return [
             'success' => true,
             'data' => $_data,
+            'update_at' => date("Y-m-d H:i:s"),
         ];
     }
 }
