@@ -20,10 +20,14 @@ foreach ($board_number as $k => $v) {
            ")->fetchObject();
     
     $raw_data_info2 = (new Database('raw_data'))->execute(
-        "SELECT address, board_type, board_number, data1, data2, data3, data4, created_at
+        "SELECT created_at, 
+            (max(data3)-ifnull(LAG(max(data3)) OVER (ORDER BY created_at), data3))*1 as water_in,
+            (max(data4)-ifnull(LAG(max(data4)) OVER (ORDER BY created_at), data4))*1 as water_out
             FROM jsro.raw_data
-            WHERE address = 4002 and board_type = 3 and board_number = 2 order by idx desc limit 0, 1
-           ")->fetchObject();
+            WHERE address = '4002' and board_number= 2 and created_at > current_date()
+            group by DF
+            ORDER BY idx asc
+        ")->fetchObject();
     
     $raw_data_info3 = (new Database('raw_data'))->execute(
         "SELECT count(*) as run_time 
@@ -44,10 +48,10 @@ foreach ($board_number as $k => $v) {
         $_temp['roomNo'] = "1";
         $_temp['roomDtlNo'] = "1";
         $_temp['mesureDt'] = date_format(date_create($raw_data_info->created_at), "Y-m-d H:i:s");
-        $_temp['mesureVal01'] = $raw_data_info->data1;
-        $_temp['mesureVal02'] = $raw_data_info2->data4;
-        $_temp['mesureVal03'] = $raw_data_info2->data3;
-        $_temp['mesureVal04'] = ($raw_data_info2->data4)-($raw_data_info2->data3);
+        $_temp['mesureVal01'] = $raw_data_info->data3;
+        $_temp['mesureVal02'] = $raw_data_info2->water_in;
+        $_temp['mesureVal03'] = $raw_data_info2->water_out;
+        $_temp['mesureVal04'] = ($raw_data_info2->water_out)-($raw_data_info2->water_in);
         $_temp['mesureVal05'] = $raw_data_info3->run_time;
         $_temp['mesureVal06'] = "";
         $_temp['mesureVal07'] = "";
