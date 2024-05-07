@@ -1,0 +1,120 @@
+<div class="content">
+    <div class="tit_area">
+        <h2>제주농협 공동처리장 모니터링 시스템</h2>
+    </div>
+    <!-- 장치 목록 -->
+    <div class="dvc_wrap">
+        <div class="item">
+
+
+            <div class="state_li">
+                <ul>
+                    <li>
+                        <span>1동 하루 음수량 (리터)</span>
+                        <strong><em id="v1">{{v1}}</em> <em>L</em></strong>
+                    </li>
+                    <li>
+                        <span>2동 하루 음수량 (리터)</span>
+                        <strong><em id="v2">{{v2}}</em> <em>L</em></strong>
+                    </li>
+                    <li>
+                        <span>물탱크실 온도 (섭씨)</span>
+                        <strong><em id="v3">{{v3}}</em> <em>°C</em></strong>
+                    </li>
+                    <li>
+                        <span>물탱크실 습도 (%)</span>
+                        <strong><em id="v4">{{v4}}</em> <em>%</em></strong>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+
+        <div class="item">
+            <div class="tit_wrap">
+                <p class="name">스위치 상태 - 1</p>
+            </div>
+
+            <div class="state_msg">
+                <p id="v5">{{v5}}</p>
+            </div>
+
+            <div class="tit_wrap">
+                <p class="name">스위치 상태 - 2</p>
+            </div>
+
+            <div class="state_msg">
+                <p id="v6">{{v6}}</p>
+            </div>
+
+            <div class="tit_wrap">
+                <p class="name">스위치 상태 - 3</p>
+            </div>
+
+            <div class="state_msg">
+                <p id="v7">{{v7}}</p>
+            </div>
+
+            <div class="tit_wrap">
+                <p class="name">스위치 상태 - 4</p>
+            </div>
+
+            <div class="state_msg">
+                <p id="v8">{{v8}}</p>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!--// 장치 목록 -->
+</div>
+
+<script>
+    $(function () {
+
+        function send_ajax() {
+            // alert($("#v3").text());
+            $.ajax({
+                url:'/manager/etc/ajax_jejunonghyeob',
+                type:'post',
+                data: {
+                    data:'',
+                },
+                dataType: "json",
+                success:function(obj){
+                    if (obj.success) {
+                        $("#v1").text(obj.data[0]);
+                        $("#v2").text(obj.data[1]);
+                        $("#v3").text(obj.data[2]);
+                        $("#v4").text(obj.data[3]);
+                        if (obj.data[4] == 0) {
+                            $("#v5").text("꺼짐");
+                        } else {
+                            $("#v5").text("켜짐");
+                        }
+                        if (obj.data[5] == 0) {
+                            $("#v6").text("꺼짐");
+                        } else {
+                            $("#v6").text("켜짐");
+                        }
+                        if (obj.data[6] == 0) {
+                            $("#v7").text("꺼짐");
+                        } else {
+                            $("#v7").text("켜짐");
+                        }
+                        if (obj.data[7] == 0) {
+                            $("#v8").text("꺼짐");
+                        } else {
+                            $("#v8").text("켜짐");
+                        }
+
+                    }
+                }
+            })
+        }
+
+        setInterval(send_ajax, 10000);
+    });
+</script>

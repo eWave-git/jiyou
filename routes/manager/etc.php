@@ -74,3 +74,22 @@ $obRouter->post('/manager/etc/info/passwordChange_post',[
         return new Response(200, Manager\Etc::Password_Change_Post($request));
     }
 ]);
+
+$obRouter->get('/manager/etc/jejunonghyeob',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Etc::jejunonghyeob($request));
+    }
+]);
+
+$obRouter->post('/manager/etc/ajax_jejunonghyeob',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Etc::ajax_jejunonghyeob($request),'application/json');
+    }
+]);
