@@ -25,7 +25,6 @@ foreach ($board_number as $k => $v) {
             (max(data4)-ifnull(LAG(max(data4)) OVER (ORDER BY created_at), data4))*1 as water_out
             FROM jsro.raw_data
             WHERE address = '4002' and board_number= 2 and created_at > current_date()
-            group by DF
             ORDER BY idx asc
         ")->fetchObject();
     
@@ -64,7 +63,7 @@ foreach ($board_number as $k => $v) {
         $_temp['mesureVal14'] = "";
         $_temp['mesureVal15'] = "";
 
-        
+
 
         $_json = json_encode($_temp);
 
