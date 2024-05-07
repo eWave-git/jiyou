@@ -20,7 +20,7 @@ foreach ($board_number as $k => $v) {
            ")->fetchObject();
     
     $raw_data_info2 = (new Database('raw_data'))->execute(
-        "SELECT address, board_type, board_number, data1, data2, data3, data4 created_at
+        "SELECT address, board_type, board_number, data1, data2, data3, data4, created_at
             FROM jsro.raw_data
             WHERE address = 4002 and board_type = 3 and board_number = 2 order by idx desc limit 0, 1
            ")->fetchObject();
@@ -48,7 +48,7 @@ foreach ($board_number as $k => $v) {
         $_temp['mesureVal02'] = $raw_data_info2->data4;
         $_temp['mesureVal03'] = $raw_data_info2->data3;
         $_temp['mesureVal04'] = ($raw_data_info2->data4)-($raw_data_info2->data3);
-        $_temp['mesureVal05'] = $raw_data_info3->count;
+        $_temp['mesureVal05'] = $raw_data_info3->runtime;
         $_temp['mesureVal06'] = "";
         $_temp['mesureVal07'] = "";
         $_temp['mesureVal08'] = "";
