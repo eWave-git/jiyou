@@ -3,14 +3,15 @@ include_once __DIR__."/crontab_init.php";
 
 use \WilliamCosta\DatabaseManager\Database;
 use \App\Utils\Common;
+use \phpseclib3\Net\SFTP;
 
-$file_name = "ewave2332_TEST1_ES01_".date('Ymd_His');
+$file_name = "ewave2332_TEST1_ES01_".date('Ymd_His').".log";
 
 $address = 2300;
 $board_type = 35;
 $board_number = ['19','18','17'];
 
-$fp = fopen("./log/".$file_name.".log", 'a');
+$fp = fopen("./log/".$file_name, 'a');
 
 foreach ($board_number as $k => $v) {
     $raw_data_info = (new Database('raw_data'))->execute(
@@ -52,6 +53,12 @@ foreach ($board_number as $k => $v) {
 
         fwrite($fp, $_json.chr(13));
 
+        $sftp = new SFTP( getenv('FTP_HOST'), getenv('FTP_POST'));
+        $sftp->login( getenv('FTP_USER'), getenv('FTP_PASS'));
+        $sftp->put( "/home/jstech/".$file_name,"./log/".$file_name,1);
+
     }
 }
 fclose($fp);
+
+
