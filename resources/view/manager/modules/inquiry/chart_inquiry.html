@@ -86,7 +86,7 @@
                 '오늘': [moment(), moment()],
                 '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 '최근 일주일': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
-                // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 // 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
@@ -163,13 +163,15 @@
 
                         // Create chart
                         // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                        // https://www.amcharts.com/docs/v5/reference/container/ 240525
                         var chart = root.container.children.push(am5xy.XYChart.new(root, {
                             panX: true,
                             panY: true,
                             wheelX: "panX",
                             wheelY: "zoomX",
                             maxTooltipDistance: 0,
-                            pinchZoomX:true
+                            pinchZoomX:true,
+                            height : 600                    //전체 650에서 그래프 600
                         }));
 
                         // Create axes
@@ -238,11 +240,17 @@
                         }));
 
                         // Add legend
+                        // https://www.amcharts.com/docs/v5/concepts/common-elements/containers/#Layout
                         // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
-                        var legend = chart.rightAxesContainer.children.push(am5.Legend.new(root, {
-                            width: 200,
-                            paddingLeft: 15,
-                            height: am5.percent(100)
+                        //var legend = chart.rightAxesContainer.children.push(am5.Legend.new(root, { //240525
+                        var legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {
+                            layout : root.horizontalLayout,
+                            //layout: root.verticalLayout,
+                            height: 50,
+                            width: 500,
+                            paddingTop: 10,
+                            paddingLeft: 10,
+                            //height: am5.percent(100)
                         }));
 
                         // When legend item container is hovered, dim all the series except the hovered one
@@ -285,6 +293,8 @@
                             width: am5.p100,
                             textAlign: "right"
                         });
+
+                        
 
                         // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
                         legend.data.setAll(chart.series.values);
