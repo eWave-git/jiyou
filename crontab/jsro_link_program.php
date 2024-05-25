@@ -3,6 +3,7 @@ include_once __DIR__."/crontab_init.php";
 
 use \WilliamCosta\DatabaseManager\Database;
 use \App\Utils\Common;
+use \phpseclib3\Net\SFTP;
 
 $file_name = "jisutech2006_TEST1_SP10_".date('Ymd_His');
 
@@ -10,7 +11,7 @@ $address = 4002;
 $board_type = 4;
 $board_number = ['3'];
 
-$fp = fopen("../log/".$file_name.".log", 'a');
+$fp = fopen("./log/".$file_name.".log", 'a');
 
 foreach ($board_number as $k => $v) {
     $raw_data_info = (new Database('raw_data'))->execute(
@@ -26,13 +27,14 @@ foreach ($board_number as $k => $v) {
             FROM jsro.raw_data
             WHERE address = '4002' and board_number= 2 and (created_at >= now() - INTERVAL 1 hour)
         ")->fetchObject();
-    
+   
+
     $raw_data_info3 = (new Database('raw_data'))->execute(
         "select count(case when data5>10 then 1 end) AS run_time
             FROM jsro.raw_data
             WHERE address = '4002' and board_number= 3 and (created_at >= now() - INTERVAL 1 hour)
             order by idx desc;
-           ")->fetchObject();
+            ")->fetchObject();
 
     if (isset($raw_data_info->address)) {
         $_temp = array();
@@ -62,12 +64,16 @@ foreach ($board_number as $k => $v) {
         $_temp['mesureVal13'] = "";
         $_temp['mesureVal14'] = "";
         $_temp['mesureVal15'] = "";
-
+        //Common::print_r2($raw_data_info3);
 
 
         $_json = json_encode($_temp);
 
         fwrite($fp, $_json.chr(13));
+
+        $sftp = new SFTP( getenv('FTP_HOST'), getenv('FTP_POST'));
+        $sftp->login( getenv('FTP_USER'), getenv('FTP_PASS'));
+        $sftp->put( "/home/jstech/".$file_name,"./log/".$file_name,1);
 
     }
 }

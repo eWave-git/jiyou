@@ -37,7 +37,9 @@ class Etc extends Page {
 
     }
 
+    /* 제주농협 공동처리장 모니터링 시스템 로딩페이지 처리 */
     public static function jejunonghyeob($request) {
+        
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
@@ -97,8 +99,11 @@ class Etc extends Page {
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'etc');
+        
+        
     }
 
+    /* 제주농협 공동처리장 모니터링 시스템 로딩페이지  ajax 처리 */
     public static function ajax_jejunonghyeob($request) {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
