@@ -48,7 +48,7 @@ class Etc extends Page {
         $_val = array();
         foreach ($obj as $k => $v) {
 
-            if ($v['device_idx'] == "168" || $v['device_idx'] == "169" || $v['device_idx'] == "175" || $v['device_idx'] == "196") {
+            if ($v['device_idx'] == "208" || $v['device_idx'] == "169" || $v['device_idx'] == "175" || $v['device_idx'] == "196") {
 
                 foreach ($v['board_name'] as $kk => $vv) {
                     if ($vv['display'] == 'Y') {
@@ -113,7 +113,7 @@ class Etc extends Page {
         $_data = array();
         foreach ($obj as $k => $v) {
 
-            if ($v['device_idx'] == "168" || $v['device_idx'] == "169" || $v['device_idx'] == "175" || $v['device_idx'] == "196") {
+            if ($v['device_idx'] == "208" || $v['device_idx'] == "169" || $v['device_idx'] == "175" || $v['device_idx'] == "196") {
 
                 foreach ($v['board_name'] as $kk => $vv) {
                     if ($vv['display'] == 'Y') {
