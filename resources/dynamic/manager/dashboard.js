@@ -134,6 +134,7 @@ $(function () {
                     // Create root element
                     // https://www.amcharts.com/docs/v5/getting-started/#Root_element
                     var root = am5.Root.new("chartdiv");
+                    root.fps = 50;
 
                     const myTheme = am5.Theme.new(root);
 
@@ -149,12 +150,30 @@ $(function () {
                         strokeOpacity: 0.05
                     });
 
+                    myTheme.rule("Label",["y"]).setAll({            //  240526
+                        //fill: am5.color(0x000000),
+                        fontSize: "0.7em"
+                    });
+                    
+                    myTheme.rule("Label",["x"]).setAll({            //  240526
+                        //fill: am5.color(0x000000),
+                        fontSize: "0.7em"
+                    });
+
+                    myTheme.rule("Graphics",["line","series","stroke"]).setAll({            //  240526 데이터 선의 두께, 표현등에 대한 변화
+                        strokeWidth: 5,
+                        //strokeDasharray: [10, 5]                                         // 대쉬추가
+                    });
+
+
                     // Set themes
                     // https://www.amcharts.com/docs/v5/concepts/themes/
                     root.setThemes([
                         am5themes_Animated.new(root),
+                        am5themes_Kelly.new(root),                                          // 고대비 색상 사용
                         myTheme
                     ]);
+
 
                     // Create chart
                     // https://www.amcharts.com/docs/v5/charts/xy-chart/
@@ -164,7 +183,9 @@ $(function () {
                         wheelX: "panX",
                         wheelY: "zoomX",
                         maxTooltipDistance: 0,
-                        pinchZoomX:true
+                        pinchZoomX:true,
+                        height : 600                    //전체 650에서 그래프 600
+                        
                     }));
 
                     // Create axes
@@ -203,12 +224,26 @@ $(function () {
                             yAxis: yAxis,
                             valueYField: "value",
                             valueXField: "date",
+                            // fill: am5.color(0x095256),                     // 240526
+                            // stroke: am5.color(0xff0000),                     // 240526
+                            minBulletDistance : 5,
                             legendValueText: "{valueY}",
                             tooltip: am5.Tooltip.new(root, {
                                 pointerOrientation: "horizontal",
                                 labelText: "[bold]{name}[/] : {valueY}"
                             })
                         }));
+
+                        series.bullets.push(function () {                               // 240526 원형 마크 추가
+                            return am5.Bullet.new(root, {
+                                sprite: am5.Circle.new(root, {
+                                radius: 8,
+                                fill: series.get("fill"),
+                                stroke: root.interfaceColors.get("background"),
+                                strokeWidth: 1,
+                                })
+                            });
+                        });
 
                         series.data.setAll(_data);
 
@@ -228,16 +263,21 @@ $(function () {
 
                     // Add scrollbar
                     // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
-                    chart.set("scrollbarX", am5.Scrollbar.new(root, {
-                        orientation: "horizontal"
-                    }));
+                    // chart.set("scrollbarX", am5.Scrollbar.new(root, {
+                    //     orientation: "horizontal"
+                    // }));
 
                     // Add legend
                     // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
-                    var legend = chart.rightAxesContainer.children.push(am5.Legend.new(root, {
-                        width: 200,
-                        paddingLeft: 15,
-                        height: am5.percent(100)
+                    //var legend = chart.rightAxesContainer.children.push(am5.Legend.new(root, { //240525
+                    var legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {
+                        layout : root.horizontalLayout,
+                        //layout: root.verticalLayout,
+                        height: 50,
+                        width: 500,
+                        paddingTop: 10,
+                        paddingLeft: 10,
+                        //height: am5.percent(100)
                     }));
 
                     // When legend item container is hovered, dim all the series except the hovered one

@@ -86,7 +86,8 @@
                 '오늘': [moment(), moment()],
                 '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 '최근 일주일': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                '최근 30일': [moment().subtract(29, 'days'), moment()],
+                '최근 60일': [moment().subtract(59, 'days'), moment()],
                 // 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
@@ -136,10 +137,12 @@
 
                     am5.ready(function() {
 
-                        // Create root element
+                        // root 요소 생성
                         // https://www.amcharts.com/docs/v5/getting-started/#Root_element
                         var root = am5.Root.new("chartdiv");
+                        root.fps = 50;
 
+                        // 테마 설정 - 향후 전체 시스템에 영향
                         const myTheme = am5.Theme.new(root);
 
                         myTheme.rule("AxisLabel", ["minor"]).setAll({
@@ -150,18 +153,35 @@
                             strokeOpacity: 0.05
                         });
 
-                        myTheme.rule("Grid", ["x", "minor"]).setAll({
+                        myTheme.rule("Grid", ["x", "minor"]).setAll({   // 240526 
                             strokeOpacity: 0.05
+                        });
+
+                        myTheme.rule("Label",["y"]).setAll({            //  240526 y축 단위 표현
+                            //fill: am5.color(0xFF0000),
+                            fontSize: "0.7em"
+                        });
+                        
+                        myTheme.rule("Label",["x"]).setAll({            //  240526 x축 단위 표현
+                            //fill: am5.color(0xFF0000),
+                            fontSize: "0.7em"
+                        });
+                        
+                        // https://www.amcharts.com/docs/v5/concepts/themes/creating-themes/
+                        myTheme.rule("Graphics",["line","series","stroke"]).setAll({            //  240526 데이터 선의 두께, 표현등에 대한 변화
+                            strokeWidth: 3,
+                            //strokeDasharray: [10, 5]                                         // 대쉬추가
                         });
 
                         // Set themes
                         // https://www.amcharts.com/docs/v5/concepts/themes/
                         root.setThemes([
                             am5themes_Animated.new(root),
+                            am5themes_Kelly.new(root),                                          // 고대비 색상 사용
                             myTheme
                         ]);
 
-                        // Create chart
+                        // 실제 차트의 공간을 생성                                             
                         // https://www.amcharts.com/docs/v5/charts/xy-chart/
                         // https://www.amcharts.com/docs/v5/reference/container/ 240525
                         var chart = root.container.children.push(am5xy.XYChart.new(root, {
@@ -171,10 +191,10 @@
                             wheelY: "zoomX",
                             maxTooltipDistance: 0,
                             pinchZoomX:true,
-                            height : 600                    //전체 650에서 그래프 600
+                            height : 600,                    //화면상 차지하는 높이 전체 600 설정
                         }));
 
-                        // Create axes
+                        // x축 (시간축)의 생성 단계
                         // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
                         var xAxis = chart.xAxes.push(
                             am5xy.DateAxis.new(root, {
@@ -183,21 +203,24 @@
                                 baseInterval: {
                                     maxDeviation: 0.1,
                                     groupData: false,
-                                    timeUnit: "minute",     // "day" | "millisecond"
+                                    timeUnit: "minute",     // "day" | "millisecond" 등으로 변경 가능
                                     count: 1
                                 },
                                 tooltipDateFormat: "MM-dd HH:mm",
                                 renderer: am5xy.AxisRendererX.new(root, {
-                                    minGridDistance: 100, pan:"zoom"
+                                    minGridDistance: 100, 
+                                    pan:"zoom"
                                 }),
                                 tooltip: am5.Tooltip.new(root, {})
                             })
                         );
-
+                        
+                        // y축 (값축)의 생성 단계
                         var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
                             renderer: am5xy.AxisRendererY.new(root, {})
                         }));
-
+                        
+                        // 반복적으로 데이터 값을 불러와서 y축에 계속 그리기 수행
                         $.each(obj.fields, function (key1, value1) {
                             var _data = []
                             $.each(data, function (key, value) {
@@ -210,13 +233,37 @@
                                 yAxis: yAxis,
                                 valueYField: "value",
                                 valueXField: "date",
+                                //fill: am5.color(0x095256),                        // 240526 그려지는 라인에 개별적인 색을 줄수 있다.
+                                //stroke: am5.color(0xff0000),                      // 240526
+                                minBulletDistance : 5,                              // 240526 bullet 간의 최소 거리 설정
                                 legendValueText: "{valueY}",
                                 tooltip: am5.Tooltip.new(root, {
                                     pointerOrientation: "horizontal",
                                     labelText: "[bold]{name}[/] : {valueY}"
                                 })
                             }));
+                            
+                            // 240526 데이터의 bullet 마트 추가 작업
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/zoom-and-pan/
+                            // https://www.amcharts.com/docs/v5/concepts/common-elements/bullets/#auto-hiding-bullets
+                            series.bullets.push(function () {                               // 240526 원형 마크 추가
+                                return am5.Bullet.new(root, {
+                                    sprite: am5.Circle.new(root, {
+                                    radius: 5,
+                                    fill: series.get("fill"),
+                                    stroke: root.interfaceColors.get("background"),
+                                    strokeWidth: 1,
+                                    })
+                                });
+                            });
 
+                            // series.strokes.template.setAll({                    // 240526 myTheme.rule 를 무시하고 적용 된다.
+                            //      strokeWidth: 5,
+                            //      strokeDasharray: [10,1],
+                            //      fillOpacity: 0.5,
+                            //      visible: true
+                            // });
+                            
                             series.data.setAll(_data);
 
                             // Make stuff animate on load
@@ -225,7 +272,7 @@
 
                         })
 
-                        // Add cursor
+                        // 커서, 선위에 포인터를 올리면 값에 대한 설명이 나오게 할지 결정
                         // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
                         var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
                             behavior: "none"
@@ -233,26 +280,27 @@
                         cursor.lineY.set("visible", false);
 
 
-                        // Add scrollbar
-                        // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
-                        chart.set("scrollbarX", am5.Scrollbar.new(root, {
-                            orientation: "horizontal"
-                        }));
+                        // // x축 스크롤바 제작 
+                        // // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+                        // chart.set("scrollbarX", am5.Scrollbar.new(root, {
+                        //     orientation: "horizontal"
+                        // }));
 
-                        // Add legend
+
+                        // 범례에 대한 결정
                         // https://www.amcharts.com/docs/v5/concepts/common-elements/containers/#Layout
                         // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
-                        //var legend = chart.rightAxesContainer.children.push(am5.Legend.new(root, { //240525
-                        var legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {
+                        // var legend = chart.rightAxesContainer.children.push(am5.Legend.new(root, {           // 240525 우측 범례를 제거
+                        var legend = chart.bottomAxesContainer.children.push(am5.Legend.new(root, {             // 240525 하단 범례로 변경
                             layout : root.horizontalLayout,
                             //layout: root.verticalLayout,
                             height: 50,
                             width: 500,
                             paddingTop: 10,
                             paddingLeft: 10,
-                            //height: am5.percent(100)
                         }));
-
+                        
+                        // 아직 모르겠음
                         // When legend item container is hovered, dim all the series except the hovered one
                         legend.itemContainers.template.events.on("pointerover", function(e) {
                             var itemContainer = e.target;
@@ -263,17 +311,17 @@
                             chart.series.each(function(chartSeries) {
                                 if (chartSeries != series) {
                                     chartSeries.strokes.template.setAll({
-                                        strokeOpacity: 0.15,
-                                        stroke: am5.color(0x000000)
+                                        strokeOpacity: 5,
+                                        //stroke: am5.color(0x00ff00)
                                     });
                                 } else {
                                     chartSeries.strokes.template.setAll({
-                                        strokeWidth: 3
+                                        strokeWidth: 5
                                     });
                                 }
                             })
                         })
-
+                        // 아직 모르겠음
                         // When legend item container is unhovered, make all series as they are
                         legend.itemContainers.template.events.on("pointerout", function(e) {
                             var itemContainer = e.target;
@@ -301,7 +349,7 @@
 
                         // Make stuff animate on load
                         // https://www.amcharts.com/docs/v5/concepts/animations/
-                        chart.appear(1000, 100);
+                        chart.appear(2000, 500);
                     });
                 }
             })

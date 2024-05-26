@@ -173,13 +173,13 @@ class RawData {
     public static function WaterDates24HourAgo($address, $board_type, $board_number, $field, $name) {                // 대쉬보드 --> 그래프 보기에서 최근 일주일 물 그래프 불러오는 쿼리  
         return (new Database('raw_data'))->execute("
              select
-                date_format(created_at, '%Y-%m-%d %h:00:00' ) as created,
+                date_format(created_at, '%Y-%m-%d 00:00:00' ) as created,
                 (max({$field})-ifnull(LAG(max({$field})) OVER (ORDER BY created_at), {$field}))*1 as '{$name}'
             from raw_data
-            where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at > (now() - INTERVAL 7 day ) 
+            where address={$address} and board_type={$board_type} and board_number={$board_number} and  created_at > (now() - INTERVAL 8 day ) 
             group by FLOOR(DAY(created_at)/1)*10
             order BY idx asc
-            Limit 0, 7
+            Limit 1, 8
         ");
     }
     /*  // 원본
