@@ -274,7 +274,7 @@ $(function () {
                         layout : root.horizontalLayout,
                         //layout: root.verticalLayout,
                         height: 50,
-                        width: 500,
+                        width: 1400,
                         paddingTop: 10,
                         paddingLeft: 10,
                         //height: am5.percent(100)
