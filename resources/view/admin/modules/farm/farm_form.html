@@ -4,7 +4,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    농장관리
+                    관리
                 </h2>
             </div>
 
@@ -18,35 +18,35 @@
             <div class="col-12">
                 <form class="card" method="post" action="{{action}}" >
                     <div class="card-header">
-                        <h3 class="card-title">농장 등록</h3>
+                        <h3 class="card-title">농장 등록/삭제</h3>
                     </div>
                     <div class="card-body">
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">농장이름</label>
+                            <label class="col-2 col-form-label required">농장 이름</label>
                             <div class="col">
-                                <input type="text" name="farm_name" value="{{farm_name}}" class="form-control" aria-describedby="" placeholder="농장이름">
+                                <input type="text" name="farm_name" value="{{farm_name}}" class="form-control" aria-describedby="" placeholder="농장 이름">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">대표자 이름</label>
+                            <label class="col-2 col-form-label ">축산업 등록번호</label>
                             <div class="col">
-                                <input type="text" name="farm_ceo" value="{{farm_ceo}}" class="form-control" placeholder="대표자 이름">
+                                <input type="text" name="farm_ceo" value="{{farm_ceo}}" class="form-control" placeholder="축산업 등록번호">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label">주소</label>
+                            <label class="col-2 col-form-label">농장 주소</label>
                             <div class="col">
-                                <input type="text" name="farm_address" value="{{farm_address}}" class="form-control" placeholder="주소">
+                                <input type="text" name="farm_address" value="{{farm_address}}" class="form-control" placeholder="농장 주소">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label">농장 고유번호</label>
+                            <label class="col-2 col-form-label">시스템 고유번호</label>
                             <div class="col">
-                                <input type="text" name="address" value="{{address}}" class="form-control" placeholder="농장고유주소">
+                                <input type="text" name="address" value="{{address}}" class="form-control" placeholder="시스템 고유번호 (Address number)">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label">manager 회원</label>
+                            <label class="col-2 col-form-label">사용자 이름</label>
                             <div class="col">
                                 <select class="form-select" name="member_idx">
                                     {{member_idx}}
@@ -59,7 +59,7 @@
                     <div class="card-footer text-center">
                         <button type="submit" class="btn btn-primary">저장</button>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="{{URL}}/admin/farm_list"><button type="button" class="btn btn-secondary">목록</button></a>
+                        <a href="{{URL}}/admin/farm_list"><button type="button" class="btn btn-secondary">뒤로가기</button></a>
                     </div>
                 </form>
             </div>

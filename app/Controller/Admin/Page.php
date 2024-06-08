@@ -17,25 +17,25 @@ class Page {
     private static $menus = [
         [
             'label' => 'member_mant',
-            'title' => '회원관리',
+            'title' => '사용자 등록/삭제',
             'link'  => URL."/admin/member_list"
         ],
         [
             'label' => 'farm_mant',
-            'title' => '농장관리',
+            'title' => '농장 등록/삭제',
             'link'  => URL."/admin/farm_list"
         ],
         [
             'label' => 'device_mant',
-            'title' => '장비관리',
+            'title' => ' 디바이스 등록/삭제',
             'submenu'=>[
-                ['label' => 'device_mant', 'title' => '보드타입관리', 'link' => URL.'/admin/board_type_ref_list'],
-                ['label' => 'device_mant', 'title' => '장비관리', 'link' => URL.'/admin/device_list'],
+                ['label' => 'device_mant', 'title' => '디바이스 타입', 'link' => URL.'/admin/board_type_ref_list'],
+                ['label' => 'device_mant', 'title' => '디바이스 리스트', 'link' => URL.'/admin/device_list'],
             ],
         ],
         [
             'label' => 'all_mant',
-            'title' => '전체리스트',
+            'title' => '통합 리스트 확인',
             'link' => URL."/admin/all_list",
         ],
     ];

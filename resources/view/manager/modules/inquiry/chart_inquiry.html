@@ -85,9 +85,10 @@
             ranges: {
                 '오늘': [moment(), moment()],
                 '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                '최근 일주일': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
-                '최근 30일': [moment().subtract(29, 'days'), moment()],
-                '최근 60일': [moment().subtract(59, 'days'), moment()],
+                //'최근 일주일': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
+                '최근 일주일': [moment().subtract(7, 'days'), moment()],
+                '최근 2주일': [moment().subtract(14, 'days'), moment()],
+                //'60일': [moment().subtract(59, 'days'), moment()],
                 // 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
@@ -126,6 +127,7 @@
                         var h = d[1].split(':');
                         data.push({
                             date: new Date(y[0], y[1]-1, y[2],h[0],h[1],h[2]).getTime(),
+                            
 
                         });
 
