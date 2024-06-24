@@ -61,10 +61,10 @@ class Etc extends Page {
                             if ($rew_obj->board_type == 3) {
                                 $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
                                 $value = ($water_row->{$vv['field']});
-                            } else if ($rew_obj->board_type == 6 || $rew_obj->board_type == 35) {
+                            } else if ($rew_obj->board_type == 6 || $rew_obj->board_type == 35 || $rew_obj->board_type == 40) {
                                 $water_row = EntityRawData::LastLimitWaterDataSumExcept_1($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
                                 $value = ($water_row->{$vv['field']});
-                            } else if ($rew_obj->board_type == 4) {
+                            } else if ($rew_obj->board_type == 4 ) {
                                 $water_row = EntityRawData::LastLimitWaterDataSumExcept_2($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
                                 $value = ($water_row->{$vv['field']});
                             } else {
@@ -126,10 +126,10 @@ class Etc extends Page {
                             if ($rew_obj->board_type == 3) {
                                 $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
                                 $value = ($water_row->{$vv['field']});
-                            } else if ($rew_obj->board_type == 6 || $rew_obj->board_type == 35) {
+                            } else if ($rew_obj->board_type == 6 || $rew_obj->board_type == 35 || $rew_obj->board_type == 40 ) {
                                 $water_row = EntityRawData::LastLimitWaterDataSumExcept_1($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
                                 $value = ($water_row->{$vv['field']});
-                            } else if ($rew_obj->board_type == 4) {
+                            } else if ($rew_obj->board_type == 4 ) {
                                 $water_row = EntityRawData::LastLimitWaterDataSumExcept_2($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
                                 $value = ($water_row->{$vv['field']});
                             } else {
