@@ -1,4 +1,5 @@
 <?php
+error_reporting(  ~E_DEPRECATED & ~E_NOTICE  );
 date_default_timezone_set('Asia/Seoul');
 
 require __DIR__.'/includes/app.php';

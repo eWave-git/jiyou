@@ -8,11 +8,13 @@ use App\Model\Entity\Member as EntityMmeber;
 use App\Model\Entity\RawData as EntityRawData;
 use App\Model\Entity\Widget as EntityWidget;
 use App\Model\Entity\WidgetBoardType as EntityWidgetBoardType;
+use App\Model\Entity\WidgetConnectionTime as EntityWidgetConnectionTime;
 use app\Utils\Common;
 use App\Utils\View;
 
 
 class Dashboard extends Page {
+    const DEFAULT_CHECK_TIME = 5;
 
 //    public static function getWidgetBoard($request) {
 //        $postVars = $request->getPostVars();
@@ -239,10 +241,23 @@ class Dashboard extends Page {
                 $result = EntityRawData::LastLimitOne($device_obj->address, $device_obj->board_type, $device_obj->board_number);
                 $rew_obj = $result->fetchObject(EntityRawData::class);
 
+                $obj[$k]['check_time'] = empty($obj[$k]['check_time']) ? self::DEFAULT_CHECK_TIME : $obj[$k]['check_time'];
+
+                $check_result = Common::widgetConnectionCheck($device_obj->address, $device_obj->board_type, $device_obj->board_number, $obj[$k]['check_time']);
+
+                $check_class = "";
+                $check_text = "정상 운영 중";
+                if ($check_result == false) {
+                    $check_class = "warning";
+                    $check_text = "경보 발생 중";
+                }
+
                 $card .= View::render('manager/modules/dashboard/widget_card', [
                     'subject' => $obj[$k]['widget_name'],
                     'idx' => $obj[$k]['idx'],
                     'item' => self::getCardItem($rew_obj, $v['board_name']),
+                    'check_class' => $check_class,
+                    'check_text' => $check_text,
                     'update_at' => isset($rew_obj->created_at) ? substr($rew_obj->created_at, 5, 14) : "00-00 00:00:00" ,
                 ]);
 
@@ -602,6 +617,9 @@ class Dashboard extends Page {
 
         $obj = EntityWidget::getWidgetByIdx($postVars['widget_idx'])->fetchObject(EntityWidget::class);
 
+        $check_yn = empty($obj->check_yn) ? 'N' : $obj->check_yn;
+        $check_time = empty($obj->check_time) ? self::DEFAULT_CHECK_TIME : $obj->check_time;
+
         $board_type = Common::getbordTypeNameByWidgetNameArray($obj->device_idx, $obj->board_type);
 
         $symbols = Common::getBoardTypeSymbol();
@@ -610,6 +628,8 @@ class Dashboard extends Page {
             'success' => true,
             'board_type' => $board_type,
             'symbols' => $symbols,
+            'check_yn' => $check_yn,
+            'check_time' => $check_time,
         ];
     }
 
@@ -658,6 +678,22 @@ class Dashboard extends Page {
                 $widget_board_type_obj->{$symbol} = $postVars[$symbol];
             }
             $widget_board_type_obj->created();
+        }
+
+        $check_yn = isset($postVars['check_yn']) ? $postVars['check_yn'] : 'N';
+        $check_time = isset($postVars['check_time']) ? $postVars['check_time'] : self::DEFAULT_CHECK_TIME;
+
+        $widget_connection_obj = EntityWidgetConnectionTime::getWidgetConnectionByWidgetIdx($postVars['idx'])->fetchObject(EntityWidgetConnectionTime::class);
+        if (isset($widget_connection_obj->idx)) {
+            $widget_connection_obj->check_yn = $check_yn;
+            $widget_connection_obj->check_time = $check_time;
+            $widget_connection_obj->updated();
+        } else {
+            $widget_connection_obj = new EntityWidgetConnectionTime();
+            $widget_connection_obj->widget_idx = $postVars['idx'];
+            $widget_connection_obj->check_yn = $check_yn;
+            $widget_connection_obj->check_time = $check_time;
+            $widget_connection_obj->created();
         }
 
         return [

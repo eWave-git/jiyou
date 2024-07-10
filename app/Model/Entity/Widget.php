@@ -34,7 +34,7 @@ class Widget {
         return self::getWidgets("device_idx ='".$device_idx."'");
     }
     public static function getWidgetByIdx($idx) {
-        return self::getWidgets("idx ='".$idx."'");
+        return (new Database('widget'))->execute("select *, w.idx as idx from widget as w left join widget_connection_time as wct on w.idx = wct.widget_idx where w.idx ='".$idx."'");
     }
 
     public static function getWidgets($where = null, $order = null, $limit = null, $fields = '*') {
@@ -42,7 +42,7 @@ class Widget {
     }
 
     public static function getWidgetByMemberIdx($user_idx) {
-        return self::getWidgets("member_idx ='".$user_idx."'");
+        return (new Database('widget'))->execute("select *, w.idx as idx from widget as w left join widget_connection_time as wct on w.idx = wct.widget_idx where w.member_idx ='".$user_idx."'");
     }
 
 

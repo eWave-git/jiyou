@@ -200,6 +200,7 @@ input[type="password"]::-ms-clear {display:none;}
 .dvc_wrap .state_li li.warning,
 .dvc_wrap .item.warning .state_msg p {color:#D32F2F;}
 .dvc_wrap .item.warning .state_msg {border-color:#D32F2F; background-color:rgba(211, 47, 47, .12);}
+.dvc_wrap .item.warning .date_wrap .date {color:#D32F2F;}
 
 @media only screen and (max-width:1500px) {
 	.dvc_wrap {margin:-40px 0 0 -20px;}

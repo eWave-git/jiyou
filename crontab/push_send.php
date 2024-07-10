@@ -5,7 +5,6 @@ use \WilliamCosta\DatabaseManager\Database;
 use \App\Utils\Common;
 use \App\Model\Entity\Device as EntityDevice;
 
-
 $activation =  (new Database('alarm'))->execute(
     "select * ,a.idx as alarm_idx
             from alarm as a
@@ -36,6 +35,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $_txt = "";
             $array[$key]['member_idx'] = $activation_obj->member_idx;
             $array[$key]['member_name'] = $activation_obj->member_name;
+            $array[$key]['member_phone'] = $activation_obj->member_phone;
             $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
 
             $array[$key]['device_idx'] =  $activation_obj->device_idx;
@@ -58,6 +58,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $_txt = "";
             $array[$key]['member_idx'] = $activation_obj->member_idx;
             $array[$key]['member_name'] = $activation_obj->member_name;
+            $array[$key]['member_phone'] = $activation_obj->member_phone;
             $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
 
             $array[$key]['device_idx'] =  $activation_obj->device_idx;
@@ -79,6 +80,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $_txt = "";
             $array[$key]['member_idx'] = $activation_obj->member_idx;
             $array[$key]['member_name'] = $activation_obj->member_name;
+            $array[$key]['member_phone'] = $activation_obj->member_phone;
             $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
 
             $array[$key]['device_idx'] =  $activation_obj->device_idx;
@@ -102,33 +104,44 @@ while ($activation_obj = $activation->fetchObject()) {
 
 $alarmHistoryDatabases = new Database('alarm_history');                                                             //알람 히스토리에서 검색을 해서 최근 알람 보낸 간격이 'h' 기준으로 1시간 이상일때만 알람을 보낸다.
 
-foreach ($array as $k => $v) {
+if (!empty($array)) {
+   foreach ($array as $k => $v) {
 
-    $results  = $alarmHistoryDatabases->select("alarm_idx = '{$v['alarm_idx']}'","created_at desc")->fetchObject();
+       $results = $alarmHistoryDatabases->select("alarm_idx = '{$v['alarm_idx']}'", "created_at desc")->fetchObject();
 
-    if (isset($results->alarm_idx)) {
-        // "있다면";
+        if (isset($results->alarm_idx)) {
+            // "있다면";
 
-        /*
-        $diff = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');                                          // 밑 뒤에 파라미터 값이 i이면 분, h이면 시간 d이면 날짜 마다 보냄
-        if ($diff >= 1) {
-           alarmHistoryInsert($v);
-           Common::sendPush($v['board_type_name']." 경보발생", $v['alarm_contents'],$v['push_subscription_id'],"");
+            /*
+            $diff = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');                                          // 밑 뒤에 파라미터 값이 i이면 분, h이면 시간 d이면 날짜 마다 보냄
+            if ($diff >= 1) {
+               alarmHistoryInsert($v);
+               Common::sendPush($v['board_type_name']." 경보발생", $v['alarm_contents'],$v['push_subscription_id'],"");
+            }
+            */
+            $diff_sec = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 's');                                          // 시간 설정 변경
+            $diff_min = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');
+            if ($diff_sec >= 59 || $diff_min >= 0) {
+                if (!empty($v['member_phone'])) {
+                    $member_phone = str_replace('-','', $v['member_phone']); ;
+                    Common::sendSms($member_phone, $v['alarm_contents']);
+                }
+
+                alarmHistoryInsert($v);
+                Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $v['push_subscription_id'], "");
+            }
+
+        } else {
+            // "없다면";
+
+            if (!empty($v['member_phone'])) {
+                $member_phone = str_replace('-','', $v['member_phone']); ;
+                Common::sendSms($member_phone, $v['alarm_contents']);
+            }
+
+            alarmHistoryInsert($v);
+            Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $v['push_subscription_id'], "");
         }
-        */
-
-        $diff_sec = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 's');                                          // 시간 설정 변경
-        $diff_min = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');                                          
-        if ($diff_sec >= 59 || $diff_min >= 0) {
-           alarmHistoryInsert($v);
-           Common::sendPush($v['board_type_name']." 경보", $v['alarm_contents'],$v['push_subscription_id'],"");
-        }
-
-    } else {
-        // "없다면";
-
-        alarmHistoryInsert($v);
-        Common::sendPush($v['board_type_name']." 경보", $v['alarm_contents'],$v['push_subscription_id'],"");
     }
 }
 

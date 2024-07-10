@@ -107,6 +107,13 @@ function OpenPop(){ //팝업
 					})
 					$("#dynamicTbody").append(html);
 
+					if (obj.check_yn == 'Y') {
+						$("[name='check_yn']").prop('checked',true);
+					} else {
+						$("[name='check_yn']").prop('checked',false);
+					}
+
+					$("[name='check_time']").val(obj.check_time).prop('selected',true);
 				}
 			}
 		})

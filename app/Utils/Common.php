@@ -1,7 +1,7 @@
 <?php
 namespace app\Utils;
 
-
+use App\Model\Entity\RawData as EntityRawData;
 use App\Controller\Admin\BoardTypeRef;
 use App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 use App\Model\Entity\Member as EntityMmeber;
@@ -9,9 +9,12 @@ use App\Model\Entity\Widget as EntityWidget;
 use App\Model\Entity\WidgetBoardType as EntityWidgetBoardType;
 use App\Model\Entity\BoardTypeSymbol as EntityBoardTypeSymbol;
 use App\Model\Entity\PushSendLog as EntityPushSendLog;
+use App\Model\Entity\SmsSendLog as EntitySmsSendLog;
 use DateInterval;
 use DatePeriod;
 use DateTime;
+use Twilio\Rest\Client as TwilioRestClient;
+
 
 class Common{
 
@@ -131,6 +134,16 @@ class Common{
         $date_diff = date_diff($startDate, $lastDate);
 
         return $date_diff->$format;
+    }
+
+    public static function date_diff_minutes($startDate, $lastDate) {
+        $startDate = new DateTime($startDate);
+        $lastDate = new DateTime($lastDate);
+
+        $interval = date_diff($startDate, $lastDate);
+        $minutes = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i;
+
+        return $minutes;
     }
 
     public static function error_msg($msg) {
@@ -350,5 +363,43 @@ class Common{
 
 
         return $status_code;
+    }
+
+    public static function sendSms($to, $body)
+    {
+        $twilioClient = new TwilioRestClient(getenv('TWILIO_SID'), getenv('TWILIO_TOKEN'));
+        $message = $twilioClient->messages->create("+82".$to, // to
+            array(
+              "from" => "+19015992266",
+              "body" => $body
+            )
+          );
+
+        $obj = new EntitySmsSendLog;
+        $obj->body = $message->body;
+        $obj->numSegments = $message->numSegments;
+        $obj->direction = $message->direction;
+        $obj->smsFrom = $message->from;
+        $obj->smsTo = $message->to;
+        $obj->errorMessage = $message->errorMessage ?? '';
+        $obj->status = $message->status;
+        $obj->sid = $message->sid;
+        $obj->created();
+
+        return $message->status;
+    }
+
+    public static function widgetConnectionCheck($address, $board_type, $number, $check_time = 0) {
+
+        $raw_result = EntityRawData::LastLimitOne($address, $board_type, $number);
+        $rew_obj = $raw_result->fetchObject(EntityRawData::class);
+        $diff = Common::date_diff_minutes($rew_obj->created_at,  date("Y-m-d H:i:s"));
+
+        $result = true;
+        if ($diff >= $check_time) {
+            $result = false;
+        }
+
+        return $result;
     }
 }

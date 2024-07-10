@@ -9,6 +9,7 @@
     "william-costa/dot-env": "^0.1.0",
     "william-costa/database-manager": "^0.1.0",
     "phpoffice/phpspreadsheet": "^1.29",
-    "phpseclib/phpseclib": "^3.0"
+    "phpseclib/phpseclib": "^3.0",
+    "twilio/sdk": "^8.2"
   }
 }
