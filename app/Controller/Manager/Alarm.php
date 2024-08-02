@@ -6,6 +6,7 @@ use \App\Model\Entity\Device as EntityDevice;
 use \App\Model\Entity\Member as EntityMmeber;
 use \App\Model\Entity\Alarm as EntityAlarm;
 use \App\Model\Entity\AlarmMember as EntityAlarmMember;
+use App\Model\Entity\WaterAlarmHistory;
 use \App\Model\Entity\WaterAlarmMember as EntityWaterAlarmMember;
 use \App\Model\Entity\AlarmHistory as EntityAlarmHistory;
 use \App\Model\Entity\WaterAlarm as EntityWaterAlarm;
@@ -244,7 +245,7 @@ class Alarm extends Page {
         $obj->member_idx = $obj->member_idx;
         $obj->device_idx = $device_info->idx ?? $obj->device_idx;
 
-        $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board']);
+        $board_type = Common::getBoardTypeNameSelect($device_info->board_type, $postVars['board'],'');
         $obj->board_type_field = $board_type['field'] ?? $obj->board_type;
         $obj->board_type_name = $board_type['name'] ?? $obj->board_number;
 
@@ -454,6 +455,53 @@ class Alarm extends Page {
         return [
             'success' => true,
         ];
+    }
+
+    public static function getWaterAlarmLogList($user_idx) {
+        $alarm_log = WaterAlarmHistory::getWaterAlarmHistoryByMemberIdx($user_idx);
+
+        $item = "";
+        $array = array();
+        $_i = 0;
+        while ($obj = $alarm_log->fetchObject(WaterAlarmHistory::class)) {
+
+            $device_obj = EntityDevice::getDevicesByIdx($obj->device_idx);
+
+            if ($device_obj) {
+                $array[$_i]['device_name'] = $device_obj->device_name;
+                $array[$_i]['board_type_name'] = $obj->board_type_name;
+                $array[$_i]['alarm_contents'] = $obj->alarm_contents;
+                $array[$_i]['created_at'] = $obj->created_at;
+            }
+            $_i++;
+        }
+
+        $_i = 1;
+
+        foreach ($array as $k => $v) {
+            $item .= View::render('manager/modules/alarm/water_alarm_log_list_item', [
+                'number' => $_i,
+                'device_name' => $v['device_name'],
+                'board_type_name' => $v['board_type_name'],
+                'alarm_contents' => $v['alarm_contents'],
+                'created_at' => $v['created_at'],
+            ]);
+
+            $_i++;
+        }
+
+        return $item;
+    }
+
+    public static function WaterAlarmLogList() {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $content = View::render('manager/modules/alarm/water_alarm_log_list', [
+            'water_alarm_log_list_item' => self::getWaterAlarmLogList($_userInfo->idx),
+        ]);
+
+        return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
     }
 
     public static function WaterAlarmDelete($request, $idx) {

@@ -104,6 +104,15 @@ $obRouter->get('/manager/water_alarm_form',[
     }
 ]);
 
+$obRouter->get('/manager/water_alarm_log_list', [
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::WaterAlarmLogList($request));
+    }
+]);
+
 $obRouter->post('/manager/water_alarm_form_create',[
     'middlewares' => [
         'required-manager-login'
