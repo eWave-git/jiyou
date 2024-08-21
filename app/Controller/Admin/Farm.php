@@ -26,6 +26,20 @@ class Farm extends Page {
         return $options;
     }
 
+    private static function getViewerMemberList($member_idx = '') {
+        $options = '';
+
+        $results = EntityMmeber::getMembers("member_type='viewer'", 'idx DESC', null);
+        while ($obFarm = $results->fetchObject(EntityMmeber::class)) {
+            $options .= View::render('admin/modules/farm/farm_form_viewer_options', [
+                'value' => $obFarm->idx,
+                'text'  => $obFarm->member_name,
+                'selected' => $obFarm->member_group == $member_idx ? 'selected' : '',
+            ]);
+        }
+
+        return $options;
+    }
 
     private static function getFarmListItems($request) {
         $items = '';
@@ -72,6 +86,7 @@ class Farm extends Page {
                 'farm_address' => $objFarm->farm_address,
                 'address' => $objFarm->address,
                 'member_idx' => self::getManagerMemberList($objFarm->member_idx),
+                'viewer_member_idx' => self::getViewerMemberList($objFarm->member_idx),
             ]);
         } else {
             $content = View::render('admin/modules/farm/farm_form', [
@@ -81,6 +96,7 @@ class Farm extends Page {
                 'farm_address' => '',
                 'address' => '',
                 'member_idx' => self::getManagerMemberList(),
+                'viewer_member_idx' => self::getViewerMemberList(),
             ]);
         }
 
@@ -100,6 +116,18 @@ class Farm extends Page {
 
         $obj->created();
 
+        $member_obj = EntityMmeber::getMemberByIdx($postVars['member_idx']);
+        $member_obj->member_group = $postVars['member_idx'];
+        $member_obj->updated();
+
+        if (isset($postVars['viewer_member_idx'])) {
+            foreach ($postVars['viewer_member_idx'] as $idx) {
+                $member_obj = EntityMmeber::getMemberByIdx($idx);
+                $member_obj->member_group = $postVars['member_idx'];
+                $member_obj->updated();
+            }
+        }
+
         $request->getRouter()->redirect('/admin/farm_list');
     }
 
@@ -115,6 +143,19 @@ class Farm extends Page {
         $obj->member_idx = $postVars['member_idx'] ?? $obj->member_idx;
         $obj->updated();
 
+        EntityMmeber::UpdateMemberGroupReset($postVars['member_idx']);
+
+        $member_obj = EntityMmeber::getMemberByIdx($postVars['member_idx']);
+        $member_obj->member_group = $postVars['member_idx'];
+        $member_obj->updated();
+
+        if (isset($postVars['viewer_member_idx'])) {
+            foreach ($postVars['viewer_member_idx'] as $idx) {
+                $member_obj = EntityMmeber::getMemberByIdx($idx);
+                $member_obj->member_group = $postVars['member_idx'];
+                $member_obj->updated();
+            }
+        }
 
         $request->getRouter()->redirect('/admin/farm_list');
     }

@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__."/crontab_init.php";
 
+use App\Model\Entity\Member as EntityMmeber;
 use \WilliamCosta\DatabaseManager\Database;
 use \App\Utils\Common;
 use \App\Model\Entity\Device as EntityDevice;
@@ -104,6 +105,8 @@ while ($activation_obj = $activation->fetchObject()) {
 
 $alarmHistoryDatabases = new Database('alarm_history');                                                             //알람 히스토리에서 검색을 해서 최근 알람 보낸 간격이 'h' 기준으로 1시간 이상일때만 알람을 보낸다.
 
+//Common::print_r2($array);
+
 if (!empty($array)) {
    foreach ($array as $k => $v) {
 
@@ -122,25 +125,34 @@ if (!empty($array)) {
             $diff_sec = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 's');                                          // 시간 설정 변경
             $diff_min = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');
             if ($diff_sec >= 59 || $diff_min >= 0) {
-                if (!empty($v['member_phone'])) {
-                    $member_phone = str_replace('-','', $v['member_phone']); ;
-                    Common::sendSms($member_phone, $v['alarm_contents']);
-                }
 
-                alarmHistoryInsert($v);
-                Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $v['push_subscription_id'], "");
+                $results = EntityMmeber::getMemberByGroup($v['member_idx']);
+
+                while ($obj = $results->fetchObject(EntityMmeber::class)) {
+                    if (!empty($obj['member_phone'])) {
+                        $member_phone = str_replace('-','', $obj['member_phone']); ;
+                        Common::sendSms($member_phone, $v['alarm_contents']);
+                    }
+
+                    alarmHistoryInsert($v);
+                    Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj['push_subscription_id'], "");
+                }
             }
 
         } else {
             // "없다면";
 
-            if (!empty($v['member_phone'])) {
-                $member_phone = str_replace('-','', $v['member_phone']); ;
-                Common::sendSms($member_phone, $v['alarm_contents']);
-            }
+                $results = EntityMmeber::getMemberByGroup($v['member_idx']);
 
-            alarmHistoryInsert($v);
-            Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $v['push_subscription_id'], "");
+                while ($obj = $results->fetchObject(EntityMmeber::class)) {
+                    if (!empty($obj['member_phone'])) {
+                        $member_phone = str_replace('-','', $obj['member_phone']); ;
+                        Common::sendSms($member_phone, $v['alarm_contents']);
+                    }
+
+                    alarmHistoryInsert($v);
+                    Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj['push_subscription_id'], "");
+                }
         }
     }
 }

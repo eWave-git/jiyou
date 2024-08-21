@@ -19,6 +19,12 @@ class Member {
 
     public $created_at;
 
+    public static function UpdateMemberGroupReset($member_group_idx) {
+        return (new Database('member'))->execute(
+            "update member set `member_group`= 0 where `member_group` = '".$member_group_idx."'"
+        );
+    }
+
     public static function PasswordChange($member_id, $password) {
         return (new Database('member'))->execute(
             "update member set `member_password`= '".$password."' where `member_id` = '".$member_id."'"
@@ -73,7 +79,7 @@ class Member {
     }
 
     public static function getManagerMemberById($member_id) {
-        return self::getMembers("member_type='manager' and member_id='".$member_id."'")->fetchObject(self::class);
+        return self::getMembers("member_id='".$member_id."'")->fetchObject(self::class);
     }
 
     public static function getMembers($where = null, $order = null, $limit = null, $fields = '*') {
@@ -103,6 +109,7 @@ class Member {
             'member_email' => $this->member_email,
             'member_phone' => $this->member_phone,
             'member_type' => $this->member_type,
+            'member_group' => $this->member_group,
         ]);
     }
 

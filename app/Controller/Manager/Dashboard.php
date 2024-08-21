@@ -271,6 +271,12 @@ class Dashboard extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
+        if ($_userInfo->member_type == "viewer") {
+            $_member = Common::get_member_info($_userInfo->member_group);
+            $_userInfo->idx = $_member['idx'];
+            $_userInfo->name = $_member['member_name'];
+        }
+
         $_farm_Info = EntityMmeber::getMembersFarm($_userInfo->idx)->fetchObject(EntityMmeber::class);
 
         $content = View::render('manager/modules/dashboard/index', [
