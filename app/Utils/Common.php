@@ -10,6 +10,7 @@ use App\Model\Entity\WidgetBoardType as EntityWidgetBoardType;
 use App\Model\Entity\BoardTypeSymbol as EntityBoardTypeSymbol;
 use App\Model\Entity\PushSendLog as EntityPushSendLog;
 use App\Model\Entity\SmsSendLog as EntitySmsSendLog;
+use App\Model\Entity\AligoSmsSendLog as EntityAligoSmsSendLog;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -387,6 +388,46 @@ class Common{
         $obj->created();
 
         return $message->status;
+    }
+
+    public static function aligoSendSms($title, $msg, $receiver)
+    {
+        $sms_url = getenv('ALIGO_SMS_URL');
+        $sms['user_id'] = getenv('ALIGO_USER_ID');
+        $sms['key'] = getenv('ALIGO_KEY');
+
+
+        $sms['msg'] = stripslashes($msg);
+        $sms['receiver'] = $receiver;
+        $sms['sender'] = '01063423999';
+        $sms['title'] = $title;
+        $sms['msg_type'] = 'SMS';
+
+        $oCurl = curl_init();
+        curl_setopt($oCurl, CURLOPT_PORT, 443);
+        curl_setopt($oCurl, CURLOPT_URL, $sms_url);
+        curl_setopt($oCurl, CURLOPT_POST, 1);
+        curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($oCurl, CURLOPT_POSTFIELDS, $sms);
+        curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        $ret = curl_exec($oCurl);
+        curl_close($oCurl);
+
+
+        $retArr = json_decode($ret);
+
+        $obj = new EntityAligoSmsSendLog();
+        $obj->title = $sms['title'];
+        $obj->msg = $sms['msg'];
+        $obj->receiver = $sms['receiver'];
+        $obj->result_code = $retArr->result_code;
+        $obj->message = $retArr->message;
+        $obj->msg_id = $retArr->msg_id ?? 0;
+        $obj->success_cnt = $retArr->success_cnt ?? 0;
+        $obj->error_cnt = $retArr->error_cnt ?? 0;
+        $obj->msg_type = $retArr->msg_type ?? '';
+        $obj->created();
+
     }
 
     public static function widgetConnectionCheck($address, $board_type, $number, $check_time = 0) {

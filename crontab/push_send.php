@@ -131,7 +131,7 @@ if (!empty($array)) {
                 while ($obj = $results->fetchObject(EntityMmeber::class)) {
                     if (!empty($obj['member_phone'])) {
                         $member_phone = str_replace('-','', $obj['member_phone']); ;
-                        Common::sendSms($member_phone, $v['alarm_contents']);
+                        Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
                     }
 
                     alarmHistoryInsert($v);
@@ -147,7 +147,7 @@ if (!empty($array)) {
                 while ($obj = $results->fetchObject(EntityMmeber::class)) {
                     if (!empty($obj['member_phone'])) {
                         $member_phone = str_replace('-','', $obj['member_phone']); ;
-                        Common::sendSms($member_phone, $v['alarm_contents']);
+                        Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
                     }
 
                     alarmHistoryInsert($v);

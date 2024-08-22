@@ -54,6 +54,15 @@ $obRouter->post('/manager/test_back',[
     }
 ]);
 
+$obRouter->get('/manager/test_sms',[
+    'middlewares' => [
+    ],
+    function($request) {
+        return new Response(200, Manager\Test::sms($request));
+    }
+]);
+
+
 
 include __DIR__.'/manager/dashboard.php';
 
