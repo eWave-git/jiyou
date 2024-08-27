@@ -7,10 +7,12 @@ use \App\Utils\Common;
 use \App\Model\Entity\Device as EntityDevice;
 
 $activation =  (new Database('alarm'))->execute(
-    "select * ,a.idx as alarm_idx
+    "select * ,a.idx as alarm_idx, f.farm_name, w.widget_name
             from alarm as a
                      left join alarm_member am on a.idx = am.alarm_idx
                      left join member as m on am.member_idx = m.idx
+                     left join farm as f on am.member_idx = f.member_idx
+                     left join widget as w on w.device_idx = a.device_idx
             where a.idx in (select max(idx)
                             from alarm
                             where activation = 'Y'
@@ -44,7 +46,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
-            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생!";
+            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위 초과 <알람 발생> 알람 현재 ".$raw_data_info->{$activation_obj->board_type_field};
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -67,7 +69,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
-            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
+            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 <알람 발생> 현재 ".$raw_data_info->{$activation_obj->board_type_field};
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -89,7 +91,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
-            $_txt = "설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 알람 발생!";
+            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 <알람 발생> 현재 ".$raw_data_info->{$activation_obj->board_type_field};
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
