@@ -129,13 +129,13 @@ if (!empty($array)) {
                 $results = EntityMmeber::getMemberByGroup($v['member_idx']);
 
                 while ($obj = $results->fetchObject(EntityMmeber::class)) {
-                    if (!empty($obj['member_phone'])) {
-                        $member_phone = str_replace('-','', $obj['member_phone']); ;
+                    if (!empty($obj->member_phone)) {
+                        $member_phone = str_replace('-','', $obj->member_phone); ;
                         Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
                     }
 
                     alarmHistoryInsert($v);
-                    Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj['push_subscription_id'], "");
+                    Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj->push_subscription_id, "");
                 }
             }
 
@@ -145,13 +145,13 @@ if (!empty($array)) {
                 $results = EntityMmeber::getMemberByGroup($v['member_idx']);
 
                 while ($obj = $results->fetchObject(EntityMmeber::class)) {
-                    if (!empty($obj['member_phone'])) {
-                        $member_phone = str_replace('-','', $obj['member_phone']); ;
+                    if (!empty($obj->member_phone)) {
+                        $member_phone = str_replace('-','', $obj->member_phone); ;
                         Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
                     }
 
                     alarmHistoryInsert($v);
-                    Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj['push_subscription_id'], "");
+                    Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj->push_subscription_id, "");
                 }
         }
     }
