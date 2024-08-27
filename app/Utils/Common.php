@@ -204,7 +204,7 @@ class Common{
     }
 
     public static function ch4_commend($address, $board_type, $board_number, $ch1, $ch2, $ch3, $ch4) {
-        $commend = 'mosquitto_pub -h 13.209.31.152 -p 1883 -t "safe1/control/'.$address.'" -u "ewave" -P "andante" -m "{\"ad\":'.$address.',\"bt\":'.$board_type.',\"bn\":'.$board_number.',\"c1\":'.$ch1.',\"c2\":'.$ch2.',\"c3\":'.$ch3.',\"c4\":'.$ch4.'}"';
+        $commend = 'mosquitto_pub -h 13.209.31.152 -p 1883 -t "safe1/control/'.$address.'" -u "ewave" -P "andante" -m "{\"bt\":'.$board_type.',\"bn\":'.$board_number.',\"cv\":4,\"c1\":'.$ch1.',\"c2\":'.$ch2.',\"c3\":'.$ch3.',\"c4\":'.$ch4.'}"';
 
         $output=null;
         $retval=null;
