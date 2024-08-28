@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__."/crontab_init.php";
 
+use App\Model\Entity\Member as EntityMmeber;
 use \WilliamCosta\DatabaseManager\Database;
 use \App\Utils\Common;
 use \App\Model\Entity\Device as EntityDevice;
@@ -54,7 +55,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위 초과 <알람 발생> 알람 현재 ".$raw_data_info->{$activation_obj->board_type_field};
+            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위 초과 <알람 발생> 알람 현재 ".$raw_data_info->water;
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -76,7 +77,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 <알람 발생> 현재 ".$raw_data_info->{$activation_obj->board_type_field};
+            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 <알람 발생> 현재 ".$raw_data_info->water;
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -97,7 +98,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 <알람 발생> 현재 ".$raw_data_info->{$activation_obj->board_type_field};
+            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 <알람 발생> 현재 ".$raw_data_info->water;
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -140,7 +141,7 @@ foreach ($array as $k => $v) {
                     Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
                 }
 
-                alarmHistoryInsert($v);
+                wateralarmHistoryInsert($v);
                 Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj->push_subscription_id, "");
             }
         }
@@ -156,7 +157,7 @@ foreach ($array as $k => $v) {
                     Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
                 }
 
-                alarmHistoryInsert($v);
+                wateralarmHistoryInsert($v);
                 Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj->push_subscription_id, "");
             }
     }
