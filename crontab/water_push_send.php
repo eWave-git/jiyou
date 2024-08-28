@@ -7,10 +7,12 @@ use \App\Model\Entity\Device as EntityDevice;
 use \App\Model\Entity\Widget as EntityWidget;
 
 $activation =  (new Database('water_alarm'))->execute(
-    "select * ,a.idx as alarm_idx
+    "select * ,a.idx as alarm_idx, f.farm_name, w.widget_name
             from water_alarm as a
                      left join water_alarm_member am on a.idx = am.water_alarm_idx
                      left join member as m on am.member_idx = m.idx
+                     left join farm as f on am.member_idx = f.member_idx
+                     left join widget as w on w.device_idx = a.device_idx            
             where a.idx in (select max(idx)
                             from water_alarm
                             where activation = 'Y'
@@ -52,7 +54,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "'".$widget_name ."' ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위를 넘어 알람 발생!";
+            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위 초과 <알람 발생> 알람 현재 ".$raw_data_info->{$activation_obj->board_type_field};
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -74,8 +76,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "'".$widget_name ."' ".$raw_data_info->water." ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 알람 발생!";
-            
+            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 <알람 발생> 현재 ".$raw_data_info->{$activation_obj->board_type_field};
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -96,7 +97,7 @@ while ($activation_obj = $activation->fetchObject()) {
             $array[$key]['board_type_name'] = $activation_obj->board_type_name;
 
             $array[$key]['water_alarm_idx'] = $activation_obj->water_alarm_idx;
-            $_txt = "'".$widget_name ."' ".$raw_data_info->water." ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 알람 발생!";
+            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 <알람 발생> 현재 ".$raw_data_info->{$activation_obj->board_type_field};
             $array[$key]['alarm_contents'] = $_txt;
             $array[$key]['min'] = $activation_obj->min;
             $array[$key]['max'] = $activation_obj->max;
@@ -130,15 +131,34 @@ foreach ($array as $k => $v) {
         $diff_sec = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 's');                                          // 시간 설정 변경
         $diff_min = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');
         if ($diff_sec >= 59 || $diff_min >= 0) {
-            wateralarmHistoryInsert($v);
-            Common::sendPush($v['board_type_name']." 경보", $v['alarm_contents'],$v['push_subscription_id'],"");
+
+            $results = EntityMmeber::getMemberByGroup($v['member_idx']);
+
+            while ($obj = $results->fetchObject(EntityMmeber::class)) {
+                if (!empty($obj->member_phone)) {
+                    $member_phone = str_replace('-','', $obj->member_phone); ;
+                    Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
+                }
+
+                alarmHistoryInsert($v);
+                Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj->push_subscription_id, "");
+            }
         }
 
     } else {
         // "없다면";
 
-        wateralarmHistoryInsert($v);
-        Common::sendPush($v['board_type_name']." 경보", $v['alarm_contents'],$v['push_subscription_id'],"");
+            $results = EntityMmeber::getMemberByGroup($v['member_idx']);
+
+            while ($obj = $results->fetchObject(EntityMmeber::class)) {
+                if (!empty($obj->member_phone)) {
+                    $member_phone = str_replace('-','', $obj->member_phone); ;
+                    Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
+                }
+
+                alarmHistoryInsert($v);
+                Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj->push_subscription_id, "");
+            }
     }
 }
 
