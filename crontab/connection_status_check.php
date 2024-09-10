@@ -11,6 +11,7 @@ while ($widget_obj = $results->fetchObject(EntityWidgetConnectionTime::class)) {
 
     if ($result == false) {
         $body = $widget_obj->widget_name." 장치 경보 발생";
-        Common::sendSms($widget_obj->member_phone, $body);
+        $member_phone = str_replace('-','',  $widget_obj->member_phone); ;
+        Common::aligoSendSms("장치 경보 발생", $body,$member_phone);
     }
 }
