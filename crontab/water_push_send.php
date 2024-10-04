@@ -18,7 +18,7 @@ $activation =  (new Database('water_alarm'))->execute(
                             from water_alarm
                             where activation = 'Y'
                             group by device_idx, board_type_field)
-            and m.push_subscription_id is not null
+            and m.push_subscription_id is not null and w.idx is not null
             ");
 
 $array = array();
