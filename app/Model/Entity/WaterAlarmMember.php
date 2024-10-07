@@ -25,7 +25,7 @@ class WaterAlarmMember {
         return $this->idx;
     }
     public static function getWaterAlarmMemberByIdx($idx) {
-        return self::getWaterAlarmMember('water_alarm_idx ='.$idx);
+        return self::getWaterAlarmMember('water_alarm_idx ='.$idx,'','','*');
     }
     public static function getWaterAlarmMember($where = null, $order = null, $limit = null, $fields = '*') {
         return (new Database('water_alarm_member'))->select($where, $order, $limit, $fields);

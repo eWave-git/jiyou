@@ -14,7 +14,7 @@ class Farm extends Page {
     private static function getManagerMemberList($member_idx = '') {
         $options = '';
 
-        $results = EntityMmeber::getMembers("member_type='manager'", 'idx DESC', null);
+        $results = EntityMmeber::getMembers("member_type='manager'", 'idx DESC', '','*');
 
         while ($obFarm = $results->fetchObject(EntityMmeber::class)) {
             $options .= View::render('admin/modules/farm/farm_form_options', [
@@ -29,7 +29,7 @@ class Farm extends Page {
     private static function getViewerMemberList($member_idx = '') {
         $options = '';
 
-        $results = EntityMmeber::getMembers("member_type='viewer'", 'idx DESC', null);
+        $results = EntityMmeber::getMembers("member_type='viewer'", 'idx DESC', '','*');
         while ($obFarm = $results->fetchObject(EntityMmeber::class)) {
             $options .= View::render('admin/modules/farm/farm_form_viewer_options', [
                 'value' => $obFarm->idx,
@@ -50,7 +50,7 @@ class Farm extends Page {
 //        $obpagin = new Pagination($datetotal, $paging, 10 );
 //        $results = EntityFarm::getFarms(null, 'idx DESC', $obpagin->getLimit());
 
-        $results = EntityFarm::getFarms(null, 'idx DESC', null);
+        $results = EntityFarm::getFarms('', 'idx DESC', '','*');
 
         while ($obFarm = $results->fetchObject(EntityFarm::class)) {
             $items .= View::render('admin/modules/farm/farm_item', [

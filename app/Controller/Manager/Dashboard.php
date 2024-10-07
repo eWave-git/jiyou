@@ -238,6 +238,7 @@ class Dashboard extends Page {
             foreach ($obj as $k => $v) {
 
                 $device_obj = EntityDevice::getDevicesByIdx($v['device_idx']);
+
                 $result = EntityRawData::LastLimitOne($device_obj->address, $device_obj->board_type, $device_obj->board_number);
                 $rew_obj = $result->fetchObject(EntityRawData::class);
 
@@ -304,9 +305,9 @@ class Dashboard extends Page {
                 $result_2 = EntityRawData::LastTotal($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $v['field'], 24);
                 $obj_2 = $result_2->fetchObject(EntityRawData::class);
 
-                $array[$k]['min'] = $obj_2->min;
-                $array[$k]['max'] = $obj_2->max;
-                $array[$k]['avg'] = $obj_2->avg;
+                $array[$k]['min'] = $obj_2->min ? $obj_2->min : 0;
+                $array[$k]['max'] = $obj_2->max ? $obj_2->max : 0;
+                $array[$k]['avg'] = $obj_2->avg ? $obj_2->avg : 0;
             }
         }
 

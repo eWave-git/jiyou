@@ -17,6 +17,22 @@ class Member {
     public $member_farm_idx;
     public $push_subscription_id;
 
+    public $farm_idx;
+    public $farm_name;
+
+    public $farm_ceo;
+
+    public $farm_address;
+
+    public $member_created_at;
+    public $device_name;
+    public $board_type;
+    public $board_number;
+
+    public $address;
+
+    public $member_idx;
+
     public $created_at;
 
     public static function UpdateMemberGroupReset($member_group_idx) {
@@ -67,19 +83,19 @@ class Member {
     }
 
     public static function getMemberByIdx($idx) {
-        return self::getMembers('idx ='.$idx)->fetchObject(self::class);
+        return self::getMembers('idx ='.$idx,'','','*')->fetchObject(self::class);
     }
 
     public static function getMemberById($member_id) {
-        return self::getMembers("member_id='".$member_id."'")->fetchObject(self::class);
+        return self::getMembers("member_id='".$member_id."'",'','','*')->fetchObject(self::class);
     }
 
     public static function getAdminMemberById($member_id) {
-        return self::getMembers("member_type='admin' and member_id='".$member_id."'")->fetchObject(self::class);
+        return self::getMembers("member_type='admin' and member_id='".$member_id."'",'','','*')->fetchObject(self::class);
     }
 
     public static function getManagerMemberById($member_id) {
-        return self::getMembers("member_id='".$member_id."'")->fetchObject(self::class);
+        return self::getMembers("member_id='".$member_id."'",'','*')->fetchObject(self::class);
     }
 
     public static function getMembers($where = null, $order = null, $limit = null, $fields = '*') {

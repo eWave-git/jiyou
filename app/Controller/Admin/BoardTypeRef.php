@@ -45,7 +45,7 @@ class BoardTypeRef extends Page {
     private static function getMemberListItems($request) {
         $items = '';
 
-        $request = EntityBoardTypeRef::getBoardTypeRef(null, 'idx DESC', null);
+        $request = EntityBoardTypeRef::getBoardTypeRef('', 'idx DESC', '','*');
 
         while ($obBoardTypeRef = $request->fetchObject(EntityBoardTypeRef::class)) {
             $items .= View::render('admin/modules/device/board_type_ref_item', [
@@ -80,10 +80,6 @@ class BoardTypeRef extends Page {
                 'data2'              => $objBoardTypeRef->data2,
                 'data3'              => $objBoardTypeRef->data3,
                 'data4'              => $objBoardTypeRef->data4,
-                'data5'              => $objBoardTypeRef->data5,
-                'data6'              => $objBoardTypeRef->data6,
-                'data7'              => $objBoardTypeRef->data7,
-                'data8'              => $objBoardTypeRef->data8,
                 'control_type'       => self::getControlType($objBoardTypeRef->control_type),
             ]);
         } else {
@@ -96,10 +92,6 @@ class BoardTypeRef extends Page {
                 'data2'              => '',
                 'data3'              => '',
                 'data4'              => '',
-                'data5'              => '',
-                'data6'              => '',
-                'data7'              => '',
-                'data8'              => '',
                 'control_type'       => self::getControlType(),
             ]);
         }
@@ -118,10 +110,6 @@ class BoardTypeRef extends Page {
         $obj->data2 = $postVars['data2'];
         $obj->data3 = $postVars['data3'];
         $obj->data4 = $postVars['data4'];
-        $obj->data5 = $postVars['data5'];
-        $obj->data6 = $postVars['data6'];
-        $obj->data7 = $postVars['data7'];
-        $obj->data8 = $postVars['data8'];
         $obj->control_type = $postVars['control_type'];
         $obj->created();
 
@@ -140,10 +128,6 @@ class BoardTypeRef extends Page {
         $obj->data2 = $postVars['data2'] ?? $obj->data2;
         $obj->data3 = $postVars['data3'] ?? $obj->data3;
         $obj->data4 = $postVars['data4'] ?? $obj->data4;
-        $obj->data5 = $postVars['data5'] ?? $obj->data5;
-        $obj->data6 = $postVars['data6'] ?? $obj->data6;
-        $obj->data7 = $postVars['data7'] ?? $obj->data7;
-        $obj->data8 = $postVars['data8'] ?? $obj->data8;
         $obj->control_type = $postVars['control_type'] ?? $obj->control_type;
 
         $obj->updated();

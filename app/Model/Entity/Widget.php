@@ -14,6 +14,9 @@ class Widget {
     public $board_type;
     public $board_number;
     public $created_at;
+    public $widget_idx;
+    public $check_yn;
+    public $check_time;
 
 
     public static function UpdateWidgetName($idx, $widget_name) {

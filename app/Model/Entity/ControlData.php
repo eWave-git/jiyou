@@ -113,7 +113,7 @@ class ControlData {
     }*/
 
     public static function getControlDataByMemberIdx($idx) {
-        return self::getControlData('member_idx ='.$idx, 'create_at asc');
+        return self::getControlData('member_idx ='.$idx, 'create_at asc','','*');
     }
 
     public static function getControlDataByIdx($idx) {

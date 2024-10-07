@@ -20,11 +20,15 @@ class RawData {
     public $data2;
     public $data3;
     public $data4;
-    public $data5;
-    public $data6;
-    public $data7;
-    public $data8;
+
     public $created_at;
+    public $hw_cnt;
+    public $min;
+    public $max;
+    public $avg;
+    public $created;
+    public $온도;
+    public $습도;
 
 
     public static function LastTotal($address, $board_type, $board_number, $field, $ago) {                                      // 대쉬보드 --> 표보기 최소, 최대, 평균값

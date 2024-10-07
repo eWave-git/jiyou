@@ -250,6 +250,7 @@ class Common{
         if ($objBoardTypeRefOrg) {
             $i = 0;
             foreach($objBoardTypeRefOrg as $column_name=>$column_value){
+
                 if (preg_match('/data/',$column_name, $match) && $column_value) {
                     $type_name = $column_name."_name";
                     $type_display = $column_name."_display";

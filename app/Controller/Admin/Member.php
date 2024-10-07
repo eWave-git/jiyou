@@ -49,7 +49,7 @@ class Member extends Page {
     private static function getMemberListItems($request) {
         $items = '';
 
-        $request = EntityMmeber::getMembers(null, 'idx DESC', null);
+        $request = EntityMmeber::getMembers('', 'idx DESC', '','*');
 
         while ($obMember = $request->fetchObject(EntityMmeber::class)) {
             $items .= View::render('admin/modules/member/member_item', [

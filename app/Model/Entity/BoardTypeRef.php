@@ -14,20 +14,18 @@ class BoardTypeRef {
     public $data2;
     public $data3;
     public $data4;
-    public $data5;
-    public $data6;
-    public $data7;
-    public $data8;
+
     public $constrol_type;
     public $created_at;
+    public $control_type;
 
 
     public static function getBoardTypeRefByBoardType($board_type) {
-        return self::getBoardTypeRef('board_type ='.$board_type)->fetchObject(self::class);
+        return self::getBoardTypeRef('board_type ='.$board_type,'','','*')->fetchObject(self::class);
     }
 
     public static function getBoardTypeRefByIdx($idx) {
-        return self::getBoardTypeRef('idx ='.$idx)->fetchObject(self::class);
+        return self::getBoardTypeRef('idx ='.$idx,'','','*')->fetchObject(self::class);
     }
 
     public static function getBoardTypeRef($where = null, $order = null, $limit = null, $fields = '*') {

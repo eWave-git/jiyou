@@ -12,6 +12,7 @@ class Device {
     public $board_type;
     public $board_number;
     public $created_at;
+    public $device_idx;
 
 
     public static function UpdateDeviceName($idx, $device_name) {
@@ -21,7 +22,7 @@ class Device {
     }
 
     public static function getDevicesByIdxAddress($farm_idx, $address) {
-        return self::getDevices("farm_idx = ".$farm_idx." and address = '".$address."'");
+        return self::getDevices("farm_idx = ".$farm_idx." and address = '".$address."'",'','','*');
     }
 
     public static function getDevicesByIdx($idx) {

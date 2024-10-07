@@ -15,7 +15,7 @@ class Farm {
 
 
     public static function getFarmsByIdx($idx) {
-        return self::getFarms('idx ='.$idx)->fetchObject(self::class);
+        return self::getFarms('idx ='.$idx,'','','*')->fetchObject(self::class);
     }
 
     public static function getFarms($where = null, $order = null, $limit = null, $fields = '*') {

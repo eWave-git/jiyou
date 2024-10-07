@@ -45,7 +45,7 @@ class Etc extends Page {
 
         $obj = Common::getMembersWidget($_userInfo->idx);
 
-        $_val = array();
+        $_val = [0,0,0,0,0,0,0,0];
         foreach ($obj as $k => $v) {
 
             if ($v['device_idx'] == "208" || $v['device_idx'] == "169" || $v['device_idx'] == "175" || $v['device_idx'] == "196") {

@@ -63,7 +63,7 @@ class WaterAlarm {
     }
 
     public static function getWaterAlarmByMemberIdx($member_idx) {
-        return self::getWaterAlarm('member_idx ='.$member_idx,'created_at desc');
+        return self::getWaterAlarm('member_idx ='.$member_idx,'created_at desc','','*');
     }
 
     public static function getWaterAlarmByDeviceIdx($idx) {

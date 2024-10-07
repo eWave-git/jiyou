@@ -25,7 +25,7 @@ class AlarmMember {
         return $this->idx;
     }
     public static function getAlarmMemberByIdx($idx) {
-        return self::getAlarmMember('alarm_idx ='.$idx);
+        return self::getAlarmMember('alarm_idx ='.$idx,'','','*');
     }
     public static function getAlarmMember($where = null, $order = null, $limit = null, $fields = '*') {
         return (new Database('alarm_member'))->select($where, $order, $limit, $fields);

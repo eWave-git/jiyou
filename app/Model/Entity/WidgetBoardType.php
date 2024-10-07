@@ -19,17 +19,7 @@ class WidgetBoardType {
     public $data4_display;
     public $data4_name;
     public $data4_symbol;
-    public $data5_display;
-    public $data5_name;
-    public $data5_symbol;
-    public $data6_display;
-    public $data6_name;
-    public $data6_symbol;
-    public $data7_display;
-    public $data7_name;
-    public $data8_symbol;
-    public $data8_display;
-    public $data8_name;
+
     public $created_at;
 
     public function created() {
@@ -49,18 +39,7 @@ class WidgetBoardType {
             'data4_display' => $this->data4_display ?? '',
             'data4_name' => $this->data4_name ?? '',
             'data4_symbol' => $this->data4_symbol ?? '',
-            'data5_display' => $this->data5_display ?? '',
-            'data5_name' => $this->data5_name ?? '',
-            'data5_symbol' => $this->data5_symbol ?? '',
-            'data6_display' => $this->data6_display ?? '',
-            'data6_name' => $this->data6_name ?? '',
-            'data6_symbol' => $this->data6_symbol ?? '',
-            'data7_display' => $this->data7_display ?? '',
-            'data7_name' => $this->data7_name ?? '',
-            'data7_symbol' => $this->data7_symbol ?? '',
-            'data8_display' => $this->data8_display ?? '',
-            'data8_name' => $this->data8_name ?? '',
-            'data8_symbol' => $this->data8_symbol ?? '',
+
             'created_at' => $this->created_at,
         ]);
     }
@@ -80,18 +59,7 @@ class WidgetBoardType {
             'data4_display' => $this->data4_display,
             'data4_name' => $this->data4_name,
             'data4_symbol' => $this->data4_symbol,
-            'data5_display' => $this->data5_display,
-            'data5_name' => $this->data5_name,
-            'data5_symbol' => $this->data5_symbol,
-            'data6_display' => $this->data6_display,
-            'data6_name' => $this->data6_name,
-            'data6_symbol' => $this->data6_symbol,
-            'data7_display' => $this->data7_display,
-            'data7_name' => $this->data7_name,
-            'data7_symbol' => $this->data7_symbol,
-            'data8_display' => $this->data8_display,
-            'data8_name' => $this->data8_name,
-            'data8_symbol' => $this->data8_symbol,
+
         ]);
     }
 
@@ -104,7 +72,7 @@ class WidgetBoardType {
     }
 
     public static function getWidgetBoardTypeByWidgetIdx($widget_idx) {
-       return self::getWidgetBoardTypes("widget_idx=".$widget_idx);
+       return self::getWidgetBoardTypes("widget_idx=".$widget_idx, '','', '*');
     }
 
     public static function getWidgetWithWidgetBoardTypeByIdx($device_idx) {

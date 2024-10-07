@@ -16,7 +16,7 @@ class Group {
     public $created_at;
 
     public static function getGroupByMemberIdx($idx) {
-        return self::getGroup('member_idx ='.$idx,'created_at desc');
+        return self::getGroup('member_idx ='.$idx,'created_at desc','','*');
     }
 
     public static function getGroupByIdx($idx) {

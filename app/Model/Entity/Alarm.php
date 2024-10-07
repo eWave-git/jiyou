@@ -63,7 +63,7 @@ class Alarm {
     }
 
     public static function getAlarmByMemberIdx($member_idx) {
-        return self::getAlarm('member_idx ='.$member_idx,'created_at desc');
+        return self::getAlarm('member_idx ='.$member_idx,'created_at desc','','*');
     }
 
     public static function getAlarmByDeviceIdx($idx) {
