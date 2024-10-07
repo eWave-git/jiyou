@@ -95,7 +95,7 @@ class Member {
     }
 
     public static function getManagerMemberById($member_id) {
-        return self::getMembers("member_id='".$member_id."'",'','*')->fetchObject(self::class);
+        return self::getMembers("member_id='".$member_id."'",'','','*')->fetchObject(self::class);
     }
 
     public static function getMembers($where = null, $order = null, $limit = null, $fields = '*') {
