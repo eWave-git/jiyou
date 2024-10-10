@@ -73,9 +73,11 @@ class Device extends Page {
         $items = '';
 
         $results = EntityDevice::getDevicesJoinWidget();
+        $cnt = EntityDevice::getDevicesJoinWidgetCnt()->fetchObject()->cnt;;
 
         while ($obDevice = $results->fetchObject(EntityDevice::class)) {
             $items .= View::render('admin/modules/device/device_item', [
+                'num' => $cnt,
                 'idx' => $obDevice->idx,
                 'farm_name' => self::getFarmsByIdx($obDevice->farm_idx),
                 'device_name' => $obDevice->device_name,
@@ -83,6 +85,7 @@ class Device extends Page {
                 'board_type' => $obDevice->board_type,
                 'board_number' => $obDevice->board_number,
             ]);
+            $cnt--;
         }
 
         return $items;

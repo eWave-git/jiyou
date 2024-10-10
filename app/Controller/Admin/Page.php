@@ -29,8 +29,8 @@ class Page {
             'label' => 'device_mant',
             'title' => ' 디바이스 등록/삭제',
             'submenu'=>[
-                ['label' => 'device_mant', 'title' => '디바이스 타입', 'link' => URL.'/admin/board_type_ref_list'],
-                ['label' => 'device_mant', 'title' => '디바이스 리스트', 'link' => URL.'/admin/device_list'],
+                ['label' => 'device_mant', 'title' => 'board_type 등록/삭제', 'link' => URL.'/admin/board_type_ref_list'],
+                ['label' => 'device_mant', 'title' => '센서 장비 등록/삭제', 'link' => URL.'/admin/device_list'],
             ],
         ],
         [

@@ -22,17 +22,12 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">농장 이름</label>
+                            <label class="col-2 col-form-label required">농장명</label>
                             <div class="col">
                                 <input type="text" name="farm_name" value="{{farm_name}}" class="form-control" aria-describedby="" placeholder="농장 이름">
                             </div>
                         </div>
-                        <div class="mb-3 row">
-                            <label class="col-2 col-form-label ">축산업 등록번호</label>
-                            <div class="col">
-                                <input type="text" name="farm_ceo" value="{{farm_ceo}}" class="form-control" placeholder="축산업 등록번호">
-                            </div>
-                        </div>
+
                         <div class="mb-3 row">
                             <label class="col-2 col-form-label">농장 주소</label>
                             <div class="col">
@@ -40,13 +35,13 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label">시스템 고유번호</label>
+                            <label class="col-2 col-form-label">safe1 식별번호</label>
                             <div class="col">
                                 <input type="text" name="address" value="{{address}}" class="form-control" placeholder="시스템 고유번호 (Address number)">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label">사용자 이름</label>
+                            <label class="col-2 col-form-label">농장 관리자 선택</label>
                             <div class="col">
                                 <select class="form-select" name="member_idx">
                                     {{member_idx}}
@@ -54,7 +49,7 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label">viewer 사용자 이름</label>
+                            <label class="col-2 col-form-label">농장 관찰자 선택</label>
                             <div class="col">
                                 <select class="form-select mul-select" multiple="true" name="viewer_member_idx[]">
                                     {{viewer_member_idx}}

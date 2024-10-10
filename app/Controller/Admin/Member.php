@@ -16,14 +16,14 @@ class Member extends Page {
     }
 
     private static function getMemberType($type = '') {
-        $_type = array( 'manager','viewer');
+        $_type = array( 'manager' => '관리자','viewer' => '뷰어');
         $options = '';
 
-        foreach ($_type as $item) {
+        foreach ($_type as $k => $v) {
             $options .= View::render('admin/modules/member/member_form_options', [
-                'value' => $item,
-                'text'  => $item,
-                'selected' => $item == $type ? 'selected' : '',
+                'value' => $k,
+                'text'  => $v,
+                'selected' => $k == $type ? 'selected' : '',
             ]);
         }
 
@@ -50,9 +50,12 @@ class Member extends Page {
         $items = '';
 
         $request = EntityMmeber::getMembers('', 'idx DESC', '','*');
+        $cnt = EntityMmeber::getMembers('', '', '', 'COUNT(*) as cnt')->fetchObject()->cnt;
 
         while ($obMember = $request->fetchObject(EntityMmeber::class)) {
+
             $items .= View::render('admin/modules/member/member_item', [
+               'num' => $cnt,
                'idx'            => $obMember->idx,
                'member_type'    => $obMember->member_type,
                'member_id'      => $obMember->member_id,
@@ -60,6 +63,7 @@ class Member extends Page {
                'member_email'   => $obMember->member_email,
                'member_phone'   => $obMember->member_phone,
             ]);
+            $cnt--;
         }
 
         return $items;
@@ -76,14 +80,21 @@ class Member extends Page {
     public static function Member_Form($request, $idx = null) {
         $objMember = is_null($idx) ? '' : EntityMmeber::getMemberByIdx($idx);
 
+        if ($objMember) {
+            $phone = explode('-', $objMember->member_phone);
+        }
+
         if ($objMember instanceof EntityMmeber) {
             $content = View::render('admin/modules/member/member_form', [
                 'action'                    =>  '/admin/member_form/'.$idx.'/edit',
                 'member_id'                 => $objMember->member_id,
                 'member_name'               => $objMember->member_name,
                 'member_password'           => '',
+                'member_password_verify'    => '',
                 'member_email'              => $objMember->member_email,
-                'member_phone'              => $objMember->member_phone,
+                'member_phone_1'              => $phone[0],
+                'member_phone_2'              => $phone[1],
+                'member_phone_3'              => $phone[2],
                 'member_type_options'       => self::getMemberType($objMember->member_type),
             ]);
         } else {
@@ -92,8 +103,11 @@ class Member extends Page {
                 'member_id'                 => '',
                 'member_name'               => '',
                 'member_password'           => '',
+                'member_password_verify'    => '',
                 'member_email'              => '',
-                'member_phone'              => '',
+                'member_phone_1'              => '010',
+                'member_phone_2'              => '',
+                'member_phone_3'              => '',
                 'member_type_options'       => self::getMemberType(),
             ]);
         }
@@ -109,7 +123,7 @@ class Member extends Page {
         $obj->member_name = $postVars['member_name'];
         $obj->member_password = password_hash($postVars['member_password'], PASSWORD_DEFAULT);
         $obj->member_email = $postVars['member_email'];
-        $obj->member_phone = $postVars['member_phone'];
+        $obj->member_phone = $postVars['member_phone_1']."-".$postVars['member_phone_2']."-".$postVars['member_phone_3'];
         $obj->member_type = $postVars['member_type'];
         $obj->created();
 
@@ -125,7 +139,13 @@ class Member extends Page {
         $obj->member_name = $postVars['member_name'] ?? $obj->member_name;
         $obj->member_password = $postVars['member_password'] ? password_hash($postVars['member_password'], PASSWORD_DEFAULT) : $obj->member_password;
         $obj->member_email = $postVars['member_email'] ?? $obj->member_email;
-        $obj->member_phone = $postVars['member_phone'] ?? $obj->member_phone;
+
+        if ($postVars['member_phone_1'] && $postVars['member_phone_2'] && $postVars['member_phone_3']) {
+            $obj->member_phone = $postVars['member_phone_1']."-".$postVars['member_phone_2']."-".$postVars['member_phone_3'];
+        } else {
+            $obj->member_phone = $obj->member_phone;
+        }
+
         $obj->member_type = $postVars['member_type'] ?? $obj->member_type;
         $obj->updated();
 

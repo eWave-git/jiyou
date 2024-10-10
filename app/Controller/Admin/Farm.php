@@ -51,15 +51,20 @@ class Farm extends Page {
 //        $results = EntityFarm::getFarms(null, 'idx DESC', $obpagin->getLimit());
 
         $results = EntityFarm::getFarms('', 'idx DESC', '','*');
+        $cnt = EntityFarm::getFarms('', '', '', 'COUNT(*) as cnt')->fetchObject()->cnt;
 
         while ($obFarm = $results->fetchObject(EntityFarm::class)) {
+            $member_info = EntityMmeber::getMemberByIdx($obFarm->member_idx);
+            $viewer_info = EntityMmeber::getMemberByGroup($obFarm->member_idx);
             $items .= View::render('admin/modules/farm/farm_item', [
+                'num'           => $cnt,
                 'idx'           => $obFarm->idx,
                 'farm_name'     => $obFarm->farm_name,
-                'farm_ceo'     => $obFarm->farm_ceo,
-                'farm_address'  => $obFarm->farm_address,
+                'manager_name'     => $member_info->member_name,
+                'viewer_name'  => '',
                 'address'   => $obFarm->address,
             ]);
+            $cnt--;
         }
 
         return $items;
@@ -82,7 +87,6 @@ class Farm extends Page {
             $content = View::render('admin/modules/farm/farm_form', [
                 'action' => '/admin/farm_form/'.$idx.'/edit',
                 'farm_name' => $objFarm->farm_name,
-                'farm_ceo' => $objFarm->farm_ceo,
                 'farm_address' => $objFarm->farm_address,
                 'address' => $objFarm->address,
                 'member_idx' => self::getManagerMemberList($objFarm->member_idx),
@@ -92,7 +96,6 @@ class Farm extends Page {
             $content = View::render('admin/modules/farm/farm_form', [
                 'action' => '/admin/farm_form/create',
                 'farm_name' => '',
-                'farm_ceo' => '',
                 'farm_address' => '',
                 'address' => '',
                 'member_idx' => self::getManagerMemberList(),

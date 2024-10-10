@@ -4,7 +4,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    회원관리
+                    사용자 등록
                 </h2>
             </div>
 
@@ -16,9 +16,9 @@
     <div class="container-xl">
         <div class="row row-cards">
             <div class="col-12">
-                <form class="card" method="post" action="{{action}}" >
+                <form class="card" name="frm" method="post" action="{{action}}" >
                     <div class="card-header">
-                        <h3 class="card-title">사용자 등록/삭제</h3>
+                        <h3 class="card-title">사용자 등록</h3>
                     </div>
                     <div class="card-body">
                         <div class="mb-3 row">
@@ -31,17 +31,24 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label required">이름 </label>
-                            <div class="col">
-                                <input type="text" name="member_name" value="{{member_name}}" class="form-control" placeholder="이름">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
                             <label class="col-2 col-form-label required">비밀번호 </label>
                             <div class="col">
                                 <input type="password" name="member_password" value="{{member_password}}" class="form-control" placeholder="비밀번호">
                             </div>
                         </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">비밀번호 확인</label>
+                            <div class="col">
+                                <input type="password" name="member_password_verify" value="{{member_password_verify}}" class="form-control" placeholder="비밀번호 확인">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">이름 </label>
+                            <div class="col">
+                                <input type="text" name="member_name" value="{{member_name}}" class="form-control" placeholder="이름">
+                            </div>
+                        </div>
+
                         <div class="mb-3 row">
                             <label class="col-2 col-form-label ">이메일 </label>
                             <div class="col">
@@ -49,9 +56,15 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-2 col-form-label ">전화번호 </label>
+                            <label class="col-2 col-form-label required">전화번호 </label>
                             <div class="col">
-                                <input type="text" name="member_phone" value="{{member_phone}}" class="form-control" placeholder="휴대폰번호">
+                                <div class="row" style="display: flex;align-items: center;">
+                                <input type="text" name="member_phone_1" value="{{member_phone_1}}" class="form-control" style="width: 150px" maxlength="3" placeholder="휴대폰번호_1" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+                                <input type="text" name="member_phone_2" value="{{member_phone_2}}" class="form-control" style="width: 150px" maxlength="4" placeholder="휴대폰번호_2" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+                                <input type="text" name="member_phone_3" value="{{member_phone_3}}" class="form-control" style="width: 150px" maxlength="4" placeholder="휴대폰번호_3" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3 row">
@@ -65,7 +78,7 @@
 
                     </div>
                     <div class="card-footer text-center">
-                        <button type="submit" class="btn btn-primary" name="save">저장</button>
+                        <button type="button" class="btn btn-primary" name="save">저장</button>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="{{URL}}/admin/member_list"><button type="button" class="btn btn-secondary">뒤로가기</button></a>
                     </div>
@@ -98,5 +111,49 @@
             })
         });
 
+        $("[name='save']").click(function(){
+            if ($("[name='member_id']").val() == '') {
+                alert('아이디을 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_password']").val() == '') {
+                alert('비밀번호를 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_password_verify']").val() == '') {
+                alert('비밀번호 확인을 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_name']").val() == '') {
+                alert('이름을 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_password']").val() != $("[name='member_password_verify']").val()) {
+                alert('비밀번호를 다시 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_phone_1']").val() == '') {
+                alert('전화번호를 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_phone_2']").val() == '') {
+                alert('전화번호를 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_phone_3']").val() == '') {
+                alert('전화번호를 입력 하세요.');
+                return false;
+            }
+
+            $("[name='frm']").submit();
+
+        });
     });
 </script>

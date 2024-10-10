@@ -46,14 +46,17 @@ class BoardTypeRef extends Page {
         $items = '';
 
         $request = EntityBoardTypeRef::getBoardTypeRef('', 'idx DESC', '','*');
+        $cnt = EntityBoardTypeRef::getBoardTypeRef('', '', '', 'COUNT(*) as cnt')->fetchObject()->cnt;
 
         while ($obBoardTypeRef = $request->fetchObject(EntityBoardTypeRef::class)) {
             $items .= View::render('admin/modules/device/board_type_ref_item', [
+                'num'             => $cnt,
                 'idx'            => $obBoardTypeRef->idx,
                 'board_type'      => $obBoardTypeRef->board_type,
                 'model_name'    => $obBoardTypeRef->model_name,
                 'sensor'      => $obBoardTypeRef->sensor,
             ]);
+            $cnt--;
         }
 
         return $items;

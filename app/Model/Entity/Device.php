@@ -32,6 +32,11 @@ class Device {
     public static function getDevicesJoinWidget() {
         return (new Database('device'))->execute("select d.*, w.widget_name as device_name from device as d left join widget as w on d.idx = w.device_idx order by d.created_at desc ");
     }
+
+    public static function getDevicesJoinWidgetCnt() {
+        return (new Database('device'))->execute("select count(*) as cnt from device as d left join widget as w on d.idx = w.device_idx order by d.created_at desc ");
+    }
+
     public static function getDevices($where = null, $order = null, $limit = null, $fields = '*') {
         return (new Database('device'))->select($where, $order, $limit, $fields);
     }
