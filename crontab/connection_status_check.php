@@ -11,7 +11,8 @@ while ($widget_obj = $results->fetchObject(EntityWidgetConnectionTime::class)) {
     $result = Common::widgetConnectionCheck($widget_obj->address, $widget_obj->board_type, $widget_obj->board_number, $widget_obj->check_time);
 
     if ($result == false) {
-        $body = $widget_obj->widget_name." 장치 경보 발생";
+
+        $body =  "<"."오류 발생"."> ".$widget_obj->farm_name." ".$widget_obj->widget_name." 데이터 ".$widget_obj->check_time."분간 미수신 상태 발생";
 
         $member_group_results = EntityMmeber::getMemberByGroup($widget_obj->member_idx);
 
