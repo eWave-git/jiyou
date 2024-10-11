@@ -112,7 +112,6 @@ class Farm extends Page {
 
         $obj = new EntityFarm;
         $obj->farm_name = Common::str_chekc($postVars['farm_name'], "농장이름을 입력 하세요.");
-        $obj->farm_ceo = Common::str_chekc($postVars['farm_ceo'], "대표자 이름을 입력 하세요.");
         $obj->farm_address = $postVars['farm_address'];
         $obj->address = Common::int_check($postVars['address'], "농장고유주소을 입력 하세요.");
         $obj->member_idx = $postVars['member_idx'];

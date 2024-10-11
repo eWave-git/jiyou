@@ -27,7 +27,6 @@ class Farm {
 
         $this->idx = (new Database('farm'))->insert([
             'farm_name' => $this->farm_name,
-            'farm_ceo' => $this->farm_ceo,
             'farm_address' => $this->farm_address,
             'address' => $this->address,
             'member_idx' => $this->member_idx,
