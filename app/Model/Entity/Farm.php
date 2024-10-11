@@ -14,6 +14,9 @@ class Farm {
     public $created_at;
 
 
+    public static function getAddressCnt($address) {
+        return self::getFarms("address ='".$address."'", null, null, 'COUNT(*) as cnt')->fetchObject(self::class)->cnt;
+    }
     public static function getFarmsByIdx($idx) {
         return self::getFarms('idx ='.$idx,'','','*')->fetchObject(self::class);
     }

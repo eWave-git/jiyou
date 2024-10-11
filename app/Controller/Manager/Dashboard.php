@@ -272,6 +272,10 @@ class Dashboard extends Page {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
+        if (empty($_userInfo)) {
+            Common::error_loc_msg('/manager/logout','로그인 정보가 없습니다.');
+        }
+
         if ($_userInfo->member_type == "viewer") {
             $_member = Common::get_member_info($_userInfo->member_group);
             $_userInfo->idx = $_member['idx'];
@@ -281,7 +285,7 @@ class Dashboard extends Page {
         $_farm_Info = EntityMmeber::getMembersFarm($_userInfo->idx)->fetchObject(EntityMmeber::class);
 
         $content = View::render('manager/modules/dashboard/index', [
-            'farm_name' => $_farm_Info->farm_name,
+            'farm_name' => $_farm_Info->farm_name ?? '',
             'widget_card' => self::getWidgetCard($_userInfo->idx)
         ]);
 

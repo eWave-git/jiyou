@@ -82,6 +82,10 @@ class Member {
         return (new Database('member'))->execute("select f.* from farm as f left join member as m on f.idx = m.member_farm_idx where m.idx is null");
     }
 
+    public static function getMemberJoinNotFarm() {
+        return (new Database('member'))->execute("select * from member as m left join farm as f on f.member_idx = m.idx where m.member_type = 'manager' and f.idx is null");
+    }
+
     public static function getMemberByIdx($idx) {
         return self::getMembers('idx ='.$idx,'','','*')->fetchObject(self::class);
     }
@@ -95,7 +99,7 @@ class Member {
     }
 
     public static function getManagerMemberById($member_id) {
-        return self::getMembers("member_id='".$member_id."'",'','','*')->fetchObject(self::class);
+        return self::getMembers("member_id='".$member_id."' and member_type != 'admin'",'','','*')->fetchObject(self::class);
     }
 
     public static function getMembers($where = null, $order = null, $limit = null, $fields = '*') {

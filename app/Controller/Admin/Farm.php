@@ -14,7 +14,11 @@ class Farm extends Page {
     private static function getManagerMemberList($member_idx = '') {
         $options = '';
 
-        $results = EntityMmeber::getMembers("member_type='manager'", 'idx DESC', '','*');
+        if ($member_idx) {
+            $results = EntityMmeber::getMembers('idx ='.$member_idx,'','','*');
+        } else {
+            $results = EntityMmeber::getMemberJoinNotFarm();
+        }
 
         while ($obFarm = $results->fetchObject(EntityMmeber::class)) {
             $options .= View::render('admin/modules/farm/farm_form_options', [
@@ -109,6 +113,12 @@ class Farm extends Page {
 
     public static function Farm_Create($request) {
         $postVars = $request->getPostVars();
+
+        $obj = EntityFarm::getAddressCnt($postVars['address']);
+
+        if ($obj > 0) {
+            Common::error_msg("등록된 safe1 식별번호 입니다.");
+        }
 
         $obj = new EntityFarm;
         $obj->farm_name = Common::str_chekc($postVars['farm_name'], "농장이름을 입력 하세요.");
