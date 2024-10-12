@@ -8,6 +8,9 @@ use App\Utils\View;
 class Page {
 
     public static function getPage($title, $content) {
+
+        $title = getenv('DB_NAME');
+
         return View::render('admin/page', [
             'title' => $title,
             'content' => $content
@@ -86,8 +89,6 @@ class Page {
             'menu' => self::getDepth_1($currentModule),
             'content' => $content
         ]);
-
-        $title = getenv('DB_NAME');
 
         return self::getPage($title, $contentPanel);
     }
