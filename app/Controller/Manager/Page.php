@@ -19,6 +19,8 @@ class Page {
             $javascript_file = "";
         }
 
+        $title = getenv('DB_NAME');
+
         return View::render('manager/page', [
             'title' => $title,
             'content' => $content,

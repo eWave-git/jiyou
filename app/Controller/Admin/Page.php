@@ -87,6 +87,8 @@ class Page {
             'content' => $content
         ]);
 
+        $title = getenv('DB_NAME');
+
         return self::getPage($title, $contentPanel);
     }
 
