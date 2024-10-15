@@ -83,7 +83,7 @@ class Member {
     }
 
     public static function getMemberJoinNotFarm() {
-        return (new Database('member'))->execute("select * from member as m left join farm as f on f.member_idx = m.idx where m.member_type = 'manager' and f.idx is null");
+        return (new Database('member'))->execute("select m.* from member as m left join farm as f on f.member_idx = m.idx where m.member_type = 'manager' and f.idx is null");
     }
 
     public static function getMemberByIdx($idx) {
