@@ -1,10 +1,8 @@
 <tr>
     <td>{{number}}</td>
-    <td>{{device_name}}</td>
-    <td>{{field}}</td>
-    <td>{{MinAtMax}}</td>
+    <td>{{group_name}}</td>
     <td>{{created_at}}</td>
-    <td style="display: {{style}}">
+    <td>
         <div class="btn_switch">
             <label for="">
                 <input type="checkbox" name="activation" data-idx="{{idx}}" value="Y" {{checked}}>
@@ -13,7 +11,9 @@
     </td>
     <td>
         <div class="btn_wrap">
+            <a href="/manager/group_alarm_detail/{{idx}}" class="btn btn_add">장치추가</a>
             <button type="button" class="btn btn_del" data-idx="{{idx}}">삭제</button>
+<!--            <button type="button" class="btn btn_add" data-idx="{{idx}}">장치추가</button>-->
 <!--            <a href="/manager/alarm/{{idx}}/delete" class="btn btn_del">삭제</a>-->
         </div>
     </td>

@@ -150,3 +150,69 @@ $obRouter->post('/manager/alarm_form/getWaterBoardType',[
         return new Response(200, Manager\Alarm::getWaterBoardType($request), 'application/json');
     }
 ]);
+
+$obRouter->get('/manager/group_alarm_list',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::getGroupAlarm($request));
+    }
+]);
+
+$obRouter->get('/manager/group_alarm_form',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::getGroupAlarm_Form($request));
+    }
+]);
+
+$obRouter->post('/manager/group_alarm_form_create',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::getGroupAlarm_Create($request));
+    }
+]);
+
+$obRouter->get('/manager/group_alarm_detail/{idx}',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Alarm::getGroupAlarm_detail($request, $idx));
+    }
+]);
+
+$obRouter->post('/manager/group_alarm_form_add_create',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::getGroupAlarmAdd_Create($request));
+    }
+]);
+
+$obRouter->get('/manager/group_alarm/{idx}/delete',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Alarm::GroupAlarmDelete($request, $idx));
+    }
+]);
+
+$obRouter->post('/manager/group_alarm/setGroupActiveChange',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request) {
+        return new Response(200, Manager\Alarm::setGroupActiveChange($request), 'application/json');
+    }
+]);
+
+//

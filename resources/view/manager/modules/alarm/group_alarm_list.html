@@ -1,0 +1,33 @@
+<div class="content">
+    <div class="tit_area">
+        <h2>그룹 환경 알람 추가/삭제</h2>
+        <div class="btn_wrap">
+            <a href="/manager/group_alarm_form" class="btn btn_add"><span>그룹 추가</span></a>
+        </div>
+    </div>
+    <div class="bd_wrap">
+        <div class="table_wrap of_x">
+            <table class="form_table tb_type1">
+                <caption class="blind">그룹 알람 설정</caption>
+                <colgroup>
+                    <col style="width: 7%">
+                    <col>
+                    <col style="width: 21%">
+                    <col style="width: 8%">
+                    <col style="width: 27%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">그룹명</th>
+                    <th scope="col">설정 일자</th>
+                    <th scope="col" colspan="3">활성화 ON/OFF</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{group_alarm_list_item}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

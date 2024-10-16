@@ -1,0 +1,35 @@
+<div class="content">
+    <div class="tit_area">
+        <h2>알람 추가</h2>
+    </div>
+    <div class="bd_wrap form_alarm_set">
+        <form class="card" method="post" action="{{action}}" >
+            <fieldset>
+                <legend>그룹 알람 추가</legend>
+                <strong class="form_caption">그룹 알람 등록</strong>
+                <div class="form_conbox">
+
+                    <div class="item" id="up_row" >
+                        <div class="form_tit">그룹명<span class="required">*</span></div>
+                        <div class="form_set">
+                            <input type="text" class="inpt_txt" placeholder="그룹명"  id="group_name" name="group_name">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="btn_wrap form_btn_wrap">
+                    <!-- <button type="button" class="btn sub_btn">저장</button> --><!-- 활성화시 class="sub_btn" -->
+                    <button type="submit" class="btn disable">저장</button><!-- 비활성화시 class="disable" -->
+                    <a href="/manager/alarm_list" class="btn line_btn">목록</a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+    });
+</script>

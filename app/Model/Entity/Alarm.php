@@ -7,7 +7,7 @@ use \WilliamCosta\DatabaseManager\Database;
 class Alarm {
     public $idx;
     public $member_idx;
-
+    public $group_idx;
     public $device_idx;
 
     public $board_type_field;
@@ -36,6 +36,7 @@ class Alarm {
 
         $this->idx = (new Database('alarm'))->insert([
             'member_idx' => $this->member_idx,
+            'group_idx' => $this->group_idx ?? 0,
             'device_idx' => $this->device_idx,
             'alarm_range' => $this->alarm_range,
             'board_type_field' => $this->board_type_field,
@@ -62,8 +63,12 @@ class Alarm {
         ]);
     }
 
-    public static function getAlarmByMemberIdx($member_idx) {
-        return self::getAlarm('member_idx ='.$member_idx,'created_at desc','','*');
+    public static function getAlarmByMemberIdx($member_idx, $group_idx = 0) {
+        return self::getAlarm('member_idx ='.$member_idx.' and group_idx ='.$group_idx,'created_at desc','','*');
+    }
+
+    public static function searchAlarm($device, $board) {
+        return (new Database('alarm'))->execute("select count(*) as cnt from alarm where device_idx =".$device." and board_type_field='".$board."'");
     }
 
     public static function getAlarmByDeviceIdx($idx) {

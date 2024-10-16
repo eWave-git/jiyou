@@ -5,6 +5,7 @@ namespace App\Controller\Manager;
 use \App\Model\Entity\Device as EntityDevice;
 use \App\Model\Entity\Member as EntityMmeber;
 use \App\Model\Entity\Alarm as EntityAlarm;
+use \App\Model\Entity\GroupAlarm as EntityGroupAlarm;
 use \App\Model\Entity\AlarmMember as EntityAlarmMember;
 use App\Model\Entity\WaterAlarmHistory;
 use \App\Model\Entity\WaterAlarmMember as EntityWaterAlarmMember;
@@ -54,9 +55,9 @@ class Alarm extends Page {
         ];
     }
 
-    public static function getAlarmList($user_idx) {
+    public static function getAlarmList($user_idx, $group_idx) {
 
-        $result = EntityAlarm::getAlarmByMemberIdx($user_idx);
+        $result = EntityAlarm::getAlarmByMemberIdx($user_idx, $group_idx);
         $array = array();
         $_i = 0;
         while ($obj = $result->fetchObject(EntityAlarm::class)) {
@@ -105,6 +106,7 @@ class Alarm extends Page {
                 'member' => $v['member'],
                 'activation' => $v['activation'],
                 'checked'       => $v['activation'] == 'Y'? 'checked' : '' ,
+                'style'   => $group_idx == 0 ? '' : 'none',
                 'created_at' => $v['create'],
             ]);
             $total--;
@@ -119,7 +121,7 @@ class Alarm extends Page {
         $_userInfo = EntityMmeber::getMemberById($_user);
 
         $content = View::render('manager/modules/alarm/alarm_list', [
-            'alarm_list_item' => self::getAlarmList($_userInfo->idx),
+            'alarm_list_item' => self::getAlarmList($_userInfo->idx, 0),
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
@@ -199,6 +201,11 @@ class Alarm extends Page {
 
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $cnt = EntityAlarm::searchAlarm($postVars['device'], $postVars['board'])->fetchObject()->cnt;;
+        if ($cnt > 0) {
+            Common::error_msg("등록된 알람 입니다.");
+        }
 
         $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
 
@@ -307,10 +314,15 @@ class Alarm extends Page {
 
     public static function AlarmDelete($request, $idx) {
         $obj = EntityAlarm::getAlarmByIdx($idx);
+        $group_idx = $obj->group_idx;
         $obj->deleted();
-        $request->getRouter()->redirect('/manager/alarm_list');
-    }
 
+        if ($group_idx > 0) {
+            $request->getRouter()->redirect('/manager/group_alarm_detail/'.$group_idx);
+        } else {
+            $request->getRouter()->redirect('/manager/alarm_list');
+        }
+    }
 
     public static function getWaterAlarmList($user_idx) {
 
@@ -370,7 +382,6 @@ class Alarm extends Page {
 
         return $item;
     }
-
 
     public static function getWaterAlarm($request) {
         $_user = Common::get_manager();
@@ -536,6 +547,186 @@ class Alarm extends Page {
             'success' => $success,
             'value'=>$arr['field'],
             'text' => $arr['name'],
+        ];
+    }
+
+    public static function getGroupAlarm($request) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $content = View::render('manager/modules/alarm/group_alarm_list', [
+            'group_alarm_list_item' => self::getGroupAlarmList($_userInfo->idx),
+        ]);
+
+        return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
+    }
+
+    public static function getGroupAlarmList($user_idx) {
+
+        $result = EntityGroupAlarm::getGroupAlarmByMemberIdx($user_idx);
+        $array = array();
+        $_i = 0;
+
+        while ($obj = $result->fetchObject(EntityGroupAlarm::class)) {
+            $array[$_i]['idx'] = $obj->idx;
+            $array[$_i]['member_idx'] = $obj->member_idx;
+            $array[$_i]['group_name'] = $obj->group_name;
+            $array[$_i]['activation'] = $obj->activation;
+            $array[$_i]['created_at'] = $obj->created_at;
+
+            $_i++;
+        };
+
+        $item = "";
+
+        $total = count($array);
+        foreach ($array as $k => $v) {
+            $item .= View::render('manager/modules/alarm/group_alarm_list_item', [
+                'idx'   => $v['idx'],
+                'number' => $total,
+                'member_idx' => $array[$k]['member_idx'],
+                'group_name' => $array[$k]['group_name'],
+                'activation' => $array[$k]['activation'],
+                'checked'    => $v['activation'] == 'Y'? 'checked' : '' ,
+                'created_at' => $array[$k]['created_at'],
+            ]);
+            $total--;
+        }
+
+        return $item;
+    }
+
+    public static function getGroupAlarm_Form($request, $idx = null) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $content = View::render('manager/modules/alarm/group_alarm_form', [
+            'action'        => '/manager/group_alarm_form_create',
+        ]);
+
+        return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
+    }
+
+    public static function getGroupAlarm_Create($request) {
+        $postVars = $request->getPostVars();
+
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $obj = new EntityGroupAlarm();
+        $obj->member_idx = $_userInfo->idx;
+        $obj->group_name = $postVars['group_name'];
+        $obj->activation = 'N';
+        $obj->created();
+
+        $request->getRouter()->redirect('/manager/group_alarm_list');
+    }
+
+    public static function getGroupAlarm_detail($request, $idx) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $result = EntityGroupAlarm::getGroupAlarm('idx='.$idx, '','','*')->fetchObject(EntityGroupAlarm::class);
+
+        $content = View::render('manager/modules/alarm/group_alarm_add_form', [
+            'device_options' => self::getMemberDevice($_userInfo->idx),
+            'board_options' => '',
+            'min'           => '',
+            'max'           => '',
+            'target_user'   => $_userInfo->idx,
+            'group_idx' => $result->idx,
+            'group_name' => $result->group_name,
+            'activation' => $result->activation,
+            'action'        => '/manager/group_alarm_form_add_create',
+            'alarm_list_item' => self::getAlarmList($_userInfo->idx, $idx),
+        ]);
+
+        return parent::getPanel('Home > DASHBOARD', $content, 'alarm');
+    }
+
+    public static function getGroupAlarmAdd_Create($request) {
+        $postVars = $request->getPostVars();
+
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $cnt = EntityAlarm::searchAlarm($postVars['device'], $postVars['board'])->fetchObject()->cnt;;
+        if ($cnt > 0) {
+            Common::error_msg("등록된 알람 입니다.");
+        }
+
+        $device_info = EntityDevice::getDevicesByIdx($postVars['device']);
+
+        if ($postVars['alarm_range'] == "between") {
+            $min = $postVars['between_min'];
+            $max = $postVars['between_max'];
+        } else if ($postVars['alarm_range'] == "up") {
+            $min = 0;
+            $max = $postVars['up_max'];
+        } else if ($postVars['alarm_range'] == "down") {
+            $min = $postVars['down_min'];
+            $max = 0;
+        }
+
+        $obj_1 = new EntityAlarm;
+        $obj_1->member_idx = $_userInfo->idx;
+        $obj_1->group_idx = $postVars['group_idx'];
+        $obj_1->device_idx = $device_info->device_idx;
+        $board_type = Common::getBoardTypeNameSelect($device_info->device_idx, $device_info->board_type, $postVars['board']);
+
+        $obj_1->board_type_field = $board_type['field'];
+        $obj_1->board_type_name = $board_type['name'];
+
+        $obj_1->alarm_range = $postVars['alarm_range'];
+        $obj_1->min = $min;
+        $obj_1->max = $max;
+        $obj_1->activation = empty($postVars['activation']) ? 'N' : $postVars['activation'];
+        $obj_1->created();
+
+        if ($postVars['target_user']) {
+            $obj_2 = new EntityAlarmMember;
+            $obj_2->alarm_idx = $obj_1->idx;
+            $obj_2->member_idx = $postVars['target_user'];
+            $obj_2->created();
+        }
+
+        $request->getRouter()->redirect('/manager/group_alarm_detail/'.$postVars['group_idx']);
+    }
+
+    public static function GroupAlarmDelete($request, $idx) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $obj = EntityGroupAlarm::getGroupAlarmByIdx($idx);
+        $group_idx = $obj->idx;
+        $obj->deleted();
+
+        $result = EntityAlarm::getAlarmByMemberIdx($_userInfo->idx, $group_idx);
+        while ($obj = $result->fetchObject(EntityAlarm::class)) {
+            $alarm_obj = EntityAlarm::getAlarmByIdx($obj->idx);
+            $alarm_obj->deleted();
+        }
+
+        $request->getRouter()->redirect('/manager/group_alarm_list');
+    }
+
+    public static function setGroupActiveChange($request) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $postVars = $request->getPostVars();
+        $active = $postVars['active'];
+
+        EntityGroupAlarm::GroupUpdateActiveValue($postVars['idx'], $active);
+
+        $result = EntityAlarm::getAlarmByMemberIdx($_userInfo->idx, $postVars['idx']);
+        while ($obj = $result->fetchObject(EntityAlarm::class)) {
+            EntityAlarm::UpdateActiveValue($obj->idx, $active);
+        }
+
+
+        return [
+            'success' => true,
         ];
     }
 }

@@ -15,6 +15,10 @@ class WidgetConnectionTime {
         return (new Database('widget_connection_time'))->execute("select m.*, w.*, wct.*, f.farm_name from member as m left join farm as f on m.idx = f.member_idx left join device as d on f.idx = d.farm_idx left join widget as w on w.device_idx = d.idx left join widget_connection_time as wct on wct.widget_idx = w.idx where m.member_type = 'manager'  and f.idx is not null and wct.idx is not null and wct.check_yn = 'Y'");
     }
 
+    public static function getWidgetConnectionByMemberIdx($member_idx) {
+        return (new Database('widget_connection_time'))->execute("select m.*, w.*, wct.*, f.farm_name from member as m left join farm as f on m.idx = f.member_idx left join device as d on f.idx = d.farm_idx left join widget as w on w.device_idx = d.idx left join widget_connection_time as wct on wct.widget_idx = w.idx where m.member_type = 'manager'  and f.idx is not null and wct.idx is not null and wct.check_yn = 'Y' and m.idx = $member_idx");
+    }
+
     public static function getWidgetConnectionByWidgetIdx($widget_idx) {
         return self::getWidgetConnection("widget_idx ='".$widget_idx."'");
     }
