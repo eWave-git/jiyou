@@ -1,185 +1,71 @@
 <?php
 include_once __DIR__."/crontab_init.php";
 
-use App\Model\Entity\Member as EntityMmeber;
 use \WilliamCosta\DatabaseManager\Database;
 use \App\Utils\Common;
-use \App\Model\Entity\Device as EntityDevice;
+use \App\Model\Entity\Member as EntityMmeber;
+use \App\Model\Entity\Alarm as EntityAlarm;
 
-$activation =  (new Database('alarm'))->execute(
-    "select * ,a.idx as alarm_idx, f.farm_name, w.widget_name
-            from alarm as a
-                     left join alarm_member am on a.idx = am.alarm_idx
-                     left join member as m on am.member_idx = m.idx
-                     left join farm as f on am.member_idx = f.member_idx
-                     left join widget as w on w.device_idx = a.device_idx
-            where a.idx in (select max(idx)
-                            from alarm
-                            where activation = 'Y'
-                            group by device_idx, board_type_field)
-            and m.push_subscription_id is not null and w.idx is not null
-            ");
+$longopt = array(
+    'member_id::'
+);
+$param = getopt('', $longopt);
 
-$array = array();
-$key = 0;
+if (empty($param)) {
+    echo "memeber_id 값을 입력 하세요.";
+    exit;
+}
 
-while ($activation_obj = $activation->fetchObject()) {
+$member_idx = $param['member_id'];
 
-    $device_info = EntityDevice::getDevicesByIdx($activation_obj->device_idx);
-    $raw_data_info = (new Database('raw_data'))->execute(
-        "select idx, created_at, {$activation_obj->board_type_field} from raw_data
-                where address='{$device_info->address}'
-                  and board_type='{$device_info->board_type}'
-                  and board_number='{$device_info->board_number}'
-                order by idx desc limit 0, 1 ")->fetchObject();
+$alarm_results = (new Database('alarm'))->execute("
+                select * from alarm as a 
+                    left join widget as w
+                    on a.device_idx = w.device_idx
+                where a.member_idx = ".$member_idx." and a.group_idx = 0 and a.activation = 'Y'
+                 ");
 
-    if ($activation_obj->alarm_range == "between") {
-        if ($activation_obj->min > $raw_data_info->{$activation_obj->board_type_field} || $activation_obj->max < $raw_data_info->{$activation_obj->board_type_field}  ) {
-            $_txt = "";
-            $array[$key]['member_idx'] = $activation_obj->member_idx;
-            $array[$key]['member_name'] = $activation_obj->member_name;
-            $array[$key]['member_phone'] = $activation_obj->member_phone;
-            $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
+$alarm_array = array();
+$alarm_history_array = array();
+$_i = 0;
+while ($alarm_obj = $alarm_results->fetchObject(EntityAlarm::class)) {
+    $raw_check = Common::alarm_validity_check($alarm_obj);
+        if ($raw_check['reslut']) {
 
-            $array[$key]['device_idx'] =  $activation_obj->device_idx;
-            $array[$key]['board_type_field'] = $activation_obj->board_type_field;
-            $array[$key]['board_type_name'] = $activation_obj->board_type_name;
+            $alarm_array[] = $alarm_obj->widget_name."-".$alarm_obj->board_type_name." ".$raw_check['raw_data_value'].$raw_check['range_value'];
 
-            $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
-            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min."~".$activation_obj->max." 범위 초과 <알람 발생> 알람 현재 ".$raw_data_info->{$activation_obj->board_type_field};
-            $array[$key]['alarm_contents'] = $_txt;
-            $array[$key]['min'] = $activation_obj->min;
-            $array[$key]['max'] = $activation_obj->max;
+            $alarm_history_array[$_i]['alarm_idx'] = $alarm_obj->idx;
+            $alarm_history_array[$_i]['device_idx'] = $alarm_obj->device_idx;
+            $alarm_history_array[$_i]['board_type_field'] = $alarm_obj->board_type_field;
+            $alarm_history_array[$_i]['board_type_name'] = $alarm_obj->board_type_name;
 
-            $array[$key]['raw_data_idx'] = $raw_data_info->idx;
-            $array[$key]['raw_data_value'] = $raw_data_info->{$activation_obj->board_type_field};
-            $array[$key]['raw_data_created_at'] = $raw_data_info->created_at;
+            $alarm_history_array[$_i]['min'] = $alarm_obj->min;
+            $alarm_history_array[$_i]['max'] = $alarm_obj->max;
+            $alarm_history_array[$_i]['raw_data_idx'] = $raw_check['raw_data_idx'];
+            $alarm_history_array[$_i]['raw_data_value'] = $raw_check['raw_data_value'];
+            $alarm_history_array[$_i]['raw_data_created_at'] = $raw_check['raw_data_created_at'];
+
+            $_i++;
         }
+}
 
-    } else if ($activation_obj->alarm_range == "up") {
-        if ($activation_obj->max < $raw_data_info->{$activation_obj->board_type_field} ) {
-            $_txt = "";
-            $array[$key]['member_idx'] = $activation_obj->member_idx;
-            $array[$key]['member_name'] = $activation_obj->member_name;
-            $array[$key]['member_phone'] = $activation_obj->member_phone;
-            $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
+$widget_names = implode(", \n", $alarm_array);
+$farm_obj = EntityMmeber::getMembersFarm($member_idx)->fetchObject(EntityMmeber::class);
+$farm_name = $farm_obj->farm_name;
 
-            $array[$key]['device_idx'] =  $activation_obj->device_idx;
-            $array[$key]['board_type_field'] = $activation_obj->board_type_field;
-            $array[$key]['board_type_name'] = $activation_obj->board_type_name;
+$alarm_contents = "<알람>\n [".$farm_name."]\n\n".$widget_names;
 
-            $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
-            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->max." 이상 <알람 발생> 현재 ".$raw_data_info->{$activation_obj->board_type_field};
-            $array[$key]['alarm_contents'] = $_txt;
-            $array[$key]['min'] = $activation_obj->min;
-            $array[$key]['max'] = $activation_obj->max;
+if (!empty($alarm_array)) {
+    $member_results = EntityMmeber::getMemberByGroup($member_idx);
 
-            $array[$key]['raw_data_idx'] = $raw_data_info->idx;
-            $array[$key]['raw_data_value'] = $raw_data_info->{$activation_obj->board_type_field};
-            $array[$key]['raw_data_created_at'] = $raw_data_info->created_at;
-        }
-    } else if ($activation_obj->alarm_range == "down") {
-        if ($activation_obj->min > $raw_data_info->{$activation_obj->board_type_field}) {
-            $_txt = "";
-            $array[$key]['member_idx'] = $activation_obj->member_idx;
-            $array[$key]['member_name'] = $activation_obj->member_name;
-            $array[$key]['member_phone'] = $activation_obj->member_phone;
-            $array[$key]['push_subscription_id'] = $activation_obj->push_subscription_id;
-
-            $array[$key]['device_idx'] =  $activation_obj->device_idx;
-            $array[$key]['board_type_field'] = $activation_obj->board_type_field;
-            $array[$key]['board_type_name'] = $activation_obj->board_type_name;
-
-            $array[$key]['alarm_idx'] = $activation_obj->alarm_idx;
-            $_txt = "[".$activation_obj->farm_name."-".$activation_obj->widget_name ."] 설정 ".$activation_obj->board_type_name." ".$activation_obj->min." 이하 <알람 발생> 현재 ".$raw_data_info->{$activation_obj->board_type_field};
-            $array[$key]['alarm_contents'] = $_txt;
-            $array[$key]['min'] = $activation_obj->min;
-            $array[$key]['max'] = $activation_obj->max;
-
-            $array[$key]['raw_data_idx'] = $raw_data_info->idx;
-            $array[$key]['raw_data_value'] = $raw_data_info->{$activation_obj->board_type_field};
-            $array[$key]['raw_data_created_at'] = $raw_data_info->created_at;
+    while ($member_obj = $member_results->fetchObject(EntityMmeber::class)) {
+        if (!empty($member_obj->member_phone)) {
+            $member_phone = str_replace('-','', $member_obj->member_phone); ;
+            Common::aligoSendSms("경보", $alarm_contents, $member_phone);
+            Common::sendPush("경보", $alarm_contents, $member_obj->push_subscription_id, "");
         }
     }
 
-    $key++;
-}
+    Common::alarmHistoryInsert($member_idx, $alarm_contents, $alarm_history_array);
 
-$alarmHistoryDatabases = new Database('alarm_history');                                                             //알람 히스토리에서 검색을 해서 최근 알람 보낸 간격이 'h' 기준으로 1시간 이상일때만 알람을 보낸다.
-
-//Common::print_r2($array);
-
-if (!empty($array)) {
-   foreach ($array as $k => $v) {
-
-       $results = $alarmHistoryDatabases->select("alarm_idx = '{$v['alarm_idx']}'", "created_at desc")->fetchObject();
-
-        if (isset($results->alarm_idx)) {
-            // "있다면";
-
-            /*
-            $diff = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');                                          // 밑 뒤에 파라미터 값이 i이면 분, h이면 시간 d이면 날짜 마다 보냄
-            if ($diff >= 1) {
-               alarmHistoryInsert($v);
-               Common::sendPush($v['board_type_name']." 경보발생", $v['alarm_contents'],$v['push_subscription_id'],"");
-            }
-            */
-            $diff_sec = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 's');                                          // 시간 설정 변경
-            $diff_min = Common::date_diff($results->created_at, date("Y-m-d H:i:s"), 'i');
-            if ($diff_sec >= 59 || $diff_min >= 0) {
-
-                $results = EntityMmeber::getMemberByGroup($v['member_idx']);
-
-                while ($obj = $results->fetchObject(EntityMmeber::class)) {
-                    if (!empty($obj->member_phone)) {
-                        $member_phone = str_replace('-','', $obj->member_phone); ;
-                        Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
-                    }
-
-                    alarmHistoryInsert($v);
-                    Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj->push_subscription_id, "");
-                }
-            }
-
-        } else {
-            // "없다면";
-
-                $results = EntityMmeber::getMemberByGroup($v['member_idx']);
-
-                while ($obj = $results->fetchObject(EntityMmeber::class)) {
-                    if (!empty($obj->member_phone)) {
-                        $member_phone = str_replace('-','', $obj->member_phone); ;
-                        Common::aligoSendSms($v['board_type_name'] . " 경보", $v['alarm_contents'], $member_phone);
-                    }
-
-                    alarmHistoryInsert($v);
-                    Common::sendPush($v['board_type_name'] . " 경보", $v['alarm_contents'], $obj->push_subscription_id, "");
-                }
-        }
-    }
-}
-
-function alarmHistoryInsert($v) {
-    $alarmHistoryDatabases = new Database('alarm_history');
-
-        $alarmHistoryDatabases->insert([
-            'member_idx' => $v['member_idx'],
-            'member_name' => $v['member_name'],
-            'push_subscription_id' => $v['push_subscription_id'],
-
-            'device_idx' => $v['device_idx'],
-            'board_type_field' => $v['board_type_field'],
-            'board_type_name' => $v['board_type_name'],
-
-            'alarm_idx' => $v['alarm_idx'],
-            'alarm_contents' => $v['alarm_contents'],
-            'min' => $v['min'],
-            'max' => $v['max'],
-
-            'raw_data_idx' => $v['raw_data_idx'],
-            'raw_data_value' => $v['raw_data_value'],
-            'raw_data_created_at' => $v['raw_data_created_at'],
-
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
 }

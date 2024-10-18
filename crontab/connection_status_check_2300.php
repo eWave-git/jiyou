@@ -6,7 +6,7 @@ use App\Model\Entity\WidgetConnectionTime as EntityWidgetConnectionTime;
 use \App\Utils\Common;
 use App\Model\Entity\Member as EntityMmeber;
 
-$member_idx = "14";
+$member_idx = "42";
 
 $results = EntityWidgetConnectionTime::getWidgetConnectionByMemberIdx($member_idx);
 
@@ -19,9 +19,10 @@ while ($widget_obj = $results->fetchObject(EntityWidgetConnectionTime::class)) {
         $widget_arr[] = $widget_obj->widget_name;
     }
 }
+
 if (!empty($widget_arr)) {
-    $text = implode(", ", $widget_arr);
-    $body = "<"."오류 발생"."> ".$farm_name." [".$text."] 미수신 상태 발생";
+    $text = implode(", \n", $widget_arr);
+    $body = "<"."오류 발생".">".$farm_name."\n\n[".$text."]\n 미수신 상태 발생";
 
     $member_group_results = EntityMmeber::getMemberByGroup($member_idx);
     while ($member_obj = $member_group_results->fetchObject(EntityMmeber::class)) {

@@ -1,6 +1,7 @@
 <?php
 namespace app\Utils;
 
+use \WilliamCosta\DatabaseManager\Database;
 use App\Model\Entity\RawData as EntityRawData;
 use App\Controller\Admin\BoardTypeRef;
 use App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
@@ -11,6 +12,7 @@ use App\Model\Entity\BoardTypeSymbol as EntityBoardTypeSymbol;
 use App\Model\Entity\PushSendLog as EntityPushSendLog;
 use App\Model\Entity\SmsSendLog as EntitySmsSendLog;
 use App\Model\Entity\AligoSmsSendLog as EntityAligoSmsSendLog;
+use App\Model\Entity\Device as EntityDevice;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -402,7 +404,7 @@ class Common{
         $sms['receiver'] = $receiver;
         $sms['sender'] = '01063423999';
         $sms['title'] = $title;
-        $sms['msg_type'] = 'SMS';
+        $sms['msg_type'] = 'LMS';
 
         $oCurl = curl_init();
         curl_setopt($oCurl, CURLOPT_PORT, 443);
@@ -443,5 +445,152 @@ class Common{
         }
 
         return $result;
+    }
+
+    public static function alarm_validity_check($obj) {
+
+        $check = array();
+        $check['reslut'] = false;
+
+        if (!empty($obj)) {
+            $device_info = EntityDevice::getDevicesByIdx($obj->device_idx);
+
+            $raw_data_info = (new Database('raw_data'))->execute(
+                "select idx, created_at, {$obj->board_type_field} from raw_data
+                        where address='{$device_info->address}'
+                          and board_type='{$device_info->board_type}'
+                          and board_number='{$device_info->board_number}'
+                        order by idx desc limit 0, 1 ")->fetchObject();
+
+            if ($obj->alarm_range == "between") {
+
+                if ($obj->min > $raw_data_info->{$obj->board_type_field} || $obj->max < $raw_data_info->{$obj->board_type_field}  ) {
+                    $check['reslut'] = true;
+                    $check['range_value'] = "(".$obj->min."~".$obj->max.")";
+                    $check['raw_data_idx'] = $raw_data_info->idx;
+                    $check['raw_data_value'] = $raw_data_info->{$obj->board_type_field};
+                    $check['raw_data_created_at'] = $raw_data_info->created_at;
+                }
+
+            } else if ($obj->alarm_range == "up") {
+                if ($obj->max < $raw_data_info->{$obj->board_type_field} ) {
+                    $check['reslut'] = true;
+                    $check['range_value'] = "(".$obj->max.")";
+                    $check['raw_data_idx'] = $raw_data_info->idx;
+                    $check['raw_data_value'] = $raw_data_info->{$obj->board_type_field};
+                    $check['raw_data_created_at'] = $raw_data_info->created_at;
+                }
+            } else if ($obj->alarm_range == "down") {
+                if ($obj->min > $raw_data_info->{$obj->board_type_field}) {
+                    $check['reslut'] = true;
+                    $check['range_value'] = "(".$obj->min.")";
+                    $check['raw_data_idx'] = $raw_data_info->idx;
+                    $check['raw_data_value'] = $raw_data_info->{$obj->board_type_field};
+                    $check['raw_data_created_at'] = $raw_data_info->created_at;
+                }
+            }
+
+        }
+
+        return $check;
+    }
+
+    public static function water_alarm_validity_check($obj) {
+
+        $check = array();
+        $check['reslut'] = false;
+
+        if (!empty($obj)) {
+            $device_info = EntityDevice::getDevicesByIdx($obj->device_idx);
+
+            $raw_data_info = (new Database('raw_data'))->execute(
+        "select sum(L) as 'water' from (
+                    select
+                           (max({$obj->board_type_field}) - ifnull(LAG(max({$obj->board_type_field})) OVER (ORDER BY created_at), {$obj->board_type_field})) * 1 as 'L'
+                    from raw_data
+                    where address = '{$device_info->address}'
+                      and board_type = '{$device_info->board_type}'
+                      and board_number = '{$device_info->board_number}'
+                      and created_at > (now() - INTERVAL 1 HOUR ) and created_at < now()
+                    group by DAY(date_format(created_at, '%Y-%m-%d %H:%i:00')), FLOOR(HOUR(date_format(created_at, '%Y-%m-%d %H:%i:00')) / 1) * 10
+                    order BY idx asc
+                ) as Temp")->fetchObject();
+
+            if ($obj->alarm_range == "between") {
+
+                if ($obj->min > $raw_data_info->water || $obj->max < $raw_data_info->water  ) {
+                    $check['reslut'] = true;
+                    $check['range_value'] = "(".$obj->min."~".$obj->max.")";
+                    $check['raw_data_value'] = $raw_data_info->water;
+                }
+
+            } else if ($obj->alarm_range == "up") {
+                if ($obj->max < $raw_data_info->water ) {
+                    $check['reslut'] = true;
+                    $check['range_value'] = "(".$obj->max.")";
+                    $check['raw_data_value'] = $raw_data_info->water;
+                }
+            } else if ($obj->alarm_range == "down") {
+                if ($obj->min > $raw_data_info->water) {
+                    $check['reslut'] = true;
+                    $check['range_value'] = "(".$obj->min.")";
+                    $check['raw_data_value'] = $raw_data_info->water;
+                }
+            }
+        }
+
+        return $check;
+    }
+
+    public static function alarmHistoryInsert($member_idx, $alarm_contents, $alarm_history_array) {
+    $member_info = EntityMmeber::getMemberByIdx($member_idx);
+
+        foreach ($alarm_history_array as $k => $v) {
+            $alarmHistoryDatabases = new Database('alarm_history');
+            $alarmHistoryDatabases->insert([
+                'member_idx' => $member_info->idx,
+                'member_name' => $member_info->member_name,
+                'push_subscription_id' => $member_info->push_subscription_id,
+
+                'device_idx' => $v['device_idx'],
+                'board_type_field' => $v['board_type_field'],
+                'board_type_name' => $v['board_type_name'],
+
+                'alarm_idx' => $v['alarm_idx'],
+                'alarm_contents' => $alarm_contents,
+                'min' => $v['min'],
+                'max' => $v['max'],
+
+                'raw_data_idx' => $v['raw_data_idx'],
+                'raw_data_value' => $v['raw_data_value'],
+                'raw_data_created_at' => $v['raw_data_created_at'],
+
+                'created_at' => date("Y-m-d H:i:s"),
+            ]);
+        }
+    }
+
+    public static function wateralarmHistoryInsert($member_idx, $alarm_contents, $alarm_history_array) {
+    $member_info = EntityMmeber::getMemberByIdx($member_idx);
+
+        foreach ($alarm_history_array as $k => $v) {
+            $alarmHistoryDatabases = new Database('water_alarm_history');
+            $alarmHistoryDatabases->insert([
+                'member_idx' => $member_info->idx,
+                'member_name' => $member_info->member_name,
+                'push_subscription_id' => $member_info->push_subscription_id,
+
+                'device_idx' => $v['device_idx'],
+                'board_type_field' => $v['board_type_field'],
+                'board_type_name' => $v['board_type_name'],
+
+                'water_alarm_idx' => $v['alarm_idx'],
+                'alarm_contents' => $alarm_contents,
+                'min' => $v['min'],
+                'max' => $v['max'],
+
+                'created_at' => date("Y-m-d H:i:s"),
+            ]);
+        }
     }
 }
