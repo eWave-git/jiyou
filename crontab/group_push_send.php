@@ -47,7 +47,7 @@ foreach ($group_array as $k => $v) {
         $raw_check = Common::alarm_validity_check($alarm_obj);
         if ($raw_check['reslut']) {
 
-            $alarm_array[] = $alarm_obj->widget_name."-".$alarm_obj->board_type_name;
+            $alarm_array[] = $alarm_obj->widget_name."-".$alarm_obj->board_type_name." ".$raw_check['raw_data_value'].$raw_check['range_value'];
 
             $alarm_history_array[$_i]['alarm_idx'] = $alarm_obj->idx;
             $alarm_history_array[$_i]['device_idx'] = $alarm_obj->device_idx;
@@ -69,7 +69,7 @@ $widget_names = implode(", \n", $alarm_array);
 $farm_obj = EntityMmeber::getMembersFarm($member_idx)->fetchObject(EntityMmeber::class);
 $farm_name = $farm_obj->farm_name;
 
-$alarm_contents = "<알람발생> ".$farm_name."\n\n [".$widget_names."]\n"."경보 발생";
+$alarm_contents = "<알람>\n [".$farm_name."]\n\n".$widget_names;
 
 if (!empty($alarm_array)) {
     $member_results = EntityMmeber::getMemberByGroup($member_idx);
