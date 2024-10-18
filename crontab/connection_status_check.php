@@ -31,7 +31,7 @@ while ($widget_obj = $results->fetchObject(EntityWidgetConnectionTime::class)) {
 
 if (!empty($widget_arr)) {
     $text = implode(", \n", $widget_arr);
-    $body = "<"."데이터점검".">\n [".$farm_name."]\n\n".$text;
+    $body = "<"."데이터점검".">\n [".$farm_name."]\n".$text;
 
     $member_group_results = EntityMmeber::getMemberByGroup($member_idx);
     while ($member_obj = $member_group_results->fetchObject(EntityMmeber::class)) {

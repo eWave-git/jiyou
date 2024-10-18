@@ -50,7 +50,7 @@ $widget_names = implode(", \n", $alarm_array);
 $farm_obj = EntityMmeber::getMembersFarm($member_idx)->fetchObject(EntityMmeber::class);
 $farm_name = $farm_obj->farm_name;
 
-$alarm_contents = "<알람>\n [".$farm_name."]\n\n".$widget_names;
+$alarm_contents = "<알람>\n [".$farm_name."]\n".$widget_names;
 
 if (!empty($alarm_array)) {
     $member_results = EntityMmeber::getMemberByGroup($member_idx);
