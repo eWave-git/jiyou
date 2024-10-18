@@ -292,9 +292,13 @@ class Dashboard extends Page {
             Common::error_loc_msg('/manager/logout','농장 정보가 없습니다.');
         }
 
+        $display = "blcok";
+        if ($_SESSION['manager']['user']['type'] == 'viewer') $display = "none";
+
         $content = View::render('manager/modules/dashboard/index', [
             'farm_name' => $_farm_Info->farm_name ?? '',
-            'widget_card' => self::getWidgetCard($_userInfo->idx)
+            'widget_card' => self::getWidgetCard($_userInfo->idx),
+            'display' => $display,
         ]);
 
 
