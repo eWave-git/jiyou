@@ -93,3 +93,12 @@ $obRouter->post('/manager/etc/ajax_jejunonghyeob',[
         return new Response(200, Manager\Etc::ajax_jejunonghyeob($request),'application/json');
     }
 ]);
+
+$obRouter->get('/manager/etc/allmessagecontrol',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Etc::allmessagecontrol($request));
+    }
+]);
