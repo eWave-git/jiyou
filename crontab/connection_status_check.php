@@ -35,8 +35,14 @@ if (!empty($widget_arr)) {
 
     $member_group_results = EntityMmeber::getMemberByGroup($member_idx);
     while ($member_obj = $member_group_results->fetchObject(EntityMmeber::class)) {
-        $member_phone = str_replace('-','',  $member_obj->member_phone);
-        Common::aligoSendSms("장치 경보 발생", $body,$member_phone);
+        if (!empty($member_obj->member_phone)) {
+            $member_phone = str_replace('-','',  $member_obj->member_phone);
+            Common::aligoSendSms("장치 경보 발생", $body,$member_phone);
+        }
+        if (!empty($member_obj->push_subscription_id)) {
+            Common::sendPush("경보", $body, $member_obj->push_subscription_id, "");
+        }
+
     }
 }
 

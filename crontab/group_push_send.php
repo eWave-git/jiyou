@@ -78,6 +78,8 @@ if (!empty($alarm_array)) {
         if (!empty($member_obj->member_phone)) {
             $member_phone = str_replace('-','', $member_obj->member_phone); ;
             Common::aligoSendSms("경보", $alarm_contents, $member_phone);
+        }
+        if (!empty($member_obj->push_subscription_id)) {
             Common::sendPush("경보", $alarm_contents, $member_obj->push_subscription_id, "");
         }
     }
