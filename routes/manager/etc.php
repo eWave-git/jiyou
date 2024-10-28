@@ -94,11 +94,21 @@ $obRouter->post('/manager/etc/ajax_jejunonghyeob',[
     }
 ]);
 
-$obRouter->get('/manager/etc/allmessagecontrol',[
+$obRouter->get('/manager/etc/alarmcontrol',[
     'middlewares' => [
         'required-manager-login'
     ],
     function($request,$idx) {
-        return new Response(200, Manager\Etc::allmessagecontrol($request));
+        return new Response(200, Manager\Etc::alarmcontrol($request));
+    }
+]);
+
+$obRouter->post('/manager/etc/setAlarmcontrolChange',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Etc::setAlarmcontrolChange($request),'application/json');
     }
 ]);

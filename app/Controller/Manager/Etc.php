@@ -6,6 +6,8 @@ use App\Model\Entity\Device as EntityDevice;
 use App\Model\Entity\Member as EntityMmeber;
 use App\Model\Entity\RawData as EntityRawData;
 use App\Model\Entity\Alarm as EntityAlarm;
+use App\Model\Entity\AlarmControl as EntityAlarmControl;
+use App\Model\Entity\WaterAlarm;
 use app\Utils\Common;
 use \App\Utils\View;
 use WilliamCosta\DatabaseManager\Database;
@@ -158,7 +160,7 @@ class Etc extends Page {
         ];
     }
 
-    public static function allmessagecontrol() {
+    public static function alarmcontrol() {
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
@@ -178,25 +180,75 @@ class Etc extends Page {
         }
 
         $alarm_results = (new Database('alarm'))->execute("
-            select * from alarm where member_idx=".$_userInfo->idx." order by group_idx=0 asc, group_idx desc;
+            select * from alarm where member_idx=".$_userInfo->idx." order by group_idx=0 asc, group_idx asc;
         ");
 
         while ($alarm_obj = $alarm_results->fetchObject(EntityAlarm::class)) {
             $device_obj = EntityDevice::getDevicesByIdx($alarm_obj->device_idx);
 
             $array[$_i]['path'] = $device_obj->device_name." ".$alarm_obj->board_type_name;
-            $array[$_i]['target'] = $alarm_obj->group_idx != 0 ? "그룹알람" : "개별알람";
+            $array[$_i]['target'] = $alarm_obj->group_idx != 0 ? "그룹환경알람" : "환경알람";
             $array[$_i]['status'] = $alarm_obj->activation;
             $_i++;
         };
 
-        // TODO :: 음수알람 추가
-//        Common::print_r2($array);
+        $water_alarm_results = (new Database('water_alarm'))->execute("
+            select * from water_alarm where member_idx=".$_userInfo->idx.";
+        ");
 
-        $content = View::render('manager/modules/etc/allmessagecontrol', [
+        while ($water_alarm_obj = $water_alarm_results->fetchObject(WaterAlarm::class)) {
+            $device_obj = EntityDevice::getDevicesByIdx($water_alarm_obj->device_idx);
 
+            $array[$_i]['path'] = $device_obj->device_name." ".$water_alarm_obj->board_type_name;
+            $array[$_i]['target'] = $water_alarm_obj->group_idx != 0 ? "그룹환경알람" : "환경알람";
+            $array[$_i]['status'] = $water_alarm_obj->activation;
+            $_i++;
+        }
+
+        $results_activation = Common::getAlarmcontrolActivation($_userInfo->member_group);
+        $checked = "";
+        if ($results_activation == 'Y') {
+            $checked = "checked";
+        }
+
+        $item = "";
+        $checkbox = "<div class='btn_switch'><label for=''><input type='checkbox' name='activation' data-idx='' value='Y' ".$checked."></label>";
+        foreach ($array as $k => $v) {
+            $item .= View::render('manager/modules/etc/alarmcontrol_row',[
+                'path' => $array[$k]['path'],
+                'target' => $array[$k]['target'],
+                'status' => $array[$k]['status'],
+
+                'td' => ($k == 0) ? '<td rowspan='.$_i.'>'.$checkbox.'</td>' : '',
+            ]);
+        }
+
+        $content = View::render('manager/modules/etc/alarmcontrol', [
+                'item' => $item,
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'etc');
     }
+
+    public static function setAlarmcontrolChange($request) {
+        $postVars = $request->getPostVars();
+        $active = $postVars['active'];
+
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $member_group = $_userInfo->member_group;
+        $member_id = $_userInfo->member_id;
+
+        $obj = new EntityAlarmControl;
+        $obj->member_group = $member_group;
+        $obj->member_id = $member_id;
+        $obj->activation = $active;
+        $obj->created();
+
+        return [
+            'success' => true,
+        ];
+    }
+
 }

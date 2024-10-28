@@ -1,6 +1,7 @@
 <?php
 namespace app\Utils;
 
+use App\Model\Entity\AlarmControl as EntityAlarmControl;
 use \WilliamCosta\DatabaseManager\Database;
 use App\Model\Entity\RawData as EntityRawData;
 use App\Controller\Admin\BoardTypeRef;
@@ -597,5 +598,18 @@ class Common{
                 'created_at' => date("Y-m-d H:i:s"),
             ]);
         }
+    }
+
+    public static function getAlarmcontrolActivation($member_group) {
+        $result = "";
+        $results_obj = EntityAlarmControl::getAlarmcontrolActivation($member_group)->fetchObject();
+
+        if (empty($results_obj)) {
+            $result = "N";
+        } else {
+            $result = $results_obj->activation;
+        }
+
+        return $result;
     }
 }

@@ -17,6 +17,15 @@ if (empty($param)) {
 }
 
 $member_idx = $param['member_id'];
+
+$member_info = Common::get_member_info($member_idx);
+$results_activation = Common::getAlarmcontrolActivation($member_info['member_group']);
+
+if ($results_activation == 'Y') {
+    exit;
+}
+
+$member_idx = $param['member_id'];
 $group_results = (new Database('group_alarm'))->execute("
                 select * from group_alarm 
                 where member_idx = ".$member_idx." and activation = 'Y'");

@@ -18,6 +18,14 @@ if (empty($param)) {
 
 $member_idx = $param['member_id'];
 
+$member_info = Common::get_member_info($member_idx);
+$results_activation = Common::getAlarmcontrolActivation($member_info['member_group']);
+
+if ($results_activation == 'Y') {
+    exit;
+}
+
+
 $alarm_results = (new Database('alarm'))->execute("
                 select * from water_alarm as a 
                     left join widget as w

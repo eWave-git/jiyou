@@ -2,6 +2,8 @@
 
 namespace App\Controller\Manager;
 
+use App\Model\Entity\AlarmControl as EntityAlarmControl;
+use App\Model\Entity\Member as EntityMmeber;
 use App\Utils\Common;
 use App\Utils\View;
 
@@ -21,10 +23,20 @@ class Page {
 
         $title = getenv('DB_NAME');
 
+        $alarmtoast = "";
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+        $results_activation = Common::getAlarmcontrolActivation($_userInfo->member_group);
+
+        if ($results_activation == 'Y') {
+            $alarmtoast = "<script src='".URL."/resources/dynamic/manager/alarm_toast.js?".date('U')."' defer></script>";
+        }
+
         return View::render('manager/page', [
             'title' => $title,
             'content' => $content,
             'javascript' => $javascript_file,
+            'alarmtoast' => $alarmtoast,
         ]);
     }
 
@@ -72,7 +84,7 @@ class Page {
                 
                 ['label' => 'group', 'title' => '그룹 관리', 'link' => '/manager/etc/group'],
                 ['label' => 'group', 'title' => '그래픽 보기', 'link' => '/manager/etc/jejunonghyeob'],
-                ['label' => 'group', 'title' => '전체메세지 설정', 'link' => '/manager/etc/allmessagecontrol'],
+                ['label' => 'group', 'title' => '전체메세지 설정', 'link' => '/manager/etc/alarmcontrol'],
                 // ['label' => 'autovalve', 'title' => '자동밸브제어', 'link' => '/manager/etc/autovalve'],
                 // ['label' => 'etc', 'title' => '알람 수신변경(예정)', 'link' => "javascript:alert('준비중')"],
                 // ['label' => 'report_form', 'title' => '레포팅', 'link' => "/manager/etc/report_form"],

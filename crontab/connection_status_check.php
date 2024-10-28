@@ -2,6 +2,7 @@
 // sms Group send test file 추후 삭제해도 무관
 include_once __DIR__."/crontab_init.php";
 
+use App\Model\Entity\AlarmControl as EntityAlarmControl;
 use App\Model\Entity\WidgetConnectionTime as EntityWidgetConnectionTime;
 use \App\Utils\Common;
 use App\Model\Entity\Member as EntityMmeber;
@@ -17,6 +18,14 @@ if (empty($param)) {
 }
 
 $member_idx = $param['member_id'];
+
+$member_info = Common::get_member_info($member_idx);
+$results_activation = Common::getAlarmcontrolActivation($member_info['member_group']);
+
+if ($results_activation == 'Y') {
+    exit;
+}
+
 $results = EntityWidgetConnectionTime::getWidgetConnectionByMemberIdx($member_idx);
 
 $widget_arr = array();
