@@ -24,12 +24,15 @@ class Page {
         $title = getenv('DB_NAME');
 
         $alarmtoast = "";
-        $_user = Common::get_manager();
-        $_userInfo = EntityMmeber::getMemberById($_user);
-        $results_activation = Common::getAlarmcontrolActivation($_userInfo->member_group);
 
-        if ($results_activation == 'Y') {
-            $alarmtoast = "<script src='".URL."/resources/dynamic/manager/alarm_toast.js?".date('U')."' defer></script>";
+        $_user = Common::get_manager();
+        if ($_user) {
+            $_userInfo = EntityMmeber::getMemberById($_user);
+            $results_activation = Common::getAlarmcontrolActivation($_userInfo->member_group);
+
+            if ($results_activation == 'Y') {
+                $alarmtoast = "<script src='".URL."/resources/dynamic/manager/alarm_toast.js?".date('U')."' defer></script>";
+            }
         }
 
         return View::render('manager/page', [
