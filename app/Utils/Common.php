@@ -434,13 +434,18 @@ class Common{
     }
 
     public static function widgetConnectionCheck($address, $board_type, $number, $check_time = 0) {
+        $result = true;
 
         $raw_result = EntityRawData::LastLimitOne($address, $board_type, $number);
         $rew_obj = $raw_result->fetchObject(EntityRawData::class);
-        $diff = Common::date_diff_minutes($rew_obj->created_at,  date("Y-m-d H:i:s"));
+        if (!empty($rew_obj)) {
+            $diff = Common::date_diff_minutes($rew_obj->created_at,  date("Y-m-d H:i:s"));
 
-        $result = true;
-        if ($diff >= $check_time) {
+            if ($diff >= $check_time) {
+                $result = false;
+            }
+
+        } else {
             $result = false;
         }
 

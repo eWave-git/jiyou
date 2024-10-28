@@ -64,7 +64,7 @@ class Alarm {
     }
 
     public static function getAlarmByMemberIdx($member_idx, $group_idx = 0) {
-        return self::getAlarm('member_idx ='.$member_idx.' and group_idx ='.$group_idx,'created_at desc','','*');
+        return self::getAlarm('member_idx ='.$member_idx.' and group_idx ='.$group_idx,'created_at asc','','*');
     }
 
     public static function searchAlarm($device, $board) {

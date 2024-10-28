@@ -1,6 +1,7 @@
 <?php
 namespace App\Http;
 
+use app\Utils\Common;
 use \Closure;
 use \Exception;
 use \ReflectionFunction;
@@ -104,7 +105,8 @@ class Router {
             }
         }
 
-        throw new Exception("Error Processing Request2", 404);
+        Common::error_loc_msg("/manager/dashboard","등록된 페이지가 없습니다.");
+//        throw new Exception("Error Processing Request2", 404);
     }
 
     public function run() {
