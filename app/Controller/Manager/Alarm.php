@@ -86,7 +86,7 @@ class Alarm extends Page {
 
         $item = "";
 
-        $total = count($array);
+        $_i = 1;
         foreach ($array as $k => $v) {
 
             if ($v['alarm_range'] == "between") {
@@ -99,7 +99,7 @@ class Alarm extends Page {
 
             $item .= View::render('manager/modules/alarm/alarm_list_item', [
                 'idx'   => $v['idx'],
-                'number' => $total,
+                'number' => $_i,
                 'device_name' => $v['device_name'],
                 'field' => $v['board_type_name'],
                 'MinAtMax' => $MinAtMax,
@@ -109,7 +109,7 @@ class Alarm extends Page {
                 'style'   => $group_idx == 0 ? '' : 'none',
                 'created_at' => $v['create'],
             ]);
-            $total--;
+            $_i++;
         }
 
         return $item;
@@ -355,7 +355,7 @@ class Alarm extends Page {
 
         $item = "";
 
-        $total = count($array);
+        $_i = 1;
         foreach ($array as $k => $v) {
 
             if ($v['alarm_range'] == "between") {
@@ -368,7 +368,7 @@ class Alarm extends Page {
 
             $item .= View::render('manager/modules/alarm/water_alarm_list_item', [
                 'idx'   => $v['idx'],
-                'number' => $total,
+                'number' => $_i,
                 'device_name' => $v['device_name'],
                 'field' => $v['board_type_name'],
                 'MinAtMax' => $MinAtMax,
@@ -377,7 +377,7 @@ class Alarm extends Page {
                 'checked'       => $v['activation'] == 'Y'? 'checked' : '' ,
                 'created_at' => $v['create'],
             ]);
-            $total--;
+            $_i++;
         }
 
         return $item;
@@ -579,18 +579,18 @@ class Alarm extends Page {
 
         $item = "";
 
-        $total = count($array);
+        $_i = 1;
         foreach ($array as $k => $v) {
             $item .= View::render('manager/modules/alarm/group_alarm_list_item', [
                 'idx'   => $v['idx'],
-                'number' => $total,
+                'number' => $_i,
                 'member_idx' => $array[$k]['member_idx'],
                 'group_name' => $array[$k]['group_name'],
                 'activation' => $array[$k]['activation'],
                 'checked'    => $v['activation'] == 'Y'? 'checked' : '' ,
                 'created_at' => $array[$k]['created_at'],
             ]);
-            $total--;
+            $_i++;
         }
 
         return $item;

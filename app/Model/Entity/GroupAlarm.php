@@ -20,7 +20,7 @@ class GroupAlarm {
         return self::getGroupAlarm('idx ='.$idx)->fetchObject(self::class);
     }
     public static function getGroupAlarmByMemberIdx($member_idx) {
-        return self::getGroupAlarm('member_idx ='.$member_idx,'created_at desc','','*');
+        return self::getGroupAlarm('member_idx ='.$member_idx,'created_at asc','','*');
     }
 
     public function created() {
