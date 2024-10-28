@@ -71,7 +71,7 @@ class Common{
     }
 
     public static function get_manager() {
-        if (!$_SESSION['manager']) return null;
+        if (empty($_SESSION['manager'])) return null;
 
         return $_SESSION['manager']['user']['id'];
     }
