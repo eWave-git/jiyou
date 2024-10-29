@@ -17,10 +17,10 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th scope="col">위치</th>
+                    <th scope="col">디바이스</th>
                     <th scope="col">대상</th>
                     <th scope="col">상태</th>
-                    <th scope="col">활성화 ON/OFF</th>
+                    <th scope="col">알람일시중단</br> ON/OFF</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,9 +35,9 @@
     $(function () {
        $("[name='activation']").click(function () {
            if ($(this).is(":checked")) {
-               var str = "체크시 모든 알람이 정지 됩니다.\n\n정지시 활성된 알람은 중지됩니다.";
+               var str = "모든 알람이 일시중지 됩니다.";
            } else {
-               var str = "체크 해제시 설정된 알람이 정상 작동 됩니다.";
+               var str = "모든 알람이 정상작동 됩니다.";
            }
 
 

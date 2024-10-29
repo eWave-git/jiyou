@@ -3,7 +3,7 @@ $(function () {
 
     if(!isMobile) {
         $.toast({
-            text: "전체 알람이 정지 상태 입니다. 기타 > 전체메세지 설정에서 해제 하십시오.", // Text that is to be shown in the toast
+            text: "모든 알람이 일시중지 상태입니다.</br>기타 > 알람일시중단 메뉴에서 변경 가능 합니다.", // Text that is to be shown in the toast
             heading: 'Note', // Optional heading to be shown on the toast
             icon: 'error', // Type of toast icon
             showHideTransition: 'fade', // fade, slide or plain

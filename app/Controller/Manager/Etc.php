@@ -217,7 +217,7 @@ class Etc extends Page {
             $item .= View::render('manager/modules/etc/alarmcontrol_row',[
                 'path' => $array[$k]['path'],
                 'target' => $array[$k]['target'],
-                'status' => $array[$k]['status'],
+                'status' => ($array[$k]['status'] == 'Y') ? "<span style='color:#0b956c'>알람켜짐</span>" : "<span style='color:red'>알람꺼짐</span>" ,
 
                 'td' => ($k == 0) ? '<td rowspan='.$_i.'>'.$checkbox.'</td>' : '',
             ]);
