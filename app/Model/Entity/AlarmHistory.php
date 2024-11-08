@@ -25,6 +25,10 @@ class AlarmHistory {
         return self::getAlarmHistory('member_idx ='.$idx, 'raw_data_created_at desc limit 100');     // 240108 /manager/alarm_log_list 알람 발생기록 페이지에서 알람 발생한 내역의 전체 표현 갯수 나타내는 숫자 제한 
     }
 
+    public static function getAlarmHistoryByDeviceIdx($device_idx) {
+        return self::getAlarmHistory('device_idx ='.$device_idx);
+    }
+
     public function created() {
         $this->created_at = date('Y-m-d H:i:s');
 
@@ -71,5 +75,7 @@ class AlarmHistory {
         return (new Database('alarm_history'))->select($where, $order, $limit, $fields);
     }
 
-
+    public function deleted() {
+        $this->idx = (new Database('alarm_history'))->delete('idx = '.$this->idx);
+    }
 }

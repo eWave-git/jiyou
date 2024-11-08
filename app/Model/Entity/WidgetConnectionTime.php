@@ -27,6 +27,10 @@ class WidgetConnectionTime {
         return (new Database('widget_connection_time'))->select($where, $order, $limit, $fields);
     }
 
+    public static function getWidgetWithWidgetConnection($device_idx) {
+        return (new Database('widget_connection_time'))->execute("select wct.* from widget as w left join widget_connection_time as wct on w.idx = wct.widget_idx where w.device_idx=".$device_idx."")->fetchObject(self::class);
+    }
+
     public function created() {
         $this->created_at = date('Y-m-d H:i:s');
 
@@ -45,5 +49,9 @@ class WidgetConnectionTime {
             'check_yn' => $this->check_yn,
             'check_time' => $this->check_time,
         ]);
+    }
+
+    public function deleted() {
+        $this->idx = (new Database('widget_connection_time'))->delete('idx ='.$this->idx);
     }
 }

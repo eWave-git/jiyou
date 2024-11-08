@@ -15,6 +15,10 @@ class Device {
     public $device_idx;
 
 
+    public static function getDeviceByFarmIdxCnt($farmIdx) {
+        return (new Database('device'))->execute("select count(*) as cnt from device where farm_idx = ".$farmIdx."");
+    }
+
     public static function UpdateDeviceName($idx, $device_name) {
         return (new Database('device'))->execute(
             "update device set `device_name`= '".$device_name."' where `idx` = '".$idx."'"

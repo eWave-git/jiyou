@@ -22,6 +22,10 @@ class WaterAlarmHistory {
         return self::getWaterAlarmHistory('member_idx ='.$idx, 'created_at desc limit 100');     // 240108 /manager/alarm_log_list 알람 발생기록 페이지에서 알람 발생한 내역의 전체 표현 갯수 나타내는 숫자 제한
     }
 
+    public static function getWaterAlarmHistoryByDeviceIdx($device_idx) {
+        return self::getWaterAlarmHistory('device_idx ='.$device_idx);
+    }
+
     public function created() {
         $this->created_at = date('Y-m-d H:i:s');
 
@@ -61,5 +65,7 @@ class WaterAlarmHistory {
         return (new Database('water_alarm_history'))->select($where, $order, $limit, $fields);
     }
 
-
+    public function deleted() {
+        $this->idx = (new Database('water_alarm_history'))->delete('idx = '.$this->idx);
+    }
 }

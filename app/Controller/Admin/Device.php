@@ -8,8 +8,15 @@ use \App\Model\Entity\BoardTypeRef as EntityBoardTypeRef;
 
 use \App\Model\Entity\Widget as EntityWidget;
 use \App\Model\Entity\WidgetBoardType as EntityWidgetBoardType;
+use \App\Model\Entity\WidgetConnectionTime as EntityWidgetConnectionTime;
 
 use App\Model\Entity\FarmAddress as EntityFarmAddress;
+
+use \App\Model\Entity\Alarm as EntityAlarm;
+use \App\Model\Entity\WaterAlarm as EntityWaterAlarm;
+use \App\Model\Entity\AlarmHistory as EntityAlarmHistory;
+use \App\Model\Entity\WaterAlarmHistory as EntityWaterAlarmHistory;
+
 
 use \app\Utils\Common;
 use \App\Utils\View;
@@ -182,12 +189,49 @@ class Device extends Page {
 
     public static function Device_Delete($request, $idx) {
 
-        $obj = EntityDevice::getDevicesByIdx($idx);
-        $obj->deleted();
+        $widget_board_type_obj = EntityWidgetBoardType::getWidgetWithWidgetBoardTypeByIdx($idx);
+        if (!empty($widget_board_type_obj->idx)) {
+            $widget_board_type_obj->deleted();
+        }
+
+        $widget_connection_obj = EntityWidgetConnectionTime::getWidgetWithWidgetConnection($idx);
+        if (!empty($widget_connection_obj->idx)) {
+            $widget_connection_obj->deleted();
+        }
 
         $widget_obj = EntityWidget::getWidgetByDeviceIdx($idx)->fetchObject(EntityWidget::class);
-        $widget_obj->deleted();
+        if (!empty($widget_obj->idx)) {
+            $widget_obj->deleted();
+        }
 
+        while ($alarm_history_obj = EntityAlarmHistory::getAlarmHistoryByDeviceIdx($idx)->fetchObject(EntityAlarmHistory::class)) {
+            if (!empty($alarm_history_obj->idx)) {
+                $alarm_history_obj->deleted();
+            }
+        }
+
+        while ($alarm_obj = EntityAlarm::getAlarmByDeviceIdx($idx)->fetchObject(EntityAlarm::class)) {
+            if (!empty($alarm_obj->idx)) {
+                $alarm_obj->deleted();
+            }
+        }
+
+        while (EntityWaterAlarmHistory::getWaterAlarmHistoryByDeviceIdx($idx)->fetchObject(EntityWaterAlarmHistory::class)) {
+            if (!empty($alarm_history_obj->idx)) {
+                $alarm_history_obj->deleted();
+            }
+        }
+
+        while ($water_alarm_obj = EntityWaterAlarm::getWaterAlarmByDeviceIdx($idx)->fetchObject(EntityWaterAlarm::class)) {
+            if (!empty($water_alarm_obj->idx)) {
+                $water_alarm_obj->deleted();
+            }
+        }
+
+        $obj = EntityDevice::getDevicesByIdx($idx);
+        if (!empty($obj->idx)) {
+            $obj->deleted();
+        }
 
         $request->getRouter()->redirect('/admin/device_list');
     }

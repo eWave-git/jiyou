@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use \App\Model\Entity\Farm as EntityFarm;
 use \App\Model\Entity\Member as EntityMmeber;
 use \App\Model\Entity\FarmAddress as EntityFarmAddress;
+use \App\Model\Entity\Device as EntityDevice;
+
 use \app\Utils\Common;
 use \WilliamCosta\DatabaseManager\Pagination;
 use \App\Utils\View;
@@ -64,7 +66,7 @@ class Farm extends Page {
                 'num'           => $cnt,
                 'idx'           => $obFarm->idx,
                 'farm_name'     => $obFarm->farm_name,
-                'manager_name'     => $member_info->member_name,
+                'manager_name'     => $member_info->member_name ?? '',
                 'viewer_name'  => '',
                 'address'   => $obFarm->address,
             ]);
@@ -173,6 +175,12 @@ class Farm extends Page {
     }
 
     public static function Farm_Delete($request, $idx) {
+
+        $cnt = EntityDevice::getDeviceByFarmIdxCnt($idx)->fetchObject()->cnt;;
+        if ($cnt > 0) {
+            Common::error_msg("디바이스를 모두 삭제 후 농장을 석제 할 수 있습니다.");
+        }
+
         $obj = EntityFarm::getFarmsByIdx($idx);
 
         $obj->deleted();
