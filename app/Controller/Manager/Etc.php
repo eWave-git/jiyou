@@ -43,7 +43,7 @@ class Etc extends Page {
 
     /* 제주농협 공동처리장 모니터링 시스템 로딩페이지 처리 */
     public static function jejunonghyeob($request) {
-        
+
         $_user = Common::get_manager();
         $_userInfo = EntityMmeber::getMemberById($_user);
 
@@ -103,8 +103,8 @@ class Etc extends Page {
         ]);
 
         return parent::getPanel('Home > DASHBOARD', $content, 'etc');
-        
-        
+
+
     }
 
     /* 제주농협 공동처리장 모니터링 시스템 로딩페이지  ajax 처리 */
@@ -250,4 +250,111 @@ class Etc extends Page {
         ];
     }
 
+    public static function Graphic_view($request) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $obj = Common::getMembersWidget($_userInfo->idx);
+        $_str = [];
+        $_val = [];
+        foreach ($obj as $k => $v) {
+
+            if ($v['device_idx'] == "327" || $v['device_idx'] == "328") {
+                foreach ($v['board_name'] as $kk => $vv) {
+                    if ($vv['display'] == 'Y') {
+                        $device_obj = EntityDevice::getDevicesByIdx($v['device_idx']);
+                        $result = EntityRawData::LastLimitOne($device_obj->address, $device_obj->board_type, $device_obj->board_number);
+                        $rew_obj = $result->fetchObject(EntityRawData::class);
+
+                        if ($vv['symbol'] == 'L') {
+                            if ($rew_obj->board_type == 3) {
+                                $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
+                                $value = ($water_row->{$vv['field']});
+                            } else if ($rew_obj->board_type == 6 || $rew_obj->board_type == 35 || $rew_obj->board_type == 40) {
+                                $water_row = EntityRawData::LastLimitWaterDataSumExcept_1($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
+                                $value = ($water_row->{$vv['field']});
+                            } else if ($rew_obj->board_type == 4 ) {
+                                $water_row = EntityRawData::LastLimitWaterDataSumExcept_2($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
+                                $value = ($water_row->{$vv['field']});
+                            } else {
+                                $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
+                                $value = ($water_row->{$vv['field']});
+                            }
+                        } else {
+                            if (isset($rew_obj->{$vv['field']})) {
+                                $value = round($rew_obj->{$vv['field']}, 1);
+                            } else {
+                                $value = 0;
+                            }
+                        }
+                        $_str[] = $vv['name'];
+                        $_val[] = $value;
+
+                    }
+                }
+            }
+        }
+
+        $content = View::render('blank/modules/graphicview', [
+            's1' => $_str[0],
+            's2' => $_str[1],
+            's3' => $_str[2],
+            's4' => $_str[3],
+            'v1' => $_val[0],
+            'v2' => $_val[1],
+            'v3' => $_val[2],
+            'v4' => $_val[3],
+            'update_at' => date("Y-m-d H:i:s"),
+        ]);
+        return parent::getBlankPanel('Home > DASHBOARD', $content, 'etc');
+    }
+
+    public static function ajax_graphicview($request) {
+        $_user = Common::get_manager();
+        $_userInfo = EntityMmeber::getMemberById($_user);
+
+        $obj = Common::getMembersWidget($_userInfo->idx);
+        $_data = [];
+        foreach ($obj as $k => $v) {
+
+            if ($v['device_idx'] == "327" || $v['device_idx'] == "328") {
+                foreach ($v['board_name'] as $kk => $vv) {
+                    if ($vv['display'] == 'Y') {
+                        $device_obj = EntityDevice::getDevicesByIdx($v['device_idx']);
+                        $result = EntityRawData::LastLimitOne($device_obj->address, $device_obj->board_type, $device_obj->board_number);
+                        $rew_obj = $result->fetchObject(EntityRawData::class);
+
+                        if ($vv['symbol'] == 'L') {
+                            if ($rew_obj->board_type == 3) {
+                                $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
+                                $value = ($water_row->{$vv['field']});
+                            } else if ($rew_obj->board_type == 6 || $rew_obj->board_type == 35 || $rew_obj->board_type == 40) {
+                                $water_row = EntityRawData::LastLimitWaterDataSumExcept_1($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
+                                $value = ($water_row->{$vv['field']});
+                            } else if ($rew_obj->board_type == 4 ) {
+                                $water_row = EntityRawData::LastLimitWaterDataSumExcept_2($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
+                                $value = ($water_row->{$vv['field']});
+                            } else {
+                                $water_row = EntityRawData::LastLimitWaterDataSum($rew_obj->address, $rew_obj->board_type, $rew_obj->board_number, $vv['field'], $vv['field'], 1)->fetchObject(EntityRawData::class);
+                                $value = ($water_row->{$vv['field']});
+                            }
+                        } else {
+                            if (isset($rew_obj->{$vv['field']})) {
+                                $value = round($rew_obj->{$vv['field']}, 1);
+                            } else {
+                                $value = 0;
+                            }
+                        }
+                        $_data[] = $value;
+                    }
+                }
+            }
+        }
+
+        return [
+            'success' => true,
+            'data' => $_data,
+            'update_at' => date("Y-m-d H:i:s"),
+        ];
+    }
 }

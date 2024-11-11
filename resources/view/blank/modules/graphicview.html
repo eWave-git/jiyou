@@ -1,0 +1,55 @@
+<style>
+    table {
+        border: 1px solid #DDDDDD;
+        text-align: center;
+        border-collapse: collapse;
+        padding: 10px 10px;
+    }
+    tr {
+        height: 500px
+    }
+    td {
+        border: 1px solid #DDDDDD;
+        font-size: 76px;
+    }
+</style>
+
+
+현재 시간 : <span id="timer">{{update_at}}</span>
+<table style="">
+    <tr>
+        <td style="">{{s1}} : <span id="v1">{{v1}}</span></td>
+        <td style="">{{s2}} : <span id="v2">{{v2}}</span></td>
+    </tr>
+    <tr>
+        <td style="">{{s3}} : <span id="v3">{{v3}}</span></td>
+        <td style="">{{s4}} : <span id="v4">{{v4}}</span></td>
+    </tr>
+</table>
+
+<script>
+    $(function () {
+        function send_ajax() {
+            $.ajax({
+                url:'/manager/etc/ajax_graphicview',
+                type:'post',
+                data: {
+                    data:'',
+                },
+                dataType: "json",
+                success:function(obj) {
+                    if (obj.success) {
+                        $("#v1").text(obj.data[0]);
+                        $("#v2").text(obj.data[1]);
+                        $("#v3").text(obj.data[2]);
+                        $("#v4").text(obj.data[3]);
+
+                        $("#timer").text(obj.update_at);
+                    }
+                }
+            })
+        }
+
+        setInterval(send_ajax, 5000);
+    });
+</script>

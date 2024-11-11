@@ -43,6 +43,25 @@ class Page {
         ]);
     }
 
+    public static function getBlankPage($title, $content) {
+
+        $REQUEST_URI = explode('?',$_SERVER['REQUEST_URI'])[0];
+        $FILE_NAME = (explode('/',$_SERVER['REQUEST_URI']))[2];
+
+        if (file_exists("resources/dynamic/manager/".$FILE_NAME.".js")) {
+            $javascript_file = "<script src='".URL."/resources/dynamic/manager/".$FILE_NAME.".js?".date('U')."' defer></script>";
+        } else {
+            $javascript_file = "";
+        }
+
+        $title = getenv('DB_NAME');
+
+        return View::render('blank/page', [
+            'title' => $title,
+            'content' => $content,
+            'javascript' => $javascript_file,
+        ]);
+    }
     private static $menus = [
         [
             'label' => 'dashboard',
@@ -84,9 +103,9 @@ class Page {
             'label' => 'etc',
             'title' => '기타',
             'submenu'=>[
-                
+
 //                ['label' => 'group', 'title' => '그룹 관리', 'link' => '/manager/etc/group'],
-//                ['label' => 'group', 'title' => '그래픽 보기', 'link' => '/manager/etc/jejunonghyeob'],
+                ['label' => 'group', 'title' => '그래픽 보기', 'link' => 'javascript:window.open(\'/manager/etc/graphic_view\', \'_blank\', \'location=no,menubar=no,toolbar=no,status=no,fullscreen=yes\')'],
                 ['label' => 'group', 'title' => '알람일시중단', 'link' => '/manager/etc/alarmcontrol'],
                 // ['label' => 'autovalve', 'title' => '자동밸브제어', 'link' => '/manager/etc/autovalve'],
                 // ['label' => 'etc', 'title' => '알람 수신변경(예정)', 'link' => "javascript:alert('준비중')"],
@@ -192,6 +211,14 @@ class Page {
         ]);
 
         return self::getPage($title, $contentPanel);
+    }
+
+    public static function getBlankPanel($title, $content, $currentModule) {
+        $contentPanel = View::render('blank/panel', [
+            'content' => $content
+        ]);
+
+        return self::getBlankPage($title, $contentPanel);
     }
 
     public static function getPagination($request, $obPagination) {

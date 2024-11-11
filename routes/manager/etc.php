@@ -112,3 +112,22 @@ $obRouter->post('/manager/etc/setAlarmcontrolChange',[
         return new Response(200, Manager\Etc::setAlarmcontrolChange($request),'application/json');
     }
 ]);
+
+$obRouter->get('/manager/etc/graphic_view',[
+    'middlewares' => [
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Etc::Graphic_view($request));
+    }
+]);
+
+$obRouter->post('/manager/etc/ajax_graphicview',[
+    'middlewares' => [
+        'api',
+        'required-manager-login'
+    ],
+    function($request,$idx) {
+        return new Response(200, Manager\Etc::ajax_graphicview($request),'application/json');
+    }
+]);
