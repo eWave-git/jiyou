@@ -123,15 +123,6 @@ class Page {
                 ['label' => 'dashboard', 'title' => '처음으로', 'link' => URL.'/'],
             ],
         ],
-        [
-            'label' => 'inquiry',
-            'title' => '조회',
-            'submenu'=>[
-                ['label' => 'table_inquiry', 'title' => '데이터 조회', 'link' => URL.'/manager/table_inquiry'],
-                ['label' => 'chart_inquiry', 'title' => '그래프 조회', 'link' => URL.'/manager/chart_inquiry'],
-            ],
-        ],
-
     ];
 
     public static function getDepth_1($currentModule) {
