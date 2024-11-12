@@ -105,7 +105,7 @@ class Page {
             'submenu'=>[
 
 //                ['label' => 'group', 'title' => '그룹 관리', 'link' => '/manager/etc/group'],
-                ['label' => 'group', 'title' => '그래픽 보기', 'link' => 'javascript:window.open(\'/manager/etc/graphic_view\', \'_blank\', \'location=no,menubar=no,toolbar=no,status=no,fullscreen=yes\')'],
+//                ['label' => 'group', 'title' => '그래픽 보기', 'link' => 'javascript:window.open(\'/manager/etc/graphic_view\', \'_blank\', \'location=no,menubar=no,toolbar=no,status=no,fullscreen=yes\')'],
                 ['label' => 'group', 'title' => '알람일시중단', 'link' => '/manager/etc/alarmcontrol'],
                 // ['label' => 'autovalve', 'title' => '자동밸브제어', 'link' => '/manager/etc/autovalve'],
                 // ['label' => 'etc', 'title' => '알람 수신변경(예정)', 'link' => "javascript:alert('준비중')"],
