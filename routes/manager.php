@@ -79,3 +79,4 @@ include __DIR__.'/manager/etc.php';
 include __DIR__.'/manager/member.php';
 
 include __DIR__.'/manager/login.php';
+
