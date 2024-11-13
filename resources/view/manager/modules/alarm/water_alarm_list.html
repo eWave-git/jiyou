@@ -1,0 +1,37 @@
+<div class="content">
+    <div class="tit_area">
+        <h2>알람 추가/삭제</h2>
+        <div class="btn_wrap">
+            <a href="/manager/water_alarm_form" class="btn btn_add"><span>알람 추가</span></a>
+        </div>
+    </div>
+    <div class="bd_wrap">
+        <div class="table_wrap of_x">
+            <table class="form_table tb_type1">
+                <caption class="blind">알람 설정</caption>
+                <colgroup>
+                    <col style="width: 7%">
+                    <col>
+                    <col style="width: 13%">
+                    <col style="width: 15%">
+                    <col style="width: 21%">
+                    <col style="width: 8%">
+                    <col style="width: 14%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">디바이스 이름</th>
+                    <th scope="col">알람 데이터</th>
+                    <th scope="col">설정 범위</th>
+                    <th scope="col">설정 일자</th>
+                    <th scope="col" colspan="2">활성화 ON/OFF</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{water_alarm_list_item}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

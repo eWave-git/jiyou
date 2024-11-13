@@ -1,0 +1,73 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    관리
+                </h2>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <form class="card" method="post" action="{{action}}" >
+                    <div class="card-header">
+                        <h3 class="card-title">농장 등록/삭제</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">농장명</label>
+                            <div class="col">
+                                <input type="text" name="farm_name" value="{{farm_name}}" class="form-control" aria-describedby="" placeholder="농장 이름">
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label">농장 주소</label>
+                            <div class="col">
+                                <input type="text" name="farm_address" value="{{farm_address}}" class="form-control" placeholder="농장 주소">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label">safe1 식별번호</label>
+                            <div class="col">
+                                <input type="text" name="address" value="{{address}}" class="form-control" placeholder="시스템 고유번호 (Address number)">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label">농장 관리자 선택</label>
+                            <div class="col">
+                                <select class="form-select" name="member_idx">
+                                    {{member_idx}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label">농장 관찰자 선택</label>
+                            <div class="col">
+                                <select class="form-select mul-select" multiple="true" name="viewer_member_idx[]">
+                                    {{viewer_member_idx}}
+                                </select>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{{URL}}/admin/farm_list"><button type="button" class="btn btn-secondary">뒤로가기</button></a>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>

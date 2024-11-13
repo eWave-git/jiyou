@@ -1,0 +1,40 @@
+<!-- #WRAP -->
+<div id="wrap" class="login_wrap">
+    <div class="login_box">
+        <form method="post">
+            <div class="logo"><img src="{{URL}}/resources//assets/images/logo.png" alt="ewave"></div>
+            <div class="inpt_wrap">
+                <p class="tit">Member ID</p>
+                <input type="text" class="inpt_txt" placeholder="ID"  value="" name="member_id">
+            </div>
+            <div class="inpt_wrap">
+                <p class="tit">Password</p>
+                <div class="pwd_wrap">
+                    <input type="password" class="inpt_txt inpt_pwd" placeholder="Password" autoComplete="off" value="" name="member_password" >
+                    <button class="ico_hidden"></button>
+                </div>
+            </div>
+            {{status}}
+            <div class="option">
+                <div class="chk_wrap">
+                    <label for="login_chk">
+                        <input type="checkbox" id="login_chk"  name="auto_login" >
+                        <span>자동 로그인</span>
+                    </label>
+
+                    <div class="btn_wrap">
+                        <button type="submit" class="btn main_btn">로그인</button>
+                    </div>
+                </div>
+            </div>
+            <div class="login_util">
+                <ul>
+                    <li><a href="#">아이디 찾기</a></li>
+                    <li><a href="#">비밀번호 찾기</a></li>
+                    <li><a href="#">회원가입</a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- // WRAP -->

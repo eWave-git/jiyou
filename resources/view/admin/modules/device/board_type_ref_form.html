@@ -1,0 +1,93 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    board 등록
+                </h2>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <form class="card" method="post" action="{{action}}" >
+                    <div class="card-header">
+                        <h3 class="card-title">board type 등록</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">board type 번호</label>
+                            <div class="col">
+                                <input type="text" name="board_type" value="{{board_type}}" class="form-control" aria-describedby="" placeholder="보드 type">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">board type 이름</label>
+                            <div class="col">
+                                <input type="text" name="model_name" value="{{model_name}}" class="form-control" aria-describedby="" placeholder="모델명">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">board 연결센서 설명</label>
+                            <div class="col">
+                                <input type="text" name="sensor" value="{{sensor}}" class="form-control" aria-describedby="" placeholder="센서">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data1</label>
+                            <div class="col">
+                                <input type="text" name="data1" value="{{data1}}" class="form-control" aria-describedby="" placeholder="data1">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data2</label>
+                            <div class="col">
+                                <input type="text" name="data2" value="{{data2}}" class="form-control" aria-describedby="" placeholder="data2">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data3</label>
+                            <div class="col">
+                                <input type="text" name="data3" value="{{data3}}" class="form-control" aria-describedby="" placeholder="data3">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">data4</label>
+                            <div class="col">
+                                <input type="text" name="data4" value="{{data4}}" class="form-control" aria-describedby="" placeholder="data4">
+
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">control_type</label>
+                            <div class="col">
+                                <select class="form-control"  name="control_type">
+                                    <option value="">선택하세요.</option>
+                                    {{control_type}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{{URL}}/admin/board_type_ref_list"><button type="button" class="btn btn-secondary">뒤로</button></a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

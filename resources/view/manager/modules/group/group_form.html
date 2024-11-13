@@ -1,0 +1,51 @@
+<div class="content">
+    <div class="tit_area">
+        <h2>그룹 관리</h2>
+    </div>
+    <div class="bd_wrap form_alarm_set">
+        <form class="card" method="post" action="/manager/etc/group_form_create" >
+            <fieldset>
+                <legend>그룹 관리</legend>
+                <strong class="form_caption"> 그룹 등록</strong>
+                <div class="form_conbox">
+                    <div class="item">
+                        <div class="form_tit">그룹 이름<span class="required"></span></div>
+                        <div class="form_input">
+                            <input type="text" class="inpt_txt" placeholder="그룹 이름을 입력하세요." id="group_name" name="group_name">
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="form_tit">기간 <span class="required"></span></div>
+                        <div class="form_input">
+                            <input type="text" class="inpt_txt" placeholder="기간을 입력하세요." id="group_date" name="group_date">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn_wrap form_btn_wrap">
+                    <!-- <button type="button" class="btn sub_btn">저장</button> --><!-- 활성화시 class="sub_btn" -->
+                    <button type="submit" class="btn disable">저장</button><!-- 비활성화시 class="disable" -->
+                    <a href="/manager/etc/group" class="btn line_btn">목록</a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#group_date').daterangepicker({
+            locale: {
+                // "format": 'YYYY-MM-DD HH:mm:ss',     // 일시 노출 포맷
+                "format": 'YYYY-MM-DD',     // 일시 노출 포맷
+                "applyLabel": "확인",                    // 확인 버튼 텍스트
+                "cancelLabel": "취소",                   // 취소 버튼 텍스트
+                "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
+                "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+            },
+            timePicker: false,                        // 시간 노출 여부
+            showDropdowns: true,                     // 년월 수동 설정 여부
+            autoApply: true,                         // 확인/취소 버튼 사용여부
+            timePicker24Hour: true,                  // 24시간 노출 여부(ex> true : 23:50, false : PM 11:50)
+        })
+    });
+</script>

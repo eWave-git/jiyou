@@ -1,0 +1,42 @@
+<div class="content">
+    <div class="tit_area">
+        <h2>온도 제어</h2>
+    </div>
+    <div class="bd_wrap form_alarm_set">
+        <form class="card" method="post" action="{{action}}" >
+            <fieldset>
+                <legend>온도 제어</legend>
+                <strong class="form_caption"> 제어 등록</strong>
+                <div class="form_conbox">
+                    <div class="item">
+                        <div class="form_tit">제어 이름<span class="required"></span></div>
+                        <div class="form_input">
+                            <input type="text" class="inpt_txt" placeholder="제어 이름을 입력하세요." id="name" name="name">
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="form_tit">장치<span class="required"></span></div>
+                        <div class="form_select">
+                            <select name="device" id="control_device">
+                                {{device_options}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="form_tit">제어타입<span class="required"></span></div>
+                        <div class="form_select">
+                            <select name="control_type">
+                                <option value="command">커맨드 제어</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn_wrap form_btn_wrap">
+                    <!-- <button type="button" class="btn sub_btn">저장</button> --><!-- 활성화시 class="sub_btn" -->
+                    <button type="submit" class="btn disable">저장</button><!-- 비활성화시 class="disable" -->
+                    <a href="/manager/control/command" class="btn line_btn">목록</a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

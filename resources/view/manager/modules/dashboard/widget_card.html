@@ -1,0 +1,28 @@
+<div class="item {{check_class}}">
+    <div class="tit_wrap">
+        <p class="name">{{subject}}</p>
+        <a href="#" class="set_pop" style="display: {{display}}" open-pop="dev_pop" data-idx="{{idx}}" data-title="{{subject}}"><span class="blind">설정</span></a>
+    </div>
+
+    <div class="state_li">
+        <ul>
+            {{item}}
+        </ul>
+    </div>
+
+    <div class="state_msg">
+        <p>{{check_text}}</p>
+    </div>
+
+    <div class="date_wrap">
+        <p class="txt">Last update</p>
+        <p class="date">{{update_at}}</p>
+    </div>
+
+    <div class="btn_wrap btn_100">
+<!--        <a href="view_table.html" class="btn main_btn">표 보기</a>-->
+<!--        <a href="view_graph.html" class="btn sub_btn">그래프 보기</a>-->
+        <a href="/manager/dashboard/table/{{idx}}" class="btn main_btn">표 보기</a>
+        <a href="/manager/dashboard/chart/{{idx}}" class="btn sub_btn">그래프 보기</a>
+    </div>
+</div>

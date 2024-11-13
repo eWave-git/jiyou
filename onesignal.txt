@@ -1,0 +1,5 @@
+UPA-mobileapp 
+OneSignal App ID : d64ca032-5fe0-40f5-974c-6ddf702ef7f2
+Rest API Key : YzBiZjIxZGItOTE3My00NGM2LThhNTAtNWYzYjFlODlhYzRm
+firebase:
+-  패키지이름 : com.ewave.upa

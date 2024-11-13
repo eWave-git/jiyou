@@ -1,0 +1,21 @@
+<tr>
+    <td>{{number}}</td>
+    <td>{{name}}</td>
+    <td>{{topic}}</td>
+    <td>{{data1}}</td>
+    <td>
+        <input type="text" class="command_inpt" name="temperature_{{idx}}" value="{{data2}}">
+    </td>
+    <td>
+        <div class="btn_wrap command_wrap">
+            <button type="button" class="btn btn_command" name="temperature" data-idx={{idx}}>저장</button>
+        </div>
+    </td>
+    <td>{{create_at}}</td>
+    <td>{{update_at}}</td>
+    <td>
+        <div class="btn_wrap">
+            <a href="/manager/control/{{idx}}/delete/command" class="btn btn_del">삭제</a>
+        </div>
+    </td>
+</tr>

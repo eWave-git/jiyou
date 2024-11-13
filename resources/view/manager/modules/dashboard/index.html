@@ -1,0 +1,86 @@
+<div class="content">
+    <div class="tit_area">
+        <h2>{{farm_name}}</h2>
+    </div>
+    <!-- 장치 목록 -->
+    <div class="dvc_wrap">
+        {{widget_card}}
+    </div>
+    <!--// 장치 목록 -->
+</div>
+
+<!-- 장치세팅팝업 -->
+<section class="popup dev_pop">
+    <form name="frm">
+        <input type="hidden" name="idx" value="">
+        <div class="inner">
+            <div class="pop_wrap">
+                <button class="btn_close"><span class="blind">닫기</span></button>
+                <div class="cont">
+                    <h3 class="pop_tit">장치 이름</h3>
+                    <input type="text" class="inpt_txt" name="widget_name" value="">
+                </div>
+                <div class="cont">
+                    <h3 class="pop_tit">Data</h3>
+                    <div class="data_list">
+                        <table>
+                            <colgroup>
+                                <col width="20%">
+                                <col width="50%">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>사용유무</th>
+                                <th class="tl">이름</th>
+                                <th class="tl">단위</th>
+                            </tr>
+                            </thead>
+                            <tbody id="dynamicTbody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3 class="pop_tit" style="padding-top: 40px;display: {{display}}">데이터 수신 불량 문자 발송</h3>
+                    <div class="data_list" style="display: {{display}}">
+                        <table>
+                            <colgroup>
+                                <col width="20%">
+                                <col width="50%">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>사용유무</th>
+                                <th class="tl"></th>
+                                <th class="tl">시간</th>
+                            </tr>
+                            </thead>
+                            <tbody id="dynamicTbody1">
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="check_yn" value="Y">
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    <select name="check_time">
+                                        <option value="1">1분</option>
+                                        <option value="3">3분</option>
+                                        <option value="5">5분</option>
+                                        <option value="10">10분</option>
+                                        <option value="15">15분</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="btn_wrap">
+                        <button type="button" name="modal_submit" class="btn main_btn">수정</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+<!--// 장치세팅팝업 -->

@@ -1,0 +1,72 @@
+<div class="content">
+    <div class="tit_area">
+        <h2>알람일시중단</h2>
+        <div class="btn_wrap">
+
+        </div>
+    </div>
+    <div class="bd_wrap">
+        <div class="table_wrap of_x">
+            <table class="form_table tb_type1">
+                <caption class="blind">그룹 알람 설정</caption>
+                <colgroup>
+                    <col style="width: 30%">
+                    <col style="width: 40%">
+                    <col style="width: 30%">
+                    <col style="width: 20%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">디바이스</th>
+                    <th scope="col">대상</th>
+                    <th scope="col">상태</th>
+                    <th scope="col">알람일시중단</br> off_on</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {{item}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+       $("[name='activation']").click(function () {
+           if ($(this).is(":checked")) {
+               var str = "모든 알람이 일시중지 됩니다.";
+           } else {
+               var str = "모든 알람이 정상작동 됩니다.";
+           }
+
+
+           if(confirm(str)) {
+                if ($(this).is(":checked")) {
+                    val = 'Y';
+                } else {
+                    val = 'N';
+                }
+
+                $.ajax({
+                    url:'/manager/etc/setAlarmcontrolChange',
+                    type:'post',
+                    data: {
+                        active:val
+                    },
+                    dataType: "json",
+                    success:function(obj){
+                        if (obj.success) {
+                            window.location.reload(true);
+                        }
+                    }
+                })
+           } else {
+                $(this).prop('checked', !$(this).is(":checked")).change()
+           }
+
+
+       })
+    });
+</script>
+

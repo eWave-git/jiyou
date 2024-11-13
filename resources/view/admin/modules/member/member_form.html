@@ -1,0 +1,159 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    사용자 등록
+                </h2>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <form class="card" name="frm" method="post" action="{{action}}" >
+                    <div class="card-header">
+                        <h3 class="card-title">사용자 등록</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">아이디 </label>
+                            <div class="col">
+                                <div class="row">
+                                    <input type="text" name="member_id" value="{{member_id}}" class="form-control" aria-describedby="" placeholder="  사용자 아이디" style="width: 70%" >
+                                    <button type="button" name="id_check" class="col-3 btn btn-primary" >아이디 중복 검사</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">비밀번호 </label>
+                            <div class="col">
+                                <input type="password" name="member_password" value="{{member_password}}" class="form-control" placeholder="비밀번호">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">비밀번호 확인</label>
+                            <div class="col">
+                                <input type="password" name="member_password_verify" value="{{member_password_verify}}" class="form-control" placeholder="비밀번호 확인">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">이름 </label>
+                            <div class="col">
+                                <input type="text" name="member_name" value="{{member_name}}" class="form-control" placeholder="이름">
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label ">이메일 </label>
+                            <div class="col">
+                                <input type="text" name="member_email" value="{{member_email}}" class="form-control" placeholder="이메일">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">전화번호 </label>
+                            <div class="col">
+                                <div class="row" style="display: flex;align-items: center;">
+                                <input type="text" name="member_phone_1" value="{{member_phone_1}}" class="form-control" style="width: 150px" maxlength="3" placeholder="휴대폰번호_1" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+                                <input type="text" name="member_phone_2" value="{{member_phone_2}}" class="form-control" style="width: 150px" maxlength="4" placeholder="휴대폰번호_2" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+                                <input type="text" name="member_phone_3" value="{{member_phone_3}}" class="form-control" style="width: 150px" maxlength="4" placeholder="휴대폰번호_3" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-2 col-form-label required">사용자 권한 </label>
+                            <div class="col">
+                                <select class="form-select" name="member_type">
+                                    {{member_type_options}}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="button" class="btn btn-primary" name="save">저장</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{{URL}}/admin/member_list"><button type="button" class="btn btn-secondary">뒤로가기</button></a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $(function () {
+
+        $("[name='id_check']").click(function(){
+            // alert($("[name='member_id']").val());
+            $.ajax({
+                url:'{{URL}}/admin/member/idCheck',
+                type:'post',
+                data: {id:$("[name='member_id']").val()},
+                dataType: "json",
+                success:function(obj){
+                    if (obj.success) {
+                        alert('사용 중인 아이디 입니다.');
+                    } else {
+                        alert('사용 가능한 아이디 입니다.');
+                    }
+                }
+            })
+        });
+
+        $("[name='save']").click(function(){
+            if ($("[name='member_id']").val() == '') {
+                alert('아이디을 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_password']").val() == '') {
+                alert('비밀번호를 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_password_verify']").val() == '') {
+                alert('비밀번호 확인을 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_name']").val() == '') {
+                alert('이름을 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_password']").val() != $("[name='member_password_verify']").val()) {
+                alert('비밀번호를 다시 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_phone_1']").val() == '') {
+                alert('전화번호를 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_phone_2']").val() == '') {
+                alert('전화번호를 입력 하세요.');
+                return false;
+            }
+
+            if ($("[name='member_phone_3']").val() == '') {
+                alert('전화번호를 입력 하세요.');
+                return false;
+            }
+
+            $("[name='frm']").submit();
+
+        });
+    });
+</script>

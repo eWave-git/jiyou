@@ -1,0 +1,20 @@
+<tr>
+    <td>{{number}}</td>
+    <td>{{name}}</td>
+    <td>{{device_name}}</td>
+    <td>{{text}}</td>
+    <td>
+        <div class="btn_switch">
+            <label for="">
+                <input type="checkbox"  name="relay"  {{checked}} data-field="{{field}}" data-idx={{idx}}>
+            </label>
+        </div>
+    </td>
+    <td>{{create_at}}</td>
+    <td>{{update_at}}</td>
+    <td>
+        <div class="btn_wrap">
+            <a href="/manager/control/{{idx}}/delete/switch" class="btn btn_del">삭제</a>
+        </div>
+    </td>
+</tr>

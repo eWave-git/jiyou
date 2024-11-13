@@ -1,0 +1,12 @@
+composer.lock
+/composer.phar
+/vendor
+/log
+
+.vagrant
+Vagrantfile
+.idea
+.vscode
+.DS_Store
+
+.env

@@ -1,0 +1,75 @@
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    board list
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <a href="/admin/board_type_ref_form">
+                    <button type="button" class="btn btn-primary">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path>
+                        </svg>
+                        board type list
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive" >
+                        <table id="farm_list" class="table table-vcenter card-table">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="10%">
+                                <col width="5%">
+                                <col width="15%">
+                                <col width="5%">
+                                <col width="5%">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>board type number</th>
+                                <th>board type name</th>
+                                <th>board 연결 센서</th>
+                                <th class="w-1"></th>
+                                <th class="w-1"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{items}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $(function () {
+
+        $('.btn_del').click(function () {
+            if(confirm("삭제 하시겠습니까?")){
+                location.href = "/admin/board_type_ref_form/"+$(this).data('idx')+"/delete";
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,20 @@
+<tr>
+    <td>{{number}}</td>
+    <td>{{device_name}}</td>
+    <td>{{field}}</td>
+    <td>{{MinAtMax}}</td>
+    <td>{{created_at}}</td>
+    <td style="display: {{style}}">
+        <div class="btn_switch">
+            <label for="">
+                <input type="checkbox" name="activation" data-idx="{{idx}}" value="Y" {{checked}}>
+            </label>
+        </div>
+    </td>
+    <td>
+        <div class="btn_wrap">
+            <button type="button" class="btn btn_del" data-idx="{{idx}}">삭제</button>
+<!--            <a href="/manager/alarm/{{idx}}/delete" class="btn btn_del">삭제</a>-->
+        </div>
+    </td>
+</tr>
