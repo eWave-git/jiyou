@@ -7,7 +7,7 @@ foreach ($_REQUEST as $k => $v) {
 	$$k = $v;
 }
 
-$conn = mysqli_connect("database-2.cvdze1lptugg.ap-northeast-2.rds.amazonaws.com","wave2","qkrtjs4871##KL","upa") or die ("Can't access DB");
+$conn = mysqli_connect("database-2.cvdze1lptugg.ap-northeast-2.rds.amazonaws.com","wave2","qkrtjs4871##KL","jiyou") or die ("Can't access DB");
 
 
 
