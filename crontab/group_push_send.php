@@ -46,7 +46,7 @@ $alarm_history_array = array();
 $_i = 0;
 foreach ($group_array as $k => $v) {
     $alarm_results = (new Database('alarm'))->execute("
-                    select *,a.idx as idx from alarm as a 
+                    select *, a.idx as idx, a.board_type_field as board_type_field from alarm as a 
                         left join widget as w
                         on a.device_idx = w.device_idx
                     where a.member_idx = ".$member_idx." and a.group_idx = ".$v['idx']."
