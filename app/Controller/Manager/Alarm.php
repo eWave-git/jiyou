@@ -315,6 +315,13 @@ class Alarm extends Page {
     }
 
     public static function AlarmDelete($request, $idx) {
+
+        while ($alarm_history_obj = EntityAlarmHistory::getAlarmHistoryByAlarmIdx($idx)->fetchObject(EntityAlarmHistory::class)) {
+            if (!empty($alarm_history_obj->idx)) {
+                $alarm_history_obj->deleted();
+            }
+        }
+
         $obj = EntityAlarm::getAlarmByIdx($idx);
         $group_idx = $obj->group_idx;
         $obj->deleted();

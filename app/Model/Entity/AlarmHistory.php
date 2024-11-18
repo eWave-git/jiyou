@@ -29,6 +29,10 @@ class AlarmHistory {
         return self::getAlarmHistory('device_idx ='.$device_idx);
     }
 
+    public static function getAlarmHistoryByAlarmIdx($alarm_idx) {
+        return self::getAlarmHistory('alarm_idx ='.$alarm_idx);
+    }
+
     public function created() {
         $this->created_at = date('Y-m-d H:i:s');
 
