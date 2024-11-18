@@ -46,7 +46,7 @@ $alarm_history_array = array();
 $_i = 0;
 foreach ($group_array as $k => $v) {
     $alarm_results = (new Database('alarm'))->execute("
-                    select * from alarm as a 
+                    select *,a.idx as idx from alarm as a 
                         left join widget as w
                         on a.device_idx = w.device_idx
                     where a.member_idx = ".$member_idx." and a.group_idx = ".$v['idx']."
@@ -54,7 +54,8 @@ foreach ($group_array as $k => $v) {
 
     while ($alarm_obj = $alarm_results->fetchObject(EntityAlarm::class)) {
         $raw_check = Common::alarm_validity_check($alarm_obj);
-        if ($raw_check['reslut']) {
+
+        if (isset($raw_check['reslut'])) {
 
             $alarm_array[] = $alarm_obj->widget_name."-".$alarm_obj->board_type_name." ".$raw_check['raw_data_value'].$raw_check['range_value'];
 

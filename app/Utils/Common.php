@@ -457,6 +457,7 @@ class Common{
 
         $check = array();
         $check['reslut'] = false;
+        $cnt = 0;
 
         if (!empty($obj)) {
             $device_info = EntityDevice::getDevicesByIdx($obj->device_idx);
@@ -466,39 +467,47 @@ class Common{
                         where address='{$device_info->address}'
                           and board_type='{$device_info->board_type}'
                           and board_number='{$device_info->board_number}'
-                        order by idx desc limit 0, 1 ")->fetchObject();
+                        order by idx desc limit 0, {$obj->alarm_satisfaction} ");
 
-            if ($obj->alarm_range == "between") {
+            $i=0;
+            while ($raw_data_row = $raw_data_info->fetchObject(EntityRawData::class)) {
 
-                if ($obj->min > $raw_data_info->{$obj->board_type_field} || $obj->max < $raw_data_info->{$obj->board_type_field}  ) {
-                    $check['reslut'] = true;
-                    $check['range_value'] = "(".$obj->min."~".$obj->max.")";
-                    $check['raw_data_idx'] = $raw_data_info->idx;
-                    $check['raw_data_value'] = $raw_data_info->{$obj->board_type_field};
-                    $check['raw_data_created_at'] = $raw_data_info->created_at;
-                }
+                if ($obj->alarm_range == "between") {
+                    if ($obj->min > $raw_data_row->{$obj->board_type_field} || $obj->max < $raw_data_row->{$obj->board_type_field}  ) {
+                        $check[$i]['reslut'] = true;
+                        $check[$i]['range_value'] = "(".$obj->min."~".$obj->max.")";
+                        $check[$i]['raw_data_idx'] = $raw_data_row->idx;
+                        $check[$i]['raw_data_value'] = $raw_data_row->{$obj->board_type_field};
+                        $check[$i]['raw_data_created_at'] = $raw_data_row->created_at;
+                        $cnt++;
+                    }
 
-            } else if ($obj->alarm_range == "up") {
-                if ($obj->max < $raw_data_info->{$obj->board_type_field} ) {
-                    $check['reslut'] = true;
-                    $check['range_value'] = "(".$obj->max.")";
-                    $check['raw_data_idx'] = $raw_data_info->idx;
-                    $check['raw_data_value'] = $raw_data_info->{$obj->board_type_field};
-                    $check['raw_data_created_at'] = $raw_data_info->created_at;
+                } else if ($obj->alarm_range == "up") {
+                    if ($obj->max < $raw_data_row->{$obj->board_type_field} ) {
+                        $check[$i]['reslut'] = true;
+                        $check[$i]['range_value'] = "(".$obj->max.")";
+                        $check[$i]['raw_data_idx'] = $raw_data_row->idx;
+                        $check[$i]['raw_data_value'] = $raw_data_row->{$obj->board_type_field};
+                        $check[$i]['raw_data_created_at'] = $raw_data_row->created_at;
+                        $cnt++;
+                    }
+                } else if ($obj->alarm_range == "down") {
+                    if ($obj->min > $raw_data_row->{$obj->board_type_field}) {
+                        $check[$i]['reslut'] = true;
+                        $check[$i]['range_value'] = "(".$obj->min.")";
+                        $check[$i]['raw_data_idx'] = $raw_data_row->idx;
+                        $check[$i]['raw_data_value'] = $raw_data_row->{$obj->board_type_field};
+                        $check[$i]['raw_data_created_at'] = $raw_data_row->created_at;
+                        $cnt++;
+                    }
                 }
-            } else if ($obj->alarm_range == "down") {
-                if ($obj->min > $raw_data_info->{$obj->board_type_field}) {
-                    $check['reslut'] = true;
-                    $check['range_value'] = "(".$obj->min.")";
-                    $check['raw_data_idx'] = $raw_data_info->idx;
-                    $check['raw_data_value'] = $raw_data_info->{$obj->board_type_field};
-                    $check['raw_data_created_at'] = $raw_data_info->created_at;
-                }
+                $i++;
             }
-
         }
 
-        return $check;
+        if ($cnt == $obj->alarm_satisfaction) {
+            return $check[0];
+        }
     }
 
     public static function water_alarm_validity_check($obj) {

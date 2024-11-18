@@ -20,6 +20,8 @@ class Alarm {
 
     public $max;
 
+    public $alarm_satisfaction;
+
     public $activation;
 
     public $created_at;
@@ -43,6 +45,7 @@ class Alarm {
             'board_type_name' => $this->board_type_name,
             'min' => $this->min,
             'max' => $this->max,
+            'alarm_satisfaction' => $this->alarm_satisfaction,
             'activation' => $this->activation,
             'created_at' => $this->created_at,
         ]);
@@ -59,6 +62,7 @@ class Alarm {
             'board_type_name' => $this->board_type_name,
             'min' => $this->min,
             'max' => $this->max,
+            'alarm_satisfaction' => $this->alarm_satisfaction,
             'activation' => $this->activation,
         ]);
     }
