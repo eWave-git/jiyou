@@ -10,3 +10,5 @@ Vagrantfile
 .DS_Store
 
 .env
+checkin.txt
+datain.php
