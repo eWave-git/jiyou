@@ -231,6 +231,7 @@ class Alarm extends Page {
         $obj_1->alarm_range = $postVars['alarm_range'];
         $obj_1->min = $min;
         $obj_1->max = $max;
+        $obj_1->alarm_satisfaction = $postVars['alarm_satisfaction'];
         $obj_1->activation = empty($postVars['activation']) ? 'N' : $postVars['activation'];
         $obj_1->created();
 
@@ -258,6 +259,7 @@ class Alarm extends Page {
 
         $obj->min = $postVars['min'] ?? $obj->min;
         $obj->max = $postVars['max'] ?? $obj->max;
+        $obj->alarm_satisfaction = $postVars['alarm_satisfaction'];
         $obj->activation = empty($postVars['activation']) ? 'N': $postVars['activation'];
         $obj->updated();
 
@@ -313,6 +315,13 @@ class Alarm extends Page {
     }
 
     public static function AlarmDelete($request, $idx) {
+
+        while ($alarm_history_obj = EntityAlarmHistory::getAlarmHistoryByAlarmIdx($idx)->fetchObject(EntityAlarmHistory::class)) {
+            if (!empty($alarm_history_obj->idx)) {
+                $alarm_history_obj->deleted();
+            }
+        }
+
         $obj = EntityAlarm::getAlarmByIdx($idx);
         $group_idx = $obj->group_idx;
         $obj->deleted();
@@ -680,6 +689,7 @@ class Alarm extends Page {
         $obj_1->alarm_range = $postVars['alarm_range'];
         $obj_1->min = $min;
         $obj_1->max = $max;
+        $obj_1->alarm_satisfaction = $postVars['alarm_satisfaction'];
         $obj_1->activation = empty($postVars['activation']) ? 'N' : $postVars['activation'];
         $obj_1->created();
 

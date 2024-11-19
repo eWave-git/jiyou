@@ -10,5 +10,3 @@ Vagrantfile
 .DS_Store
 
 .env
-datain.txt
-checkin.txt
